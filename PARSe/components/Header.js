@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'center',
     flexDirection: "row",
-    fontFamily: "Arial",
+    fontFamily: "Helvetica",
     fontSize: 100,
     backgroundColor: "rgb(239, 187, 125)",
     borderRadius: 5,

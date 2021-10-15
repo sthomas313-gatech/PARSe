@@ -9,6 +9,7 @@ import {
 
 // custom components
 import Header from './components/Header';
+import LoginScreen from './components/LoginScreen';
 import RecCard from './components/RecCard';
 
 // import static content (replace with dynamic content from backend later)
@@ -24,12 +25,13 @@ export default function App() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Header />
-      <ScrollView>
-        {recCardsList}
-      </ScrollView>
-    </SafeAreaView>
+    <LoginScreen />
+    // <SafeAreaView style={styles.container}>
+    //   <Header />
+    //   <ScrollView>
+    //     {recCardsList}
+    //   </ScrollView>
+    // </SafeAreaView>
   );
 }
 
