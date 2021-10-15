@@ -17,6 +17,8 @@ target 'PARSe' do
     # Pods for testing
   end
 
+  pod 'Firebase/Analytics'
+
   # Enables Flipper.
   #
   # Note that if you have use_frameworks! enabled, Flipper will not work and
