@@ -1,37 +1,36 @@
 import React from 'react';
 import { 
-  StyleSheet,
-  ScrollView,
-  SafeAreaView
+  StyleSheet
 } from 'react-native';
-// import Constants from 'expo-constants';
+import { NavigationContainer } from '@react-navigation/native'; 
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+// navigation manager -- https://reactnative.dev/docs/navigation
+const Stack = createNativeStackNavigator();
 
 // custom components
-import Header from './components/Header';
 import LoginScreen from './components/LoginScreen';
-import RecCard from './components/RecCard';
-
-// import static content (replace with dynamic content from backend later)
-import {recs } from "./static_content";
+import FeedScreen from './components/FeedScreen';
 
 
 export default function App() {
 
-  // build array of RecCard components
-  recCardsList = [];
-  for (var i=0; i < recs.length; i++) {
-    recCardsList.push(<RecCard key={recs[i].restaurant.name.concat(recs[i].user.username)} rec={recs[i]} />);
-  }
-
   return (
-    <LoginScreen />
-    // <SafeAreaView style={styles.container}>
-    //   <Header />
-    //   <ScrollView>
-    //     {recCardsList}
-    //   </ScrollView>
-    // </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+            name="LoginScreen"
+            component={LoginScreen}
+            options={{ title: 'Login' }}
+          />
+        <Stack.Screen 
+            name="FeedScreen"
+            component={FeedScreen}
+            options={{ title: "Recommendation Feed"}}
+          />
+      </Stack.Navigator>
+    </NavigationContainer>
+    
   );
 }
 

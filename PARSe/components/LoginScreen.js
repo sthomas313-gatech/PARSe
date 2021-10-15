@@ -10,11 +10,12 @@ import {
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
+// import googleSignIn from "../images/google_signin_buttons/ios/2x/btn_google_light_normal_ios@2x.png";
 
 import Header from './Header';
 
 
-export default function LoginScreen() {
+export default function LoginScreen( {navigation} ) {
     return (
         <View style={styles.loginView} >
             <SafeAreaView style={styles.loginSafeView}>
@@ -31,17 +32,25 @@ export default function LoginScreen() {
                 />
                 
                 <View style={styles.buttonRow} > 
-                    <Icon.Button 
-                        style={styles.facebookButton} 
-                        name="facebook" 
-                        onPress={() => Alert.alert('login with facebook')} 
-                    />
-                    <Icon.Button name="google" onPress={() => Alert.alert('login with google')} />
+                    <View style={styles.facebookView}>
+                        <Icon 
+                            style={styles.facebookButton} 
+                            name="facebook" 
+                            onPress={() => Alert.alert('login with facebook')} 
+                        />
+                    </View>
+                    <View style={styles.facebookView}>
+                        {/* <Image source={require("../images/google_signin_buttons/ios/2x/btn_google_light_normal_ios@2x.png")} /> */}
+                        <Icon 
+                            style={styles.facebookButton}
+                            name="google" 
+                            onPress={() => Alert.alert('login with google')} />
+                    </View>
                     <View style={styles.buttonView}>
                         <Button
                             style={styles.loginButton}
                             title="Login"
-                            onPress={() => Alert.alert('login with email/username')}
+                            onPress={() => navigation.navigate("FeedScreen")}
                         />
                     </View>
                 </View>
@@ -89,6 +98,17 @@ styles = StyleSheet.create({
         fontSize: 14
     },
     facebookButton: {
-        borderRadius: 100
+        fontSize: 25,
+        color: "white"
+    },
+    facebookView: {
+        width: 50,
+        height: 50,
+        borderRadius: 50/2,
+        borderWidth: 2,
+        padding: 10,
+        backgroundColor: "rgb(66,103,178)",
+        justifyContent: "center",
+        alignItems: "center"
     }
 })
