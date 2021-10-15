@@ -13,6 +13,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		A05BA1E739E7C3F4E686E2C0 /* libPods-PARSe-PARSeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8394AF155C56AAA554D7F994 /* libPods-PARSe-PARSeTests.a */; };
+		C8CA6AB02719FE640009A5E4 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = C8CA6AAF2719FE640009A5E4 /* fonts */; };
 		D4F67E2DCC0D4BC4CC1EE632 /* libPods-PARSe.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A05D095C8B2FF01F967A5964 /* libPods-PARSe.a */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 		8394AF155C56AAA554D7F994 /* libPods-PARSe-PARSeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PARSe-PARSeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8594B679F751DC6556AC5901 /* Pods-PARSe-PARSeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PARSe-PARSeTests.debug.xcconfig"; path = "Target Support Files/Pods-PARSe-PARSeTests/Pods-PARSe-PARSeTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A05D095C8B2FF01F967A5964 /* libPods-PARSe.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PARSe.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C8CA6AAF2719FE640009A5E4 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -88,6 +90,7 @@
 			children = (
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
+				C8CA6AAF2719FE640009A5E4 /* fonts */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
@@ -104,7 +107,6 @@
 				8594B679F751DC6556AC5901 /* Pods-PARSe-PARSeTests.debug.xcconfig */,
 				5F50D4E6C745942147FB03D1 /* Pods-PARSe-PARSeTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -241,6 +243,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C8CA6AB02719FE640009A5E4 /* fonts in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);

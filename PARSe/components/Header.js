@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { 
   Text, 
   View, 
@@ -27,7 +27,8 @@ const styles = StyleSheet.create({
     backgroundColor: "rgb(239, 187, 125)",
     borderRadius: 5,
     padding: 5,
-    marginBottom: 5
+    marginBottom: 5,
+    margin: 3
   },
   headerText: {
     fontFamily: "Chalkduster",

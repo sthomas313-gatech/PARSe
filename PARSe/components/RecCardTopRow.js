@@ -4,9 +4,9 @@ import {
   View, 
   StyleSheet
   } from 'react-native';
-import { MaterialCommunityIcons } from "react-native-vector-icons";
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import {ProfilePic} from './ProfilePic';
+import ProfilePic from './ProfilePic';
 
 
 

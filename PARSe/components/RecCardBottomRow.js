@@ -3,12 +3,13 @@ import {
   View, 
   StyleSheet, 
   Dimensions,
-  TouchableHighlight
+  TouchableHighlight,
+  Text
   } from 'react-native';
-import { MaterialCommunityIcons } from "react-native-vector-icons";
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import {MoreInfo} from './MoreInfo';
-import {Tag} from './Tag';
+import MoreInfo from './MoreInfo';
+import Tag from './Tag';
 
 
 
@@ -26,7 +27,7 @@ export default function RecCardBottomRow( {rec} ) {
   
         <View style={bottomRowStyles.buttonGroup}>
           <TouchableHighlight>
-            <MaterialCommunityIcons style={styles.mapIcon} name="heart-outline" />
+            <MaterialCommunityIcons style={bottomRowStyles.mapIcon} name="heart-outline" />
           </TouchableHighlight>
           <MoreInfo />
         </View>
@@ -51,5 +52,8 @@ const bottomRowStyles = StyleSheet.create({
         flex: 1,
         justifyContent: "space-around",
         alignItems: "center"
+    },
+    mapIcon: {
+        fontSize: 20
     }
 })

@@ -4,7 +4,7 @@ import {
   StyleSheet
   } from 'react-native';
 
-import { MaterialCommunityIcons } from "react-native-vector-icons";
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function MoreInfo() {
   return (
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   circleIcon: {
-    fontSize: "10",
+    fontSize: 10,
     padding: 3
   }
 });
