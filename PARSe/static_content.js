@@ -21,8 +21,12 @@ export const recs = [
       name: "Taqueria Del Sol",
       location: {
         city: "Atlanta",
-        state: "GA"
-      }
+        state: "GA",
+        coordinate: {
+          latitude : 33.787419165604035 , 
+          longitude : -84.4129149869835
+        }
+      },
     },
     user: {
       username: "patrickc410",
@@ -43,7 +47,11 @@ export const recs = [
       name: "Papi's Cuban Grill",
       location: {
         city: "Atlanta",
-        state: "GA"
+        state: "GA",
+        coordinate: {
+          latitude : 33.772889173966654 ,
+          longitude : -84.38038030207767
+        }
       }
     },
     user: {
@@ -65,7 +73,11 @@ export const recs = [
       name: "Wagaya",
       location: {
         city: "Houston",
-        state: "TX"
+        state: "TX",
+        coordinate: {
+          latitude : 33.78636618067914 , 
+          longitude : -84.39823984446893
+        }
       }
     },
     user: {
@@ -87,7 +99,11 @@ export const recs = [
       name: "Fox Bros BBQ",
       location: {
         city: "Atlanta",
-        state: "GA"
+        state: "GA",
+        coordinate: {
+          latitude : 33.76114625659493 , 
+          longitude : -84.34746527330518
+        }
       }
     },
     user: {
