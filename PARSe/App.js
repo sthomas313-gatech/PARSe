@@ -12,6 +12,7 @@ const Stack = createNativeStackNavigator();
 import LoginScreen from './components/LoginScreen';
 import FeedScreen from './components/FeedScreen';
 import Header2 from './components/Header2';
+import DiscoverScreen from './components/DiscoverScreen';
 
 
 export default function App() {
@@ -39,6 +40,12 @@ export default function App() {
         <Stack.Screen 
             name="FeedScreen"
             component={FeedScreen}
+            // options={{ title: "Recommendation Feed"}}
+            options={{ headerTitle: (props) => <Header2 {...props} /> }}
+          />
+        <Stack.Screen 
+            name="DiscoverScreen"
+            component={DiscoverScreen}
             // options={{ title: "Recommendation Feed"}}
             options={{ headerTitle: (props) => <Header2 {...props} /> }}
           />
