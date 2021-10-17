@@ -11,22 +11,36 @@ const Stack = createNativeStackNavigator();
 // custom components
 import LoginScreen from './components/LoginScreen';
 import FeedScreen from './components/FeedScreen';
+import Header2 from './components/Header2';
 
 
 export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator 
+        screenOptions={{
+          headerShown: false,
+          headerStyle: {
+            backgroundColor: 'rgb(239, 187, 125)',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
+        >
         <Stack.Screen
             name="LoginScreen"
             component={LoginScreen}
             options={{ title: 'Login' }}
+            options={{ headerTitle: (props) => <Header2 {...props} /> }}
           />
         <Stack.Screen 
             name="FeedScreen"
             component={FeedScreen}
-            options={{ title: "Recommendation Feed"}}
+            // options={{ title: "Recommendation Feed"}}
+            options={{ headerTitle: (props) => <Header2 {...props} /> }}
           />
       </Stack.Navigator>
     </NavigationContainer>
@@ -41,4 +55,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#ecf0f1',
     padding: 8,
   },
+  navContainer: {
+    margin: 0,
+    padding: 0
+  }
 });

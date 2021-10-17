@@ -9,6 +9,7 @@ import { Button } from 'react-native-paper';
 // custom components
 import Header from './Header';
 import RecCard from './RecCard';
+import NavBar from './NavBar';
 
 // import static content (replace with dynamic content from backend later)
 import { recs } from "../static_content";
@@ -28,7 +29,8 @@ export default function FeedScreen( {navigation} ) {
         <ScrollView>
             {recCardsList}
         </ScrollView>
-        <Button title="Login" onPress={() => navigation.navigate("LoginScreen")} />
+        {/* <Button title="Login" onPress={() => navigation.navigate("LoginScreen")} /> */}
+        <NavBar navigation={navigation} />
     </SafeAreaView>
   );
 }
