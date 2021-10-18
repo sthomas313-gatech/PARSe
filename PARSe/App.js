@@ -13,6 +13,7 @@ import LoginScreen from './components/LoginScreen';
 import FeedScreen from './components/FeedScreen';
 import Header2 from './components/Header2';
 import DiscoverScreen from './components/DiscoverScreen';
+import ProfileScreen from './components/ProfileScreen';
 
 
 export default function App() {
@@ -49,6 +50,12 @@ export default function App() {
             // options={{ title: "Recommendation Feed"}}
             options={{ headerTitle: (props) => <Header2 {...props} /> }}
           />
+        <Stack.Screen 
+            name="ProfileScreen"
+            component={ProfileScreen}
+            // options={{ title: "Recommendation Feed"}}
+            options={{ headerTitle: (props) => <Header2 {...props} /> }}
+          />   
       </Stack.Navigator>
     </NavigationContainer>
     

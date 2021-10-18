@@ -33,7 +33,7 @@ export default function NavBar({navigation}) {
         </TouchableOpacity>
 
         <TouchableOpacity
-            onPress={() => navigation.navigate("LoginScreen")}
+            onPress={() => navigation.navigate("ProfileScreen")}
             style={styles.pressableStyle}
         >
             <MaterialCommunityIcons 
