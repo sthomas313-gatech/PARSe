@@ -46,7 +46,7 @@ export default function ProfileScreen( {navigation} ) {
     );
 }
 
-styles = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 10
@@ -66,13 +66,6 @@ styles = StyleSheet.create({
         padding: 10,
         borderRadius: 10,
         backgroundColor: "rgb(250,250,250)"
-    },
-    textStyle: {
-        fontFamily: "Helvetica",
-    },
-    buttonRow: {
-        flexDirection: "row",
-        justifyContent: "space-around"
     },
     buttonView: {
         borderRadius: 10,

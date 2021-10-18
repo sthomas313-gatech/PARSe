@@ -61,7 +61,7 @@ export default function LoginScreen( {navigation} ) {
     );
 }
 
-styles = StyleSheet.create({
+const styles = StyleSheet.create({
     loginView: {
         backgroundColor: "rgb(239, 187, 125)",
         flex: 1

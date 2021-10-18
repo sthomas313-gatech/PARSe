@@ -18,7 +18,7 @@ import { recs } from "../static_content";
 export default function FeedScreen( {navigation} ) {
 
   // build array of RecCard components
-  recCardsList = [];
+  var recCardsList = [];
   for (var i=0; i < recs.length; i++) {
     recCardsList.push(<RecCard key={recs[i].restaurant.name.concat(recs[i].user.username)} rec={recs[i]} />);
   }

@@ -35,26 +35,26 @@ export default function App() {
         <Stack.Screen
             name="LoginScreen"
             component={LoginScreen}
-            options={{ title: 'Login' }}
-            options={{ headerTitle: (props) => <Header2 {...props} /> }}
+            // options={{ title: 'Login' }}
+            // options={{ headerTitle: (props) => <Header2 {...props} /> }}
           />
         <Stack.Screen 
             name="FeedScreen"
             component={FeedScreen}
             // options={{ title: "Recommendation Feed"}}
-            options={{ headerTitle: (props) => <Header2 {...props} /> }}
+            // options={{ headerTitle: (props) => <Header2 {...props} /> }}
           />
         <Stack.Screen 
             name="DiscoverScreen"
             component={DiscoverScreen}
             // options={{ title: "Recommendation Feed"}}
-            options={{ headerTitle: (props) => <Header2 {...props} /> }}
+            // options={{ headerTitle: (props) => <Header2 {...props} /> }}
           />
         <Stack.Screen 
             name="ProfileScreen"
             component={ProfileScreen}
             // options={{ title: "Recommendation Feed"}}
-            options={{ headerTitle: (props) => <Header2 {...props} /> }}
+            // options={{ headerTitle: (props) => <Header2 {...props} /> }}
           />   
       </Stack.Navigator>
     </NavigationContainer>
@@ -62,15 +62,15 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
-    padding: 8,
-  },
-  navContainer: {
-    margin: 0,
-    padding: 0
-  }
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     justifyContent: 'center',
+//     backgroundColor: '#ecf0f1',
+//     padding: 8,
+//   },
+//   navContainer: {
+//     margin: 0,
+//     padding: 0
+//   }
+// });

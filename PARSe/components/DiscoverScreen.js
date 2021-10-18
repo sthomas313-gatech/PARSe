@@ -16,7 +16,7 @@ import {recs} from '../static_content';
 
 export default function DiscoverScreen( {navigation} ) {
     // build array of RecCard components
-    markerList = [];
+    var markerList = [];
     for (var i=0; i < recs.length; i++) {
         markerList.push(<Marker 
             key={recs[i].restaurant.name.concat(recs[i].user.username)} 

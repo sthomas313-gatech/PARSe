@@ -66,27 +66,6 @@ const styles = StyleSheet.create({
         alignItems: "center"
         // fontSize: 40
     },
-    buttonView: {
-        borderWidth: 1,
-        // borderRadius: 10,
-        padding: 5,
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center"
-        // fontSize: 40
-    },
-    leftButtonView: {
-        borderLeftWidth: 0
-    },
-    rightButtonView: {
-        borderRightWidth: 0
-    },
-    // buttonStyle: {
-    //     fontFamily: "Helvetica",
-    //     fontSize: 14,
-    //     color: "white",
-    //     backgroundColor: "red"
-    // },
     icon: {
         fontSize: 40
     }
