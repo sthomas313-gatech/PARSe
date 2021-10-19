@@ -5,57 +5,70 @@ import {
   Button,
   Text,
 //   Pressable,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions
   } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import LinearGradient from 'react-native-linear-gradient';
 
 export default function NavBar({navigation}) {
   return (
-    <View style={styles.navBarStyle} >
-        <TouchableOpacity
-            onPress={() => navigation.navigate("FeedScreen")}
-            style={styles.pressableStyle}
+    <LinearGradient 
+            style={styles.linGradStyle}
+            colors={["rgb(255, 255, 255)", "rgb(239, 187, 125)"]}
         >
-            <MaterialCommunityIcons 
-                style={styles.icon} 
-                name="script" 
-            />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-            onPress={() => navigation.navigate("DiscoverScreen")}
-            style={styles.pressableStyle}
-        >
+        <View style={styles.navBarStyle} >
+            <TouchableOpacity
+                onPress={() => navigation.navigate("FeedScreen")}
+                style={styles.pressableStyle}
+            >
                 <MaterialCommunityIcons 
                     style={styles.icon} 
-                    name="magnify" 
+                    name="script" 
                 />
-        </TouchableOpacity>
+            </TouchableOpacity>
 
-        <TouchableOpacity
-            onPress={() => navigation.navigate("ProfileScreen")}
-            style={styles.pressableStyle}
-        >
-            <MaterialCommunityIcons 
-                style={styles.icon} 
-                name="account" 
-            />
-        </TouchableOpacity>
-    </View>
+            <TouchableOpacity
+                onPress={() => navigation.navigate("DiscoverScreen")}
+                style={styles.pressableStyle}
+            >
+                    <MaterialCommunityIcons 
+                        style={styles.icon} 
+                        name="magnify" 
+                    />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                onPress={() => navigation.navigate("ProfileScreen")}
+                style={styles.pressableStyle}
+            >
+                <MaterialCommunityIcons 
+                    style={styles.icon} 
+                    name="account" 
+                />
+            </TouchableOpacity>
+        </View>
+    </LinearGradient>
     
   );
 }
 
 const styles = StyleSheet.create({
-    navBarStyle: {
-        // paddingTop: 10,
+    linGradStyle: {
+        position: "absolute",
+        top: 10*Dimensions.get("window").height/11,
         marginBottom: 0,
-        // flex: 1,
+        opacity: 0.75,
         flexDirection: "row",
         justifyContent: "space-around",
         alignItems: "center",
-        // borderTopWidth: 1,
-        // borderTopColor: "black"
+        backgroundColor: "rgb(239, 187, 125)"
+    },
+    navBarStyle: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        alignItems: "center",
+        // flex: 1
     },
     pressableStyle: {
         borderWidth: 1,

@@ -5,27 +5,76 @@ import {
   StyleSheet,
   TextInput,
   Text,
-  Alert,
-  Button
+  Button,
+  ScrollView,
+  TouchableOpacity
 } from 'react-native';
-
+import {Card} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 // import googleSignIn from "../images/google_signin_buttons/ios/2x/btn_google_light_normal_ios@2x.png";
 
 import Header from './Header';
 import NavBar from './NavBar';
 import ProfilePic from './ProfilePic';
+import RecCard from "./RecCard";
+
 
 // Replace with dynamic content later
 import patrick_profile_pic1 from '../images/patrick_profile_pic1.jpeg';
+import {recs} from '../static_content';
+// import RecCard from './RecCard';
 
 
 export default function ProfileScreen( {navigation} ) {
+    const user = {
+        username: "patrickc410",
+        firstName: "Patrick",
+        lastName: "Crawford"
+    }
+    var recCardsList = [];
+    for (var i=0; i < 1; i++) {
+        recCardsList.push(<RecCard key={recs[i].restaurant.name.concat(recs[i].user.username)} rec={recs[i]} />);
+    }
+
     return (
         <SafeAreaView style={styles.loginSafeView}>
             <Header />
-            <View style={styles.container} >
-                <ProfilePic picture={patrick_profile_pic1} />
+            <ScrollView style={styles.container} >
+                <View style={styles.userInfoView}>
+                    <ProfilePic picture={patrick_profile_pic1} />
+                    <View style={styles.userInfoView}>
+                        <Text style={styles.nameStyle}>{user.firstName} {user.lastName}</Text>
+                        <Text style={styles.userNameStyle}>@{user.username}</Text>
+                    </View>
+                </View>
+
+                <View style={styles.row}>
+                    <Text style={styles.text}>My Top Recs</Text>
+                    <Button title="Edit" />
+                </View>
+                <View>
+                    {recCardsList}
+                    <Button title="Add" />
+                </View>
+
+                <View style={styles.row}>
+                    <Text style={styles.text}>My Lists</Text>
+                    <Button title="Edit" />
+                </View>
+                <View>
+                    <TouchableOpacity>
+                        <Card style={styles.myListCard}><Text style={styles.text}>Been There</Text></Card>
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <Card style={styles.myListCard}><Text style={styles.text}>Want To Go</Text></Card>
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <Card style={styles.myListCard}><Text style={styles.text}>Austin TX Trip</Text></Card>
+                    </TouchableOpacity>
+                    <Button title="Add" />
+                </View>
+                
+
                 <TextInput style={styles.inputBox} />
                 <TextInput style={styles.inputBox} />
                 <TextInput style={styles.inputBox} />
@@ -38,7 +87,10 @@ export default function ProfileScreen( {navigation} ) {
                         onPress={() => navigation.navigate("LoginScreen")} 
                     />
                 </View>
-            </View>
+                <View style={styles.space}>
+                    <Text></Text>
+                </View>
+            </ScrollView>
             <NavBar navigation={navigation} />
             
         </SafeAreaView>
@@ -49,7 +101,21 @@ export default function ProfileScreen( {navigation} ) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 10
+        padding: 10,
+        // justifyContent: "center",
+        // alignItems: "center"
+    },
+    userInfoView: {
+        alignItems: "center"
+    },
+    nameStyle: {
+        fontFamily: "Helvetica",
+        fontSize: 25
+    },
+    userNameStyle: {
+        fontFamily: "Helvetica",
+        fontSize: 20,
+        color: "rgb(129, 129, 129)",
     },
     loginSafeView: {
         justifyContent: "center",
@@ -58,7 +124,29 @@ const styles = StyleSheet.create({
         // margin: 18,
         // alignItems: "center"
     },
+    row: {
+        flexDirection: "row",
+        alignItems: "flex-end",
+        justifyContent: "space-between",
+        marginTop: 10
+    },
+    space: {
+        height: 80,
+    },
+    text: {
+        fontFamily: "Helvetica",
+        fontSize: 23
+    },
+    myListCard: {
+        padding: 10,
+        borderWidth: 1,
+        borderColor:  "rgb(239, 187, 125)",
+        marginTop: 2,
+        marginBottom: 2
+    },
     inputBox: {
+        flex: 1,
+        flexDirection: "row",
         height: 40,
         marginBottom: 12,
         marginTop: 2,
