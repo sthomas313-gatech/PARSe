@@ -8,6 +8,9 @@ import {
   Alert,
   Button
 } from 'react-native';
+import  * as firebase from '@react-native-firebase/app'
+import '@react-native-firebase/auth'
+
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 // import googleSignIn from "../images/google_signin_buttons/ios/2x/btn_google_light_normal_ios@2x.png";
@@ -15,20 +18,43 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Header from './Header';
 
 
-export default function LoginScreen( {navigation} ) {
+
+export default class LoginScreen extends React.Component {
+    state = {
+        email: "",
+        password: "",
+        errorMessage: null
+    };
+    handleLogin = () => {
+        const {email, password} = this.state
+        firebase.default
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .catch(error => this.setState({errorMessage: error.message}))
+    }
+    
+    render() {
     return (
         <View style={styles.loginView} >
             <SafeAreaView style={styles.loginSafeView}>
                 <Header />
-                <Text style={styles.textStyle}>Username or Email:</Text>
+                <View style={styles.errorMessage}>
+                {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
+                </View>
+                <Text style={styles.textStyle}>Email:</Text>
                 <TextInput 
                     style={styles.inputBox}
+                    autoCapitalize="none" 
+                    onChangeText={email => this.setState({email})}
                     placeholder="user1234" 
                 />
                 <Text style={styles.textStyle}>Password:</Text>
                 <TextInput 
                     style={styles.inputBox}
-                    placeholder="strongPassword4" 
+                    secureTextEntry={true}
+                    autoCapitalize="none" 
+                    onChangeText={password => this.setState({password})}
+                    placeholder="password" 
                 />
                 
                 <View style={styles.buttonRow} > 
@@ -50,7 +76,15 @@ export default function LoginScreen( {navigation} ) {
                         <Button
                             style={styles.loginButton}
                             title="Login"
-                            onPress={() => navigation.navigate("FeedScreen")}
+                            //onPress={() => navigation.navigate("FeedScreen")}
+                            onPress={this.handleLogin}
+                        />
+                    </View>
+                    <View style = {styles.buttonView}>
+                        <Button
+                            style = {styles.loginButton}
+                            title = "Register"
+                            onPress={() => this.props.navigation.navigate("RegisterScreen")}
                         />
                     </View>
                 </View>
@@ -59,6 +93,7 @@ export default function LoginScreen( {navigation} ) {
         </View>
 
     );
+    }
 }
 
 const styles = StyleSheet.create({
