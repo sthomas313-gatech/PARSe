@@ -27,6 +27,9 @@ export default class RegisterScreen extends React.Component {
         .catch(error => this.setState({errorMessage: error.message}))
     }
 
+    goBack = () => (
+        this.props.navigation.goBack()
+    )
     
     render() {
         return <View style={styles.container}> 
@@ -58,9 +61,9 @@ export default class RegisterScreen extends React.Component {
             <TouchableOpacity style={styles.button} onPress={this.handleSignUp}>
                 <Text style={{fontWeight: "600"}}>Sign up</Text>
             </TouchableOpacity>
-            {/* <TouchableOpacity style={styles.button} onPress={this.props.navigation.navigate("LoginScreen")}>
+            <TouchableOpacity style={styles.button} onPress={this.goBack}>
                 <Text style={{fontWeight: "600"}}>Return</Text>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
         </View>
     }
 }
