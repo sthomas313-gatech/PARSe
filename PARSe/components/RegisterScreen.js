@@ -23,7 +23,7 @@ export default class RegisterScreen extends React.Component {
                 displayName: this.state.name
             })
         })
-        //.then(this.props.navigation.navigate("FeedScreen"))
+        .then(this.props.navigation.navigate("FeedScreen"))
         .catch(error => this.setState({errorMessage: error.message}))
     }
 

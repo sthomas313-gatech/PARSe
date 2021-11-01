@@ -46,7 +46,7 @@ firebase.initializeApp(firebaseConfig);
 
 const authStack = () => (
   <NavigationContainer>
-    <AuthStack.Navigator initialRouteName = "ProgramsHome">
+    <AuthStack.Navigator initialRouteName = "Login">
       <AuthStack.Screen name="Login" component={LoginScreen} />
       <AuthStack.Screen name="Register" component={RegisterScreen} />
     </AuthStack.Navigator>
