@@ -44,6 +44,8 @@ const firebaseConfig =
 
 firebase.initializeApp(firebaseConfig);
 
+const AuthStack = createNativeStackNavigator();
+
 const authStack = () => (
   <NavigationContainer>
     <AuthStack.Navigator initialRouteName = "Login">
