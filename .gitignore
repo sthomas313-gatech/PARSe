@@ -1,1 +1,11 @@
+# OS X
 .DS_Store
+
+# Node packages
+yarn.lock
+package-lock.json
+node_modules/
+
+# Pods
+ios/Podfile.lock
+ios/Pods/
