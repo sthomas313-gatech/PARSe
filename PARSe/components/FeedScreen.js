@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   StyleSheet,
   ScrollView,
-  SafeAreaView
+  SafeAreaView,
+  Text
 } from 'react-native';
 import { Button } from 'react-native-paper';
 
@@ -18,8 +19,12 @@ import { recs } from "../static_content";
 import firestore from '@react-native-firebase/firestore';
 
 async function get_recs() {
-  const recs_db = firestore().collection("recs");
-  const rec = await recs_db.doc("recID1").get();
+  // const rec_col = await firestore().collection("recs").get();
+  // console.log(`read collection recs from firestore: ${JSON.stringify(rec_col)}`)
+  const rec_comment = await firestore().doc("recs/recID1/comments").get();
+  console.log(`read recID1 comment from firestore: ${JSON.stringify(rec_comment)}`);
+  const rec = await firestore().collection("recs").doc("recID1").get();
+  console.log(`read recID1 from firestore: ${JSON.stringify(rec)}`)
   return rec;
 }
 
@@ -35,9 +40,14 @@ export default function FeedScreen( {navigation} ) {
     recCardsList.push(<RecCard key={recs[i].restaurant.name.concat(recs[i].user.username)} rec={recs[i]} />);
   }
 
-  /* Get Firestore Data */
-  // const rec = get_recs();
-  // setDb_recs(JSON.stringify(rec));
+  React.useEffect(() => {
+    /* Get Firestore Data */
+    // get_recs().then( (rec) => {
+    //   console.log(`back in useEffect: ${JSON.stringify(rec)}`);
+    //   setDb_recs(JSON.stringify(rec));
+    // })
+  }, []);
+  
 
   return (
     <SafeAreaView style={styles.container}>

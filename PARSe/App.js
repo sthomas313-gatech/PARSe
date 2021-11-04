@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   StyleSheet
 } from 'react-native';
@@ -14,8 +14,6 @@ import { FIREBASE_APIKEY,
   FIREBASE_APPID} from 'react-native-dotenv'
   import firebase from '@react-native-firebase/app'
   import '@react-native-firebase/auth'
-// navigation manager -- https://reactnative.dev/docs/navigation
-const Stack = createNativeStackNavigator();
 
 // custom components
 import LoginScreen from './components/LoginScreen';
@@ -25,6 +23,7 @@ import DiscoverScreen from './components/DiscoverScreen';
 import ProfileScreen from './components/ProfileScreen';
 import RegisterScreen from './components/RegisterScreen';
 import LoadingScreen from './components/LoadingScreen';
+import { State } from 'react-native-gesture-handler';
 
 const firebaseConfig = 
 {
@@ -43,137 +42,108 @@ const firebaseConfig =
   persistence: true
 }
 
-// firebase.initializeApp(firebaseConfig);
 
-const AuthStack = createNativeStackNavigator();
+// navigation manager -- https://reactnative.dev/docs/navigation
+const Stack = createNativeStackNavigator();
+export const AuthContext = React.createContext();
 
-const authStack = () => (
-  <NavigationContainer>
-    <AuthStack.Navigator initialRouteName = "Login">
-      <AuthStack.Screen name="Login" component={LoginScreen} />
-      <AuthStack.Screen name="Register" component={RegisterScreen} />
-    </AuthStack.Navigator>
-  </NavigationContainer>
-)
 
-const allStacks = () => (
-    <NavigationContainer initialRouteName = "FeedScreen">
-      <Stack.Navigator 
-        screenOptions={{
-          headerShown: false,
-          headerStyle: {
-            backgroundColor: 'rgb(239, 187, 125)',
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-        }}
-        >
-        <Stack.Screen
-            name="LoginScreen"
-            component={LoginScreen}
-            // options={{ title: 'Login' }}
-            // options={{ headerTitle: (props) => <Header2 {...props} /> }}
-          />
-        <Stack.Screen
-            name="RegisterScreen"
-            component={RegisterScreen}
-        />
-        <Stack.Screen 
-            name="FeedScreen"
-            component={FeedScreen}
-            // options={{ title: "Recommendation Feed"}}
-            // options={{ headerTitle: (props) => <Header2 {...props} /> }}
-          />
-        <Stack.Screen 
-            name="DiscoverScreen"
-            component={DiscoverScreen}
-            // options={{ title: "Recommendation Feed"}}
-            // options={{ headerTitle: (props) => <Header2 {...props} /> }}
-          />
-        <Stack.Screen 
-            name="ProfileScreen"
-            component={ProfileScreen}
-            // options={{ title: "Recommendation Feed"}}
-            // options={{ headerTitle: (props) => <Header2 {...props} /> }}
-          />   
-      </Stack.Navigator>
-    </NavigationContainer>
-    
-  )
 
-export default createAppContainer(
-  createSwitchNavigator(
-    {
-      Loading: LoadingScreen,
-      App: allStacks,
-      Auth: authStack,
+export default function App() {
+
+  const [state, dispatch] = React.useReducer(
+    (prevState, action) => {
+      switch (action.type) {
+        case 'RESTORE_TOKEN':
+          return {
+            ...prevState,
+            userToken: action.token,
+            isLoading: false,
+          };
+        case 'SIGN_IN':
+          return {
+            ...prevState,
+            isSignout: false,
+            userToken: action.token,
+          };
+        case 'SIGN_OUT':
+          return {
+            ...prevState,
+            isSignout: true,
+            userToken: null,
+          };
+      }
     },
     {
-      initialRouteName: "Loading"
+      isLoading: true,
+      isSignout: false,
+      userToken: null,
     }
+  );
+
+  const authContext = React.useMemo(
+    () => ({
+      // Sign-In method
+      signIn: async (email, password) => {
+        firebase
+          .auth()
+          .signInWithEmailAndPassword(email, password)
+          .then(userCredentials => {
+              console.log(`signIn attempt success: ${JSON.stringify(userCredentials)}`);
+              dispatch({ type: 'SIGN_IN', token: userCredentials });
+          })
+          .catch(error => console.log(`signIn error: ${error.code}, ${error.message}`));   
+      },
+
+      // Signout method
+      signOut: () => dispatch({ type: 'SIGN_OUT' }),
+
+      // signup method
+      signUp: async (email, password) => {
+        firebase
+          .auth()
+          .createUserWithEmailAndPassword(email, password)
+          .then(userCredentials => {
+              console.log(`signUp attempt success: ${userCredentials}`);
+              dispatch({ type: 'SIGN_IN', token: userCredentials });
+          })
+          .catch(error => console.log(`signUp error: ${error.code}, ${error.message}`));   
+      },
+    }),
+    []
+  );
+
+
+  return (
+    <AuthContext.Provider value={authContext} >
+      <NavigationContainer>
+        <Stack.Navigator 
+          screenOptions={{
+            headerShown: false,
+            headerStyle: {
+              backgroundColor: 'rgb(239, 187, 125)',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        >
+          {state.userToken ? (
+            <>
+              <Stack.Screen name="FeedScreen" component={FeedScreen} />
+              <Stack.Screen name="DiscoverScreen" component={DiscoverScreen} />
+              <Stack.Screen name="ProfileScreen" component={ProfileScreen} />   
+            </>
+          ) : (
+            <>
+              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="Loading" component={LoadingScreen} />
+              <Stack.Screen name="Register" component={RegisterScreen} />
+            </>
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </AuthContext.Provider>
   )
-)
-// export default function App() {
-
-//   return (
-//     <NavigationContainer>
-//       <Stack.Navigator 
-//         screenOptions={{
-//           headerShown: false,
-//           headerStyle: {
-//             backgroundColor: 'rgb(239, 187, 125)',
-//           },
-//           headerTintColor: '#fff',
-//           headerTitleStyle: {
-//             fontWeight: 'bold',
-//           },
-//         }}
-//         >
-//         <Stack.Screen
-//             name="LoginScreen"
-//             component={LoginScreen}
-//             // options={{ title: 'Login' }}
-//             // options={{ headerTitle: (props) => <Header2 {...props} /> }}
-//           />
-//         <Stack.Screen
-//             name="RegisterScreen"
-//             component={RegisterScreen}
-//         />
-//         <Stack.Screen 
-//             name="FeedScreen"
-//             component={FeedScreen}
-//             // options={{ title: "Recommendation Feed"}}
-//             // options={{ headerTitle: (props) => <Header2 {...props} /> }}
-//           />
-//         <Stack.Screen 
-//             name="DiscoverScreen"
-//             component={DiscoverScreen}
-//             // options={{ title: "Recommendation Feed"}}
-//             // options={{ headerTitle: (props) => <Header2 {...props} /> }}
-//           />
-//         <Stack.Screen 
-//             name="ProfileScreen"
-//             component={ProfileScreen}
-//             // options={{ title: "Recommendation Feed"}}
-//             // options={{ headerTitle: (props) => <Header2 {...props} /> }}
-//           />   
-//       </Stack.Navigator>
-//     </NavigationContainer>
-    
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     backgroundColor: '#ecf0f1',
-//     padding: 8,
-//   },
-//   navContainer: {
-//     margin: 0,
-//     padding: 0
-//   }
-// });
+}
