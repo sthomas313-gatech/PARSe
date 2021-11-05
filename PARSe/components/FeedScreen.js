@@ -66,10 +66,11 @@ export default function FeedScreen( {navigation} ) {
   }, []);
 
   // TODO: fix getCurrentUserFriendRecs
-  // React.useEffect( async () => {
-  //   const currentUserFriendRecs = await getCurrentUserFriendRecs();
-  //   console.log(`current user friend recs: ${currentUserFriendRecs}`)
-  // }, []);
+  React.useEffect( async () => {
+    getCurrentUserFriendRecs().then(currentUserFriendRecs => {
+      console.log(`current user friend recs: ${JSON.stringify(currentUserFriendRecs)}`);
+    })
+  }, []);
   
 
   return (

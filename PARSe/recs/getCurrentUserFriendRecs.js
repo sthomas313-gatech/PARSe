@@ -6,5 +6,7 @@ export const getCurrentUserFriendRecs = async () => {
     const currentUserFriendsList = await getCurrentUserFriends();
     if (!currentUserFriendsList) return null;
 
-    return await getFriendRecs(currentUserFriendsList);
+    console.log(`getCurrentUserFriendRecs: currentUserFriendsList: ${JSON.stringify(currentUserFriendsList)}`);
+
+    return await getFriendRecs(currentUserFriendsList.friendList);
 };
