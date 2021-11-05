@@ -16,23 +16,28 @@ import NavBar from './NavBar';
 import { recs } from "../static_content";
 
 // firestore
-import firestore from '@react-native-firebase/firestore';
+import '@react-native-firebase/firestore';
+import firebase from '@react-native-firebase/app';
 
-async function get_recs() {
-  // const rec_col = await firestore().collection("recs").get();
-  // console.log(`read collection recs from firestore: ${JSON.stringify(rec_col)}`)
-  const rec_comment = await firestore().doc("recs/recID1/comments").get();
-  console.log(`read recID1 comment from firestore: ${JSON.stringify(rec_comment)}`);
-  const rec = await firestore().collection("recs").doc("recID1").get();
-  console.log(`read recID1 from firestore: ${JSON.stringify(rec)}`)
-  return rec;
+const get_recs = async () => {
+  try {
+    const result = await firebase.firestore().collection("recs").doc("recID1").get();
+    const rec_comment = result.data();
+    return rec_comment;
+  } catch (e) {
+    throw new Error("error in get_recs function");
+  }
 }
+
+import { getCurrentUserFriends } from '../friends/getCurrentUserFriends';
+import { getCurrentUserInfo } from '../user/getCurrentUserInfo';
+import { getCurrentUserFriendRecs } from '../recs/getCurrentUserFriendRecs';
 
 
 
 export default function FeedScreen( {navigation} ) {
   
-  const [db_recs, setDb_recs] = useState("");
+  const [db_recs, setDb_recs] = useState(null);
 
   /* create list of RecCard elements */
   var recCardsList = [];
@@ -40,13 +45,31 @@ export default function FeedScreen( {navigation} ) {
     recCardsList.push(<RecCard key={recs[i].restaurant.name.concat(recs[i].user.username)} rec={recs[i]} />);
   }
 
-  React.useEffect(() => {
-    /* Get Firestore Data */
-    // get_recs().then( (rec) => {
-    //   console.log(`back in useEffect: ${JSON.stringify(rec)}`);
-    //   setDb_recs(JSON.stringify(rec));
-    // })
+  /* Get Firestore Data */
+  React.useEffect( () => {
+    get_recs().then(rec => {
+      console.log(`useEffect getting recs: ${JSON.stringify(rec)}`)
+      setDb_recs(JSON.stringify(rec));
+    })
   }, []);
+
+  React.useEffect( () => {
+    getCurrentUserInfo().then(userInfo => {
+      console.log(`useEffect get current user info: ${JSON.stringify(userInfo)}`);
+    })
+  }, []);
+
+  React.useEffect( () => {
+    getCurrentUserFriends().then(friends => {
+      console.log(`useEffect get current user friends: ${JSON.stringify(friends)}`)
+    })
+  }, []);
+
+  // TODO: fix getCurrentUserFriendRecs
+  // React.useEffect( async () => {
+  //   const currentUserFriendRecs = await getCurrentUserFriendRecs();
+  //   console.log(`current user friend recs: ${currentUserFriendRecs}`)
+  // }, []);
   
 
   return (
@@ -54,7 +77,7 @@ export default function FeedScreen( {navigation} ) {
         <Header />
         <ScrollView>
             {recCardsList}
-            {/* <Text>{db_recs}</Text> */}
+            <Text>{db_recs}</Text>
         </ScrollView>
         <NavBar navigation={navigation} />
     </SafeAreaView>

@@ -1,0 +1,1 @@
+export { getCurrentUserFriends } from './getCurrentUserFriends';
