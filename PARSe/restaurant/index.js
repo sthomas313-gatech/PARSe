@@ -1,0 +1,1 @@
+export { getRestaurant } from './getRestaurant';

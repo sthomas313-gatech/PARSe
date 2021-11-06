@@ -1,6 +1,8 @@
 import firebase from '@react-native-firebase/app'
 import '@react-native-firebase/firestore'
-
+import { getRestaurant } from '../restaurant';
+import { getUserInfo } from '../user/getUserInfo';
+import { mapAsync } from '../util';
 
 export const getFriendRecs = async friendList => {
     const querySnapshot = await firebase.firestore()
@@ -14,6 +16,16 @@ export const getFriendRecs = async friendList => {
         ...doc.data()
     }));
 
-    return recs;
+    const populatedRecs = await mapAsync(recs, async rec => {
+        const restaurant = await getRestaurant(rec.restaurantID);
+        const user = await getUserInfo(rec.username);
+        return {
+            ...rec,
+            restaurant,
+            user
+        };
+    })
+
+    return populatedRecs;
 
 };

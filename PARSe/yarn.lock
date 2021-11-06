@@ -2032,6 +2032,11 @@
   "resolved" "https://registry.npmjs.org/@react-native-community/eslint-plugin/-/eslint-plugin-1.1.0.tgz"
   "version" "1.1.0"
 
+"@react-native-community/geolocation@^2.0.2":
+  "integrity" "sha512-tTNXRCgnhJBu79mulQwzabXRpDqfh/uaDqfHVpvF0nX4NTpolpy6mvTRiFg7eWFPGRArsnZz1EYp6rHfJWGgEA=="
+  "resolved" "https://registry.npmjs.org/@react-native-community/geolocation/-/geolocation-2.0.2.tgz"
+  "version" "2.0.2"
+
 "@react-native-firebase/app@^12.9.2", "@react-native-firebase/app@12.9.3":
   "integrity" "sha512-Qy5awKs/VvASUFvjXUCtkUxZo+MEt6Rv32xXK18isUDWoqsopL5o0tHiWF+86EAyZTx/j0C1nc6lYlCwvLvDwQ=="
   "resolved" "https://registry.npmjs.org/@react-native-firebase/app/-/app-12.9.3.tgz"
@@ -7249,6 +7254,11 @@
   "integrity" "sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w=="
   "resolved" "https://registry.npmjs.org/react-is/-/react-is-17.0.2.tgz"
   "version" "17.0.2"
+
+"react-native-clean-project@^3.6.7":
+  "integrity" "sha512-GSJG1oNRJKtINPMzfHgRmu7HJs7phwgtwQ6GvyGARiySqQlU/bAc5zsI9rOeNPGlpgYongQtjOGdmqSpsWMJTw=="
+  "resolved" "https://registry.npmjs.org/react-native-clean-project/-/react-native-clean-project-3.6.7.tgz"
+  "version" "3.6.7"
 
 "react-native-codegen@^0.0.7":
   "integrity" "sha512-dwNgR8zJ3ALr480QnAmpTiqvFo+rDtq6V5oCggKhYFlRjzOmVSFn3YD41u8ltvKS5G2nQ8gCs2vReFFnRGLYng=="

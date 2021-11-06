@@ -4,11 +4,20 @@ import {
   Image,
   Dimensions
 } from 'react-native';
+import { readFile } from '../util';
 
 
-export default function ProfilePic({picture}) {
+export default function ProfilePic({pictureURL}) {
+
+  if (!pictureURL) {
+    const anon_user_url = "https://storage.googleapis.com/parse-cs8803mas.appspot.com/profilePictures/anon_user.png";
+    return (
+      <Image style={styles.pic} source={{uri: anon_user_url}} />
+    )
+  }
+
   return (
-    <Image style={styles.pic} source={picture} />
+    <Image style={styles.pic} source={{uri: pictureURL}} />
   );
 }
 

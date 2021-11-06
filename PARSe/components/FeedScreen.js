@@ -29,47 +29,28 @@ const get_recs = async () => {
   }
 }
 
-import { getCurrentUserFriends } from '../friends/getCurrentUserFriends';
-import { getCurrentUserInfo } from '../user/getCurrentUserInfo';
 import { getCurrentUserFriendRecs } from '../recs/getCurrentUserFriendRecs';
 
 
 
 export default function FeedScreen( {navigation} ) {
-  
-  const [db_recs, setDb_recs] = useState(null);
 
-  /* create list of RecCard elements */
-  var recCardsList = [];
-  for (var i=0; i < recs.length; i++) {
-    recCardsList.push(<RecCard key={recs[i].restaurant.name.concat(recs[i].user.username)} rec={recs[i]} />);
-  }
+  const [recCardsList, setRecCardsList] = useState(null);
 
-  /* Get Firestore Data */
+  // Populate recCardsList based on currently logged in user's friends' recommendations
   React.useEffect( () => {
-    get_recs().then(rec => {
-      console.log(`useEffect getting recs: ${JSON.stringify(rec)}`)
-      setDb_recs(JSON.stringify(rec));
-    })
-  }, []);
-
-  React.useEffect( () => {
-    getCurrentUserInfo().then(userInfo => {
-      console.log(`useEffect get current user info: ${JSON.stringify(userInfo)}`);
-    })
-  }, []);
-
-  React.useEffect( () => {
-    getCurrentUserFriends().then(friends => {
-      console.log(`useEffect get current user friends: ${JSON.stringify(friends)}`)
-    })
-  }, []);
-
-  // TODO: fix getCurrentUserFriendRecs
-  React.useEffect( async () => {
-    getCurrentUserFriendRecs().then(currentUserFriendRecs => {
-      console.log(`current user friend recs: ${JSON.stringify(currentUserFriendRecs)}`);
-    })
+    getCurrentUserFriendRecs()
+      .then(currentUserFriendRecs => {
+        var recCardsList = [];
+        for (var i=0; i < currentUserFriendRecs.length; i++) {
+          recCardsList.push(<RecCard key={currentUserFriendRecs[i].restaurant.name.concat(currentUserFriendRecs[i].user.username)} rec={currentUserFriendRecs[i]} />);
+        }
+        setRecCardsList(recCardsList);
+        console.log(`current user friend recs: ${JSON.stringify(currentUserFriendRecs)}`);
+      })
+      .catch((error) => {
+        throw new Error(error.message);
+      });
   }, []);
   
 
@@ -78,7 +59,6 @@ export default function FeedScreen( {navigation} ) {
         <Header />
         <ScrollView>
             {recCardsList}
-            <Text>{db_recs}</Text>
         </ScrollView>
         <NavBar navigation={navigation} />
     </SafeAreaView>

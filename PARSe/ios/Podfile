@@ -12,6 +12,7 @@ target 'PARSe' do
     :hermes_enabled => false
   )
 
+
   target 'PARSeTests' do
     inherit! :complete
     # Pods for testing
@@ -34,5 +35,17 @@ target 'PARSe' do
   post_install do |installer|
     react_native_post_install(installer)
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
+
+    installer.pods_project.targets.each do |target|
+      if target.name == 'react-native-google-places-api'
+        target.build_configurations.each do |config|
+          config.build_settings['CLANG_ENABLE_MODULES'] = 'No'
+        end
+      end
+      if target.name == "React"
+        target.remove_from_project
+      end
+    end
+
   end
 end

@@ -11,11 +11,12 @@ import ProfilePic from './ProfilePic';
 
 
 export default function RecCardTopRow( {rec} ) {
+
   return (
     <View style={topRowStyles.topRow} >
 
       <View>
-        <ProfilePic picture={rec.user.picture} />
+        <ProfilePic pictureURL={rec.user.profilePicture} />
       </View>
 
       <View style={topRowStyles.topRight} >
@@ -27,7 +28,7 @@ export default function RecCardTopRow( {rec} ) {
         </View>
 
         <View style={topRowStyles.usernameLocationRow}>
-          <Text style={topRowStyles.usernameText} >@{rec.user.username}</Text>
+          <Text style={topRowStyles.usernameText} >@{rec.username}</Text>
           <View style={topRowStyles.locationPinRow} >
             <MaterialCommunityIcons style={topRowStyles.mapIcon} name="map-marker" />
             <Text style={topRowStyles.locationText} >{rec.restaurant.location.city}, {rec.restaurant.location.state}</Text>
