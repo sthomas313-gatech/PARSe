@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { 
   StyleSheet
 } from 'react-native';
@@ -6,6 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation'; 
 //import {  } from '@react-navigation';
+
 import { FIREBASE_APIKEY,
   FIREBASE_AUTHDOMAIN,
   FIREBASE_PROJECTID,
@@ -14,6 +15,8 @@ import { FIREBASE_APIKEY,
   FIREBASE_APPID} from 'react-native-dotenv'
   import firebase from '@react-native-firebase/app'
   import '@react-native-firebase/auth'
+
+
 // navigation manager -- https://reactnative.dev/docs/navigation
 const Stack = createNativeStackNavigator();
 
@@ -39,13 +42,16 @@ const firebaseConfig =
   // projectId:  'parse-cs8803mas',
   // storageBucket: 'parse-cs8803mas.appspot.com',
   // messagingSenderId: '1085239309703',
-  // appId: '1:1085239309703:ios:1b06408a93debff1c48f22'
+  // appId: '1:1085239309703:ios:1b06408a93debff1c48f22',
   persistence: true
 }
 
-// firebase.initializeApp(firebaseConfig);
+
+firebase.initializeApp(firebaseConfig);
 
 const AuthStack = createNativeStackNavigator();
+
+
 
 const authStack = () => (
   <NavigationContainer>

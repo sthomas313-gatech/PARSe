@@ -57,9 +57,20 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>FacebookAppID</key>
+	<string>1540328606332029</string>
+	<key>FacebookDisplayName</key>
+	<string>Stirring the pot</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key></key>
-	<string></string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb1540328606332029</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>
