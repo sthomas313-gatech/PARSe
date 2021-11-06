@@ -14,9 +14,15 @@ import Tag from './Tag';
 
 
 export default function RecCardBottomRow( {rec} ) {
+    
+    const tagList = Object.keys(rec.tags);
+    const filteredTagList = tagList.filter(function(tag) {
+        return rec.tags[tag];
+    });
+
     var tagsList = [];
-    for (var i=0; i < rec.tags.length; i++) {
-      tagsList.push(<Tag key={rec.tags[i]} tagText={rec.tags[i]} />);
+    for (var i=0; i < filteredTagList.length; i++) {
+      tagsList.push(<Tag key={filteredTagList[i]} tagText={filteredTagList[i]} />);
     }
   
     return (
