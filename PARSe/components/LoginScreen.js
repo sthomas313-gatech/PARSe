@@ -33,6 +33,8 @@ export default class LoginScreen extends React.Component  {
         .signInWithEmailAndPassword(email, password)
         .catch(error => this.setState({errorMessage: error.message}))
     }
+    componentDidMount() {
+    }
 
     // handleFacebook = () => {
     //     useContext(AuthContext);
@@ -67,8 +69,8 @@ export default class LoginScreen extends React.Component  {
                             <Icon 
                                 style={styles.facebookButton} 
                                 name="facebook" 
-                                //onPress={() => onFacebookButtonPress().then(() => console.log('Signed in with Facebook!'))} 
-                                onPress={() => onFacebookButtonPress().then(() => this.props.navigation.navigate("FeedScreen"))}
+                                onPress={() => onFacebookButtonPress().then(() => console.log('Signed in with Facebook!'))} 
+                                //onPress={() => onFacebookButtonPress().then(() => this.props.navigation.navigate("FeedScreen"))}
                                 //onPress={() => Alert.alert('login with facebook')}
                             />
                         </View>
@@ -91,7 +93,7 @@ export default class LoginScreen extends React.Component  {
                             <Button
                                 style = {styles.loginButton}
                                 title = "Register"
-                                onPress={() => this.props.navigation.navigate("RegisterScreen")}
+                                onPress={() => this.props.navigation.navigate("Register")}
                             />
                         </View>
                     </View>

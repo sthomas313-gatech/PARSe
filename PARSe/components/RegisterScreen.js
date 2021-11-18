@@ -18,12 +18,12 @@ export default class RegisterScreen extends React.Component {
         firebase.default
         .auth()
         .createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then(userCredentials => {
-            return userCredentials.user.updateProfile({
-                displayName: this.state.name
-            })
-        })
-        .then(this.props.navigation.navigate("FeedScreen"))
+        // .then(userCredentials => {
+        //     return userCredentials.user.updateProfile({
+        //         displayName: this.state.name
+        //     })
+        // })
+        //.then(this.props.navigation.navigate("FeedScreen"))
         .catch(error => this.setState({errorMessage: error.message}))
     }
 
@@ -38,12 +38,12 @@ export default class RegisterScreen extends React.Component {
                 {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
             </View>
             <View style={styles.form}>
-                <View> 
+                {/* <View> 
                     <Text style={styles.inputTitle}>Full Name</Text>
                     <TextInput style={styles.input} autoCapitalize="none" onChangeText={name=> this.setState({name})} 
                     value = {this.state.name}></TextInput>
                     
-                </View>
+                </View> */}
                 <View style={{marginTop: 32}}> 
                     <Text style={styles.inputTitle}>Email Address</Text>
                     <TextInput style={styles.input} autoCapitalize="none" onChangeText={email => this.setState({email})} 
@@ -61,9 +61,9 @@ export default class RegisterScreen extends React.Component {
             <TouchableOpacity style={styles.button} onPress={this.handleSignUp}>
                 <Text style={{fontWeight: "600"}}>Sign up</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={this.goBack}>
+            {/* <TouchableOpacity style={styles.button} onPress={this.goBack}>
                 <Text style={{fontWeight: "600"}}>Return</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
         </View>
     }
 }
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     },
     button: {
         marginHorizontal: 30,
-        backgroundColor: "#54993B",
+        backgroundColor: "#ebab3d",
         borderRadius: 4,
         height: 52,
         alignItems: "center",

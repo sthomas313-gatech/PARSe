@@ -17,9 +17,6 @@ import { FIREBASE_APIKEY,
   import '@react-native-firebase/auth'
 
 
-// navigation manager -- https://reactnative.dev/docs/navigation
-const Stack = createNativeStackNavigator();
-
 // custom components
 import LoginScreen from './components/LoginScreen';
 import FeedScreen from './components/FeedScreen';
@@ -49,6 +46,8 @@ const firebaseConfig =
 
 firebase.initializeApp(firebaseConfig);
 
+// navigation manager -- https://reactnative.dev/docs/navigation
+const Stack = createNativeStackNavigator();
 const AuthStack = createNativeStackNavigator();
 
 
@@ -63,7 +62,8 @@ const authStack = () => (
 )
 
 const allStacks = () => (
-    <NavigationContainer initialRouteName = "FeedScreen">
+    <NavigationContainer>
+
       <Stack.Navigator 
         screenOptions={{
           headerShown: false,
@@ -75,6 +75,7 @@ const allStacks = () => (
             fontWeight: 'bold',
           },
         }}
+        initialRouteName = "FeedScreen"
         >
         <Stack.Screen
             name="LoginScreen"
@@ -109,18 +110,18 @@ const allStacks = () => (
     
   )
 
-export default createAppContainer(
-  createSwitchNavigator(
-    {
-      Loading: LoadingScreen,
-      App: allStacks,
-      Auth: authStack,
-    },
-    {
-      initialRouteName: "Loading"
-    }
+  export default createAppContainer(
+    createSwitchNavigator(
+      {
+        Loading: LoadingScreen,
+        App: allStacks,
+        Auth: authStack,
+      },
+      {
+        initialRouteName: "Loading"
+      }
+    )
   )
-)
 // export default function App() {
 
 //   return (
