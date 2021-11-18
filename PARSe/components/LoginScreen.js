@@ -70,8 +70,6 @@ export default class LoginScreen extends React.Component  {
                                 style={styles.facebookButton} 
                                 name="facebook" 
                                 onPress={() => onFacebookButtonPress().then(() => console.log('Signed in with Facebook!'))} 
-                                //onPress={() => onFacebookButtonPress().then(() => this.props.navigation.navigate("FeedScreen"))}
-                                //onPress={() => Alert.alert('login with facebook')}
                             />
                         </View>
                         <View style={styles.facebookView}>
@@ -85,7 +83,6 @@ export default class LoginScreen extends React.Component  {
                             <Button
                                 style={styles.loginButton}
                                 title="Login"
-                                //onPress={() => navigation.navigate("FeedScreen")}
                                 onPress={this.handleLogin}
                             />
                         </View>

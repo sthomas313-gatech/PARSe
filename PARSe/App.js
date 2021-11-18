@@ -5,6 +5,7 @@ import {
 import { NavigationContainer } from '@react-navigation/native'; 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation'; 
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 //import {  } from '@react-navigation';
 
 import { FIREBASE_APIKEY,
@@ -28,12 +29,12 @@ import LoadingScreen from './components/LoadingScreen';
 
 import { firebaseConfig } from './firebaseConfig';
 
-
 firebase.initializeApp(firebaseConfig);
 
 // navigation manager -- https://reactnative.dev/docs/navigation
 const Stack = createNativeStackNavigator();
 const AuthStack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 
 
@@ -46,60 +47,32 @@ const authStack = () => (
   </NavigationContainer>
 )
 
-const allStacks = () => (
+  const NavBar = () => (
     <NavigationContainer>
-
-      <Stack.Navigator 
-        screenOptions={{
-          headerShown: false,
-          headerStyle: {
-            backgroundColor: 'rgb(239, 187, 125)',
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-        }}
-        initialRouteName = "FeedScreen"
-        >
-        <Stack.Screen
-            name="LoginScreen"
-            component={LoginScreen}
-            // options={{ title: 'Login' }}
-            // options={{ headerTitle: (props) => <Header2 {...props} /> }}
-          />
-        <Stack.Screen
-            name="RegisterScreen"
-            component={RegisterScreen}
-        />
-        <Stack.Screen 
-            name="FeedScreen"
+      <Tab.Navigator initialRouteName = "FeedScreen" screenOptions={{
+      headerShown: false
+    }}>
+      <Stack.Screen 
+            name="Feed"
             component={FeedScreen}
-            // options={{ title: "Recommendation Feed"}}
-            // options={{ headerTitle: (props) => <Header2 {...props} /> }}
           />
-        <Stack.Screen 
-            name="DiscoverScreen"
+        <Tab.Screen 
+            name="Discover"
             component={DiscoverScreen}
-            // options={{ title: "Recommendation Feed"}}
-            // options={{ headerTitle: (props) => <Header2 {...props} /> }}
           />
-        <Stack.Screen 
-            name="ProfileScreen"
+        <Tab.Screen 
+            name="Profile"
             component={ProfileScreen}
-            // options={{ title: "Recommendation Feed"}}
-            // options={{ headerTitle: (props) => <Header2 {...props} /> }}
-          />   
-      </Stack.Navigator>
+          />  
+      </Tab.Navigator>
     </NavigationContainer>
-    
   )
 
   export default createAppContainer(
     createSwitchNavigator(
       {
         Loading: LoadingScreen,
-        App: allStacks,
+        App: NavBar,
         Auth: authStack,
       },
       {
@@ -107,65 +80,3 @@ const allStacks = () => (
       }
     )
   )
-// export default function App() {
-
-//   return (
-//     <NavigationContainer>
-//       <Stack.Navigator 
-//         screenOptions={{
-//           headerShown: false,
-//           headerStyle: {
-//             backgroundColor: 'rgb(239, 187, 125)',
-//           },
-//           headerTintColor: '#fff',
-//           headerTitleStyle: {
-//             fontWeight: 'bold',
-//           },
-//         }}
-//         >
-//         <Stack.Screen
-//             name="LoginScreen"
-//             component={LoginScreen}
-//             // options={{ title: 'Login' }}
-//             // options={{ headerTitle: (props) => <Header2 {...props} /> }}
-//           />
-//         <Stack.Screen
-//             name="RegisterScreen"
-//             component={RegisterScreen}
-//         />
-//         <Stack.Screen 
-//             name="FeedScreen"
-//             component={FeedScreen}
-//             // options={{ title: "Recommendation Feed"}}
-//             // options={{ headerTitle: (props) => <Header2 {...props} /> }}
-//           />
-//         <Stack.Screen 
-//             name="DiscoverScreen"
-//             component={DiscoverScreen}
-//             // options={{ title: "Recommendation Feed"}}
-//             // options={{ headerTitle: (props) => <Header2 {...props} /> }}
-//           />
-//         <Stack.Screen 
-//             name="ProfileScreen"
-//             component={ProfileScreen}
-//             // options={{ title: "Recommendation Feed"}}
-//             // options={{ headerTitle: (props) => <Header2 {...props} /> }}
-//           />   
-//       </Stack.Navigator>
-//     </NavigationContainer>
-    
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     backgroundColor: '#ecf0f1',
-//     padding: 8,
-//   },
-//   navContainer: {
-//     margin: 0,
-//     padding: 0
-//   }
-// });
