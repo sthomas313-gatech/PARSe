@@ -13,6 +13,7 @@ import {
 import Header from './Header';
 import NavBar from './NavBar';
 import { addCurrentUserRec } from '../recs/addCurrentUserRec';
+import { searchRestaurant } from '../restaurant';
 
 
 // import {launchImageLibrary} from 'react-native-image-picker';
@@ -70,21 +71,37 @@ export default function CreateScreen( {navigation} ) {
         selectedTags.forEach(tag => {
             newRec["tags"][tag.item] = true;
         });
-        await addCurrentUserRec(newRec);
+
+        const newRestaurant = {};
+        newRestaurant["name"] = restaurant;
+        newRestaurant["location"] = {};
+        newRestaurant["location"]["city"] = city;
+        newRestaurant["location"]["state"] = state;
+        
+        await addCurrentUserRec(newRec, newRestaurant);
         navigation.navigate("FeedScreen");
     };
 
-    // React.useEffect(() => {
-    //     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
-    // }, []);
 
     React.useEffect(() => { 
         var selectedTagsList = [];
         for (var i=0; i < selectedTags.length; i++) {
             selectedTagsList.push(selectedTags[i].item);
         }
-        console.log(`selected tags: ${selectedTagsList}`);
+        console.log(`selected tags: ${selectedTagsList}`); 
     }, [selectedTags]);
+
+    // React.useEffect(() => { 
+    //     const obj = {name: "Taqueria Del Sol", city: "Atlanta"};
+    //     searchRestaurant(obj)
+    //         .then((results) => {
+    //             console.log(`searchRestaurant results: ${JSON.stringify(results)}`);
+    //             // console.log()
+    //         })
+    //         .catch((error) => {
+    //             console.log(`error in searchRestaurant: ${error}`);
+    //         });
+    // }, []);
 
     return (
         <SafeAreaView style={styles.container}>

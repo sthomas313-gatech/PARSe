@@ -1,5 +1,6 @@
-import { getFriendRecs } from './getFriendRecs';
+// import { getFriendRecs } from './getFriendRecs';
 import { getCurrentUserFriends } from '../friends/getCurrentUserFriends';
+import { getUsersRecs } from "./getUsersRecs";
 
 
 export const getCurrentUserFriendRecs = async () => {
@@ -8,5 +9,5 @@ export const getCurrentUserFriendRecs = async () => {
 
     console.log(`getCurrentUserFriendRecs: currentUserFriendsList: ${JSON.stringify(currentUserFriendsList)}`);
 
-    return await getFriendRecs(currentUserFriendsList.friendList);
+    return await getUsersRecs(currentUserFriendsList.friendList);
 };

@@ -2,17 +2,30 @@ import firebase from '@react-native-firebase/app'
 import '@react-native-firebase/firestore'
 import { firestore } from 'firebase-admin';
 import { getCurrentUser } from '../auth/getCurrentUser';
+import { addRestaurant, searchRestaurant} from '../restaurant';
 
-export const addCurrentUserRec = async (rec) => {
+export const addCurrentUserRec = async (rec, restaurant) => {
 
     // Get Current User, to use user ID in firestore lookups
     const currentUser = getCurrentUser();
-
     if (!currentUser) return;
 
+    // search 'restaurants' documents; if no matching restaurant, create new document
+    const restSearchResults = await searchRestaurant(restaurant);
+    var restaurantID = null;
+    if (!restSearchResults) {
+        const restaurantDoc = await addRestaurant(restaurant);
+        restaurantID = restaurantDoc.id;
+    } else {
+        console.log(`restaurantSearch results: ${JSON.stringify(restSearchResults)}`);
+        if ("id" in restSearchResults[0]) {
+            restaurantID = restSearchResults[0].id;
+        }
+    }
 
     // Add user ID to recommendation; store in firestore 'recs' collection
-    rec["userID"] = currentUser.id;
+    rec.userID = currentUser.id;
+    rec.restaurantID = restaurantID;
     const createdRecDoc = await firebase.firestore()
         .collection("recs")
         .add(rec);

@@ -29,8 +29,8 @@ const get_recs = async () => {
   }
 }
 
-import { getCurrentUserFriendRecs } from '../recs';
-// import { getCurrentUserAndFriendRecs } from "../recs";
+// import { getCurrentUserFriendRecs } from '../recs';
+import { getCurrentUserAndFriendRecs } from "../recs";
 
 
 
@@ -40,14 +40,15 @@ export default function FeedScreen( {navigation} ) {
 
   // Populate recCardsList based on currently logged in user's friends' recommendations
   React.useEffect( () => {
-    getCurrentUserFriendRecs()
+    getCurrentUserAndFriendRecs()
       .then(recs => {
+        // console.log(`current user and friend recs: ${JSON.stringify(recs)}`);
         var recCardsList = [];
         for (var i=0; i < recs.length; i++) {
           recCardsList.push(<RecCard key={recs[i].restaurant.name.concat(recs[i].user.username)} rec={recs[i]} />);
         }
         setRecCardsList(recCardsList);
-        console.log(`current user friend recs: ${JSON.stringify(recs)}`);
+        
       })
       .catch((error) => {
         throw new Error(error.message);
