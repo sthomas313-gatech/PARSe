@@ -3,16 +3,30 @@ import {
   Text, 
   View, 
   StyleSheet, 
-  Image 
+  Image,
+  TouchableHighlight
   } from 'react-native';
 
-  import pot_icon from '../images/pot_icon1.png'
+import pot_icon from '../images/pot_icon1.png'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export default function Header() {
+export default function Header( {navigation=null, createButton=false, text=" Stirring the Pot "} ) {
+
   return (
     <View style={styles.headerView}>
-      <Image style={styles.icon} source={pot_icon} />
-      <Text style={styles.headerText} > Stirring the Pot </Text>
+      <View style={styles.iconTitleView} >
+        <Image style={styles.icon} source={pot_icon} />
+        <Text style={styles.headerText} > {text} </Text>
+      </View>
+
+      { createButton &&
+        <TouchableHighlight 
+          style={styles.plusHighlight} 
+          onPress={() => navigation.navigate("CreateScreen")}
+        >
+          <MaterialCommunityIcons style={styles.plusIcon} name="plus" />
+        </TouchableHighlight>
+      }
     </View>
   );
 }
@@ -20,7 +34,7 @@ export default function Header() {
 const styles = StyleSheet.create({
   headerView: {
     alignItems: 'flex-start',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     flexDirection: "row",
     fontFamily: "Helvetica",
     fontSize: 100,
@@ -30,6 +44,10 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     margin: 3
   },
+  iconTitleView: {
+    flexDirection: "row",
+    alignItems: "center"
+  },
   headerText: {
     fontFamily: "Chalkduster",
     fontSize: 25
@@ -37,5 +55,12 @@ const styles = StyleSheet.create({
   icon: {
     height: 30,
     width: 30
+  },
+  plusIcon: {
+    fontSize: 30
+  },
+  plusHighlight: {
+    borderRadius: 15,
+    borderWidth: 1
   }
 });

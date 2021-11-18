@@ -61,5 +61,7 @@
 	<false/>
 	<key></key>
 	<string></string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Need users to be able to upload photos for social media interaction on platform. Users should be able to upload photos of their dining experience to share with friends.</string>
 </dict>
 </plist>

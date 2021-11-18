@@ -14,6 +14,7 @@ import { FIREBASE_APIKEY,
   FIREBASE_APPID} from 'react-native-dotenv'
   import firebase from '@react-native-firebase/app'
   import '@react-native-firebase/auth'
+  // import 'firebase/functions';
 
 // custom components
 import LoginScreen from './components/LoginScreen';
@@ -23,9 +24,12 @@ import DiscoverScreen from './components/DiscoverScreen';
 import ProfileScreen from './components/ProfileScreen';
 import RegisterScreen from './components/RegisterScreen';
 import LoadingScreen from './components/LoadingScreen';
+import CreateScreen from './components/CreateScreen';
 import { State } from 'react-native-gesture-handler';
 
 import { firebaseConfig } from './firebaseConfig';
+
+// firebase.functions().useFunctionsEmulator("http://localhost:5001");
 
 
 // navigation manager -- https://reactnative.dev/docs/navigation
@@ -103,6 +107,9 @@ export default function App() {
     <AuthContext.Provider value={authContext} >
       <NavigationContainer>
         <Stack.Navigator 
+          initialRouteName={
+            state.userToken ? "FeedScreen" : "Login"
+          }
           screenOptions={{
             headerShown: false,
             headerStyle: {
@@ -119,6 +126,7 @@ export default function App() {
               <Stack.Screen name="FeedScreen" component={FeedScreen} />
               <Stack.Screen name="DiscoverScreen" component={DiscoverScreen} />
               <Stack.Screen name="ProfileScreen" component={ProfileScreen} />   
+              <Stack.Screen name="CreateScreen" component={CreateScreen} />
             </>
           ) : (
             <>

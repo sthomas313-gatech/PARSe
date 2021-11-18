@@ -29,7 +29,8 @@ const get_recs = async () => {
   }
 }
 
-import { getCurrentUserFriendRecs } from '../recs/getCurrentUserFriendRecs';
+import { getCurrentUserFriendRecs } from '../recs';
+// import { getCurrentUserAndFriendRecs } from "../recs";
 
 
 
@@ -40,13 +41,13 @@ export default function FeedScreen( {navigation} ) {
   // Populate recCardsList based on currently logged in user's friends' recommendations
   React.useEffect( () => {
     getCurrentUserFriendRecs()
-      .then(currentUserFriendRecs => {
+      .then(recs => {
         var recCardsList = [];
-        for (var i=0; i < currentUserFriendRecs.length; i++) {
-          recCardsList.push(<RecCard key={currentUserFriendRecs[i].restaurant.name.concat(currentUserFriendRecs[i].user.username)} rec={currentUserFriendRecs[i]} />);
+        for (var i=0; i < recs.length; i++) {
+          recCardsList.push(<RecCard key={recs[i].restaurant.name.concat(recs[i].user.username)} rec={recs[i]} />);
         }
         setRecCardsList(recCardsList);
-        console.log(`current user friend recs: ${JSON.stringify(currentUserFriendRecs)}`);
+        console.log(`current user friend recs: ${JSON.stringify(recs)}`);
       })
       .catch((error) => {
         throw new Error(error.message);
@@ -56,7 +57,7 @@ export default function FeedScreen( {navigation} ) {
 
   return (
     <SafeAreaView style={styles.container}>
-        <Header />
+        <Header navigation={navigation} createButton={true} />
         <ScrollView>
             {recCardsList}
         </ScrollView>

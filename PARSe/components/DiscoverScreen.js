@@ -82,7 +82,7 @@ export default function DiscoverScreen( {navigation} ) {
 
     return (
         <SafeAreaView style={styles.container} >
-                <Header />
+                <Header navigation={navigation} createButton={true} />
                 <MapView
                     style={styles.mapViewStyle}
                     provider="google"
