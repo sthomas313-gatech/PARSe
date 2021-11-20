@@ -3,14 +3,17 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
-  Text
+  Text,
+  RefreshControl,
+  Button
 } from 'react-native';
-import { Button } from 'react-native-paper';
+// import { Button } from 'react-native-paper';
 
 // custom components
 import Header from './Header';
 import RecCard from './RecCard';
 import NavBar from './NavBar';
+
 
 // import static content (replace with dynamic content from backend later)
 import { recs } from "../static_content";
@@ -19,48 +22,113 @@ import { recs } from "../static_content";
 import '@react-native-firebase/firestore';
 import firebase from '@react-native-firebase/app';
 
-const get_recs = async () => {
-  try {
-    const result = await firebase.firestore().collection("recs").doc("recID1").get();
-    const rec_comment = result.data();
-    return rec_comment;
-  } catch (e) {
-    throw new Error("error in get_recs function");
-  }
-}
-
 // import { getCurrentUserFriendRecs } from '../recs';
 import { getCurrentUserAndFriendRecs } from "../recs";
+// import { getCurrentUserRecs } from '../recs';
+import { getCurrentTimestamp } from '../time';
 
 
 
 export default function FeedScreen( {navigation} ) {
 
-  const [recCardsList, setRecCardsList] = useState(null);
+  const [recCardsList, setRecCardsList] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+  const [lastRefresh, setLastRefresh] = useState(null);
+  const [recsList, setRecsList] = useState([]);
+  const [lastRec, setLastRec] = useState(null);
+  const [noMoreRecs, setNoMoreRecs] = useState(false);
 
-  // Populate recCardsList based on currently logged in user's friends' recommendations
-  React.useEffect( () => {
-    getCurrentUserAndFriendRecs()
-      .then(recs => {
-        // console.log(`current user and friend recs: ${JSON.stringify(recs)}`);
-        var recCardsList = [];
-        for (var i=0; i < recs.length; i++) {
-          recCardsList.push(<RecCard key={recs[i].restaurant.name.concat(recs[i].user.username)} rec={recs[i]} />);
+  const updateRecCardsList = async (minRefreshTime=0, startAfter=null, overWrite=true) => {
+
+      var skipRefresh = false;
+      if (lastRefresh) {
+        if (getCurrentTimestamp().seconds - lastRefresh.seconds < minRefreshTime) {
+          skipRefresh = true;
         }
-        setRecCardsList(recCardsList);
-        
-      })
-      .catch((error) => {
-        throw new Error(error.message);
+      }
+
+      if (skipRefresh) {
+        console.log(`skipping refresh, only been ${(getCurrentTimestamp().seconds - lastRefresh.seconds).toFixed(1)} seconds`);
+        return;
+      }
+
+      console.log(`refreshing recCardsList`);
+
+      getCurrentUserAndFriendRecs(limit=5, orderBy={field: "created", direction: "desc"}, startAfter=startAfter)
+        .then((result) => {
+          const [recs, lastDoc] = result;
+          // console.log(`recs: ${JSON.stringify(recs, undefined, 4)}`);
+
+          if (recs.length == 0) {
+            setNoMoreRecs(true);
+            return;
+          } else if (recs.length > 0) {
+            setNoMoreRecs(false);
+          }
+
+          var tempRecsList = [];
+          var tempRecCardsList = [];
+          if (!overWrite) {
+            tempRecsList = [...recsList];
+            tempRecCardsList = [...recCardsList];
+          }
+            
+          recs.forEach((rec) => {
+            tempRecsList.push(rec);
+            tempRecCardsList.push(<RecCard key={rec.restaurant.name.concat(rec.user.username)} rec={rec} />)
+          });
+
+          setRecsList(tempRecsList);
+          setRecCardsList(tempRecCardsList);
+
+          setLastRec(lastDoc);
+
+          setLastRefresh(getCurrentTimestamp());
+
+        })
+        .catch((error) => {
+          throw new Error(error.message);
+        });
+  }
+  
+  // Populate recCardsList on initial load, based on currently logged in user's friends' recommendations
+  React.useEffect( () => {
+    updateRecCardsList(minRefreshTime=0, startAfter=null, overWrite=true)
+  }, []);
+
+  // On refresh, update recCardsList
+  const onRefresh = React.useCallback(() => {
+      setRefreshing(true);
+      updateRecCardsList(minRefreshTime=5, startAfter=null, overWrite=true).then(() => {
+        setRefreshing(false);
       });
   }, []);
+
+  const loadMore = () => {
+      // let startAfter = {userID: lastRec.userID, title: lastRec.title, restaurantID: lastRec.restaurantID, created: lastRec.created};
+      updateRecCardsList(minRefreshTime=0, startAfter=lastRec, overWrite=false);
+  };
   
 
   return (
     <SafeAreaView style={styles.container}>
         <Header navigation={navigation} createButton={true} />
-        <ScrollView>
+        <ScrollView 
+          contentContainerStyle={styles.scrollViewStyle}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
+          }
+        >
             {recCardsList}
+            {noMoreRecs && <Text style={styles.noMoreRecsStyle} >No more recommendations to load! :(</Text>}
+            <Button 
+              style={styles.loadMoreButton} 
+              title="Load More Recommendations" 
+              onPress={loadMore}
+            />
         </ScrollView>
         <NavBar navigation={navigation} />
     </SafeAreaView>
@@ -74,4 +142,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#ecf0f1',
     padding: 8,
   },
+  scrollViewStyle: {
+    paddingBottom: 100,
+    // marginBottom: 200
+  },
+  loadMoreButton: {
+    marginTop: 20,
+  },
+  noMoreRecsStyle: {
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 12,
+  }
 });

@@ -43,6 +43,7 @@ const TAG_OPTIONS = [
     {item: "Japanese", id: "Japanese"},
     {item: "Ramen", id: "Ramen"},
     {item: "Sushi", id: "Sushi"},
+    {item: "Indian", id: "Indian"},
 ]
 
 

@@ -3,9 +3,13 @@ import '@react-native-firebase/firestore'
 
 export const addRestaurant = async (restaurant) => {
     try {
+        
         const createdRestaurantDoc = await firebase.firestore()
             .collection("restaurants")
-            .add(restaurant);
+            .add(
+                {...restaurant, 
+                    created: firebase.firestore.Timestamp.now()
+                });
         
         if (!createdRestaurantDoc) {
             console.log(`issue writing new restaurant to firestore 'restaurants' collection`);

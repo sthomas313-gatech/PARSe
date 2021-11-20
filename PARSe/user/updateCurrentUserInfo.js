@@ -10,5 +10,5 @@ export const updateCurrentUserInfo = async updates => {
     await firebase.firestore()
         .collection("users")
         .doc(currentUser.id)
-        .update(updates);
+        .update({...updates, updated: firebase.firestore.Timestamp.now()});
 };
