@@ -1,5 +1,6 @@
 import firebase from '@react-native-firebase/app'
 import '@react-native-firebase/firestore'
+import { getCurrentTimestamp } from '../time';
 
 export const addRestaurant = async (restaurant) => {
     try {
@@ -8,7 +9,7 @@ export const addRestaurant = async (restaurant) => {
             .collection("restaurants")
             .add(
                 {...restaurant, 
-                    created: firebase.firestore.Timestamp.now()
+                    created: getCurrentTimestamp()
                 });
         
         if (!createdRestaurantDoc) {

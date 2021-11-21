@@ -1,6 +1,7 @@
 import firebase from '@react-native-firebase/app'
 import '@react-native-firebase/firestore'
 import { getCurrentUser } from '../auth/getCurrentUser';
+import { getCurrentTimestamp } from '../time';
 
 export const updateCurrentUserInfo = async updates => {
     const currentUser = getCurrentUser();
@@ -10,5 +11,5 @@ export const updateCurrentUserInfo = async updates => {
     await firebase.firestore()
         .collection("users")
         .doc(currentUser.id)
-        .update({...updates, updated: firebase.firestore.Timestamp.now()});
+        .update({...updates, updated: getCurrentTimestamp()});
 };

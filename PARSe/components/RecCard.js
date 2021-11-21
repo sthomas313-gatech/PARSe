@@ -10,7 +10,7 @@ import RecCardBottomRow from "./RecCardBottomRow";
 
 
 
-export default function RecCard({rec}) {
+export default function RecCard({rec, editView=false}) {
 
   return (
     <Card style={styles.cardView}>
@@ -19,7 +19,7 @@ export default function RecCard({rec}) {
 
       <RecCardReview rec={rec} />
 
-      <RecCardBottomRow rec={rec} />
+      <RecCardBottomRow rec={rec} editView={editView} />
 
     </Card>
   );

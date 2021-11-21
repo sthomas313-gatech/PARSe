@@ -29,7 +29,8 @@ export const getUsersRecs = async (userList, limit=null, orderBy=null, startAfte
     if (!querySnapshot) return null;
 
     const recs = querySnapshot.docs.map(doc => ({
-        ...doc.data()
+        ...doc.data(),
+        id: doc.id
     }));
 
     const populatedRecs = await mapAsync(recs, async rec => {

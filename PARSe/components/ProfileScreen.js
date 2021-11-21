@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import {Card} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
-// import googleSignIn from "../images/google_signin_buttons/ios/2x/btn_google_light_normal_ios@2x.png";
 
 import Header from './Header';
 import NavBar from './NavBar';
@@ -19,32 +18,58 @@ import ProfilePic from './ProfilePic';
 import RecCard from "./RecCard";
 
 
-// Replace with dynamic content later
-import patrick_profile_pic1 from '../images/patrick_profile_pic1.jpeg';
-import {recs} from '../static_content';
-// import RecCard from './RecCard';
+// Firestore data
+import { getCurrentUserRecs } from '../recs';
+import { getCurrentTimestamp } from '../time';
+import { getCurrentUserInfo } from '../user';
 
 
 export default function ProfileScreen( {navigation} ) {
-    const user = {
-        username: "patrickc410",
-        firstName: "Patrick",
-        lastName: "Crawford"
+
+    const [recCardsList, setRecCardsList] = React.useState([]);
+    const [recsList, setRecsList] = React.useState([]);
+    const [lastRefresh, setLastRefresh] = React.useState(null);
+    const [userInfo, setUserInfo] = React.useState(null);
+
+
+    const updateRecCardsList = () => {
+        getCurrentUserRecs().then((result) => {
+            const [recs, lastDoc] = result;
+            var tempRecCardsList = []
+            var tempRecsList = []
+            recs.forEach((rec) => {
+                tempRecsList.push(rec);
+                tempRecCardsList.push(<RecCard key={rec.restaurant.name.concat(rec.user.username)} rec={rec} editView={true} />)
+              });
+            
+            setRecCardsList(tempRecCardsList);
+            setRecsList(tempRecsList);
+            setLastRefresh(getCurrentTimestamp());
+        })
+        .catch((error) => {
+            throw new Error(error.message);
+        });
     }
-    var recCardsList = [];
-    for (var i=0; i < 1; i++) {
-        recCardsList.push(<RecCard key={recs[i].restaurant.name.concat(recs[i].user.username)} rec={recs[i]} />);
-    }
+
+    // set
+    React.useEffect( () => {
+        updateRecCardsList();
+        getCurrentUserInfo().then((result) => {
+            setUserInfo(result);
+            console.log(`${JSON.stringify(result)}`);
+        })
+    }, []);
+
 
     return (
         <SafeAreaView style={styles.loginSafeView}>
             <Header />
             <ScrollView style={styles.container} >
                 <View style={styles.userInfoView}>
-                    <ProfilePic picture={patrick_profile_pic1} />
+                    <ProfilePic pictureURL={userInfo && userInfo.profilePicture} />
                     <View style={styles.userInfoView}>
-                        <Text style={styles.nameStyle}>{user.firstName} {user.lastName}</Text>
-                        <Text style={styles.userNameStyle}>@{user.username}</Text>
+                        <Text style={styles.nameStyle}>{userInfo && `${userInfo.firstName} ${userInfo.lastName}`}</Text>
+                        <Text style={styles.userNameStyle}>@{userInfo && `${userInfo.username}`}</Text>
                     </View>
                 </View>
 
@@ -54,7 +79,7 @@ export default function ProfileScreen( {navigation} ) {
                 </View>
                 <View>
                     {recCardsList}
-                    <Button title="Add" />
+                    <Button title="Add" onPress={() => navigation.navigate("CreateScreen") } />
                 </View>
 
                 <View style={styles.row}>

@@ -11,32 +11,71 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MoreInfo from './MoreInfo';
 import Tag from './Tag';
 
+import { deleteRec } from '../recs';
 
 
-export default function RecCardBottomRow( {rec} ) {
-    
-    const tagList = Object.keys(rec.tags);
-    const filteredTagList = tagList.filter(function(tag) {
-        return rec.tags[tag];
-    });
 
-    var tagsList = [];
-    for (var i=0; i < filteredTagList.length; i++) {
-      tagsList.push(<Tag key={filteredTagList[i]} tagText={filteredTagList[i]} />);
+export default function RecCardBottomRow( {rec, editView=false} ) {
+
+
+    const [tagList, setTagList] = React.useState([]);
+    const [tagElementList, setTagElementList] = React.useState([]);
+    const [recInfo, setRecInfo] = React.useState(rec);
+    const [editViewVal, setEditViewVal] = React.useState(editView);
+
+    React.useEffect( () => {
+
+      console.log(`RecCardBottomCard, param rec: ${JSON.stringify(rec)}`)
+
+      if (rec && "tags" in rec) {
+        const tempTagList = Object.keys(rec.tags);
+        const tempFilteredTagList = tempTagList.filter(function(tag) {
+          return rec.tags[tag];
+        });
+        setTagList(tempFilteredTagList);
+
+        var tempTagElementList = [];
+        tempFilteredTagList.forEach((tag) => {
+          tempTagElementList.push(<Tag key={tag} tagText={tag} />);
+        });
+        setTagElementList(tempTagElementList);
+      }
+      
+    }, [])
+
+    const handleDeleteRec = async () => {
+      console.log(`delete rec: ${JSON.stringify(recInfo, undefined, 2)}`);
+      deleteRec(recInfo.id, recInfo.userID)
+        .then(() => {
+          console.log(`successfully deleted rec: ${recInfo.id}`);
+        })
+        .catch((error) => {
+          console.log(`error deleting rec: ${error}`)
+        });
     }
   
     return (
       <View style={bottomRowStyles.bottomRow}>
         <View style={bottomRowStyles.tagGroup}>
-          {tagsList}
+          {tagElementList}
         </View>
-  
+
+        {(!editView)
+        ? 
+          <View style={bottomRowStyles.buttonGroup}>
+            <TouchableHighlight>
+              <MaterialCommunityIcons style={bottomRowStyles.mapIcon} name="heart-outline" />
+            </TouchableHighlight>
+            <MoreInfo />
+          </View>
+        :
         <View style={bottomRowStyles.buttonGroup}>
-          <TouchableHighlight>
-            <MaterialCommunityIcons style={bottomRowStyles.mapIcon} name="heart-outline" />
-          </TouchableHighlight>
-          <MoreInfo />
-        </View>
+            <TouchableHighlight onPress={handleDeleteRec} >
+              <MaterialCommunityIcons style={bottomRowStyles.deleteIcon} name="delete" />
+            </TouchableHighlight>
+          </View>
+        }
+        
       </View>
     );
 }
@@ -61,5 +100,9 @@ const bottomRowStyles = StyleSheet.create({
     },
     mapIcon: {
         fontSize: 20
+    }, 
+    deleteIcon: {
+      fontSize: 20,
+      color: "red"
     }
 })

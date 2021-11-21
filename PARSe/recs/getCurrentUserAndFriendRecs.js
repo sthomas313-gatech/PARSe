@@ -18,14 +18,4 @@ export const getCurrentUserAndFriendRecs = async (limit=4, orderBy={field: "crea
                                 orderBy=orderBy,
                                 startAfter=startAfter);
 
-
-    // try {
-    //     const friendRecs = await getCurrentUserFriendRecs(); 
-    //     const currentUserRecs = await getCurrentUserRecs();
-    //     return friendRecs.concat(currentUserRecs);
-    // } catch (error) {
-    //     console.log(`error in getCurrentUserAndFriendRecs: ${error}`);
-    //     return null;
-    // }
-
 }
