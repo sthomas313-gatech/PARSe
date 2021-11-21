@@ -22,6 +22,8 @@ import RecCard from "./RecCard";
 import { getCurrentUserRecs } from '../recs';
 import { getCurrentTimestamp } from '../time';
 import { getCurrentUserInfo } from '../user';
+import firebase from '@react-native-firebase/app'
+import '@react-native-firebase/firestore'
 
 
 export default function ProfileScreen( {navigation} ) {
@@ -59,6 +61,19 @@ export default function ProfileScreen( {navigation} ) {
             console.log(`${JSON.stringify(result)}`);
         })
     }, []);
+
+    // React.useEffect( () => {
+    //     const subscriber = firebase.firestore()
+    //         .collection('userRecs')
+    //         .doc(userInfo && "id" in userInfo && userInfo.id)
+    //         .onSnapshot(documentSnapshot => {
+    //             console.log('User data: ', documentSnapshot.data());
+    //         });
+
+    //     // Stop listening for updates when no longer required
+    //     return () => subscriber();
+    // }, []);
+    
 
 
     return (

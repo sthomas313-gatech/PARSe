@@ -8,6 +8,7 @@ import {
   Button
 } from 'react-native';
 // import { Button } from 'react-native-paper';
+import { useIsFocused } from '@react-navigation/native';
 
 // custom components
 import Header from './Header';
@@ -30,6 +31,8 @@ import { getCurrentTimestamp } from '../time';
 
 
 export default function FeedScreen( {navigation} ) {
+
+  const isFocused = useIsFocused();
 
   const [recCardsList, setRecCardsList] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
@@ -94,7 +97,7 @@ export default function FeedScreen( {navigation} ) {
   // Populate recCardsList on initial load, based on currently logged in user's friends' recommendations
   React.useEffect( () => {
     updateRecCardsList(minRefreshTime=0, startAfter=null, overWrite=true)
-  }, []);
+  }, [isFocused]);
 
   // On refresh, update recCardsList
   const onRefresh = React.useCallback(() => {
