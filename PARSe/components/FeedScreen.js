@@ -15,10 +15,6 @@ import Header from './Header';
 import RecCard from './RecCard';
 import NavBar from './NavBar';
 
-
-// import static content (replace with dynamic content from backend later)
-import { recs } from "../static_content";
-
 // firestore
 import '@react-native-firebase/firestore';
 import firebase from '@react-native-firebase/app';
@@ -96,7 +92,10 @@ export default function FeedScreen( {navigation} ) {
   
   // Populate recCardsList on initial load, based on currently logged in user's friends' recommendations
   React.useEffect( () => {
-    updateRecCardsList(minRefreshTime=0, startAfter=null, overWrite=true)
+    setRefreshing(true);
+    updateRecCardsList(minRefreshTime=0, startAfter=null, overWrite=true).then(() => {
+      setRefreshing(false);
+    });
   }, [isFocused]);
 
   // On refresh, update recCardsList
@@ -127,11 +126,11 @@ export default function FeedScreen( {navigation} ) {
         >
             {recCardsList}
             {noMoreRecs && <Text style={styles.noMoreRecsStyle} >No more recommendations to load! :(</Text>}
-            <Button 
+            {!refreshing && <Button 
               style={styles.loadMoreButton} 
               title="Load More Recommendations" 
               onPress={loadMore}
-            />
+            />}
         </ScrollView>
         <NavBar navigation={navigation} />
     </SafeAreaView>

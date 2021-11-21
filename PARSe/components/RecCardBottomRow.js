@@ -4,7 +4,8 @@ import {
   StyleSheet, 
   Dimensions,
   TouchableHighlight,
-  Text
+  Text,
+  Alert
   } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -25,7 +26,7 @@ export default function RecCardBottomRow( {rec, editView=false} ) {
 
     React.useEffect( () => {
 
-      console.log(`RecCardBottomCard, param rec: ${JSON.stringify(rec)}`)
+      console.log(`RecCardBottomCard, param rec: ${JSON.stringify(rec)}`);
 
       if (rec && "tags" in rec) {
         const tempTagList = Object.keys(rec.tags);
@@ -43,6 +44,7 @@ export default function RecCardBottomRow( {rec, editView=false} ) {
       
     }, [])
 
+
     const handleDeleteRec = async () => {
       console.log(`delete rec: ${JSON.stringify(recInfo, undefined, 2)}`);
       deleteRec(recInfo.id, recInfo.userID)
@@ -52,6 +54,23 @@ export default function RecCardBottomRow( {rec, editView=false} ) {
         .catch((error) => {
           console.log(`error deleting rec: ${error}`)
         });
+    };
+
+
+    const handleDeleteRecAlert = async () => {
+      Alert.alert(
+        "Are you sure?",
+        `Are you sure you want to delete your recommendation for the restaurant: '${recInfo.restaurant.name}'?`,
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+          },
+          { text: "Yes", onPress: () => handleDeleteRec() }
+        ]
+      );
+      
     }
   
     return (
@@ -70,7 +89,7 @@ export default function RecCardBottomRow( {rec, editView=false} ) {
           </View>
         :
         <View style={bottomRowStyles.buttonGroup}>
-            <TouchableHighlight onPress={handleDeleteRec} >
+            <TouchableHighlight onPress={handleDeleteRecAlert} >
               <MaterialCommunityIcons style={bottomRowStyles.deleteIcon} name="delete" />
             </TouchableHighlight>
           </View>

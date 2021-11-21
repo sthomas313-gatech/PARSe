@@ -24,55 +24,39 @@ import { getCurrentTimestamp } from '../time';
 import { getCurrentUserInfo } from '../user';
 import firebase from '@react-native-firebase/app'
 import '@react-native-firebase/firestore'
+import { subscribeToCurrentUserRecs } from '../recs';
 
 
 export default function ProfileScreen( {navigation} ) {
 
     const [recCardsList, setRecCardsList] = React.useState([]);
     const [recsList, setRecsList] = React.useState([]);
-    const [lastRefresh, setLastRefresh] = React.useState(null);
     const [userInfo, setUserInfo] = React.useState(null);
 
-
-    const updateRecCardsList = () => {
-        getCurrentUserRecs().then((result) => {
-            const [recs, lastDoc] = result;
-            var tempRecCardsList = []
-            var tempRecsList = []
-            recs.forEach((rec) => {
-                tempRecsList.push(rec);
-                tempRecCardsList.push(<RecCard key={rec.restaurant.name.concat(rec.user.username)} rec={rec} editView={true} />)
-              });
-            
-            setRecCardsList(tempRecCardsList);
-            setRecsList(tempRecsList);
-            setLastRefresh(getCurrentTimestamp());
-        })
-        .catch((error) => {
-            throw new Error(error.message);
-        });
-    }
-
-    // set
+    // set current user info 
     React.useEffect( () => {
-        updateRecCardsList();
         getCurrentUserInfo().then((result) => {
             setUserInfo(result);
-            console.log(`${JSON.stringify(result)}`);
         })
     }, []);
 
-    // React.useEffect( () => {
-    //     const subscriber = firebase.firestore()
-    //         .collection('userRecs')
-    //         .doc(userInfo && "id" in userInfo && userInfo.id)
-    //         .onSnapshot(documentSnapshot => {
-    //             console.log('User data: ', documentSnapshot.data());
-    //         });
 
-    //     // Stop listening for updates when no longer required
-    //     return () => subscriber();
-    // }, []);
+    // subscribe to real-time changes in the user's recommendations
+    React.useEffect(() => {
+        const unsubscribe = subscribeToCurrentUserRecs(results => {
+            setRecsList(results);
+        });
+        return unsubscribe;
+    }, []);
+
+    // update recCardsList when recsList changes
+    React.useEffect( () => {
+        var tempRecCardsList = []
+        recsList.forEach((rec) => {
+            tempRecCardsList.push(<RecCard key={rec.restaurant.name.concat(rec.user.username)} rec={rec} editView={true} />)
+        });
+        setRecCardsList(tempRecCardsList);
+    }, [recsList]);
     
 
 
