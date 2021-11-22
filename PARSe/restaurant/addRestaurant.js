@@ -4,6 +4,9 @@ import { getCurrentTimestamp } from '../time';
 
 export const addRestaurant = async (restaurant) => {
     try {
+
+        console.log("addRestaurant: ");
+        console.log(restaurant);
         
         const createdRestaurantDoc = await firebase.firestore()
             .collection("restaurants")
