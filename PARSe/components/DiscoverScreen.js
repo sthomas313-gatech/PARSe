@@ -2,7 +2,8 @@ import React from 'react';
 import { 
     StyleSheet,
     SafeAreaView,
-    Dimensions
+    Dimensions,
+    // Button
 } from 'react-native';
 
 
@@ -146,14 +147,6 @@ export default function DiscoverScreen( {navigation} ) {
                     showsUserLocation={true}
                     initialRegion={initialRegion}
                     region={mapViewRegion}
-                    // initialRegion={
-                    //         {
-                    //     latitude: 33.753746,
-                    //     longitude: -84.386330,
-                    //     latitudeDelta: 0.0922,
-                    //     longitudeDelta: 0.0421
-                    //     }
-                    // }
                 >
                     {markerList}
                 </MapView>

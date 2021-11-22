@@ -1,5 +1,6 @@
 import firebase from '@react-native-firebase/app'
 import '@react-native-firebase/firestore'
+import { checkRecLikesDocExists, getRecLikes } from '../likes';
 import { getRestaurant } from '../restaurant';
 import { getUserInfo } from '../user/getUserInfo';
 import { mapAsync } from '../util';
@@ -36,10 +37,16 @@ export const getUsersRecs = async (userList, limit=null, orderBy=null, startAfte
     const populatedRecs = await mapAsync(recs, async rec => {
         const restaurant = await getRestaurant(rec.restaurantID);
         const user = await getUserInfo(rec.userID);
+        const recLikesExist = await checkRecLikesDocExists(rec.id);
+        var recLikes = null;
+        if (recLikesExist) {
+            recLikes = await getRecLikes(rec.id); 
+        }
         return {
             ...rec,
             restaurant,
-            user
+            user,
+            recLikes
         };
     })
 
