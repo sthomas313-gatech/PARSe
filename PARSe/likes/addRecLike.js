@@ -1,7 +1,6 @@
-import firebase from '@react-native-firebase/app'
-import '@react-native-firebase/firestore'
-import { getCurrentTimestamp } from '../time';
 import { checkRecLikesDocExists } from './checkRecLikesDocExists';
+import { updateRecLikesDoc } from './updateRecLikesDoc';
+import { createRecLikesDoc } from './createRecLikesDoc';
 
 
 export const addRecLike = async (recID, userID) => {
@@ -27,29 +26,12 @@ export const addRecLike = async (recID, userID) => {
 
     // Create 'recLikes' document or update 'recLikes' document
     if (exists == false) {
-        createRecLikes(recID, recLikesUpdate).then(() => {
+        createRecLikesDoc(recID, recLikesUpdate).then(() => {
             console.log(`created new recLikes doc for recID: ${recID}`);
         });
     } else if (exists == true) {
-        updateRecLikes(recID, recLikesUpdate).then(() => {
+        updateRecLikesDoc(recID, recLikesUpdate).then(() => {
             console.log(`updated existing recLikes doc for recID: ${recID}`);
         });
     }
-}
-
-
-
-const updateRecLikes = async (docID, recLikesUpdate) => {
-    firebase.firestore()
-        .collection("recLikes")
-        .doc(docID)
-        .update({...recLikesUpdate, updated: getCurrentTimestamp()});
-};
-
-
-const createRecLikes = async (docID, recLikesUpdate) => {
-    firebase.firestore()
-        .collection("recLikes")
-        .doc(docID)
-        .set({...recLikesUpdate, created: getCurrentTimestamp()});
 }

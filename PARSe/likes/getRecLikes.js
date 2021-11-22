@@ -16,7 +16,7 @@ export const getRecLikes = async (recID) => {
 
     const recLikes = recLikesDoc.data();
 
-    if (!recLikes) return null;
+    if (!recLikes) return {};
 
     return {
         ...recLikes,

@@ -13,6 +13,8 @@ import MoreInfo from './MoreInfo';
 import Tag from './Tag';
 
 import { deleteRec } from '../recs';
+import { addCurrentUserRecLike, removeCurrentUserRecLike } from '../likes';
+import { getCurrentUser } from '../auth';
 
 
 
@@ -23,6 +25,7 @@ export default function RecCardBottomRow( {rec, editView=false} ) {
     const [tagElementList, setTagElementList] = React.useState([]);
     const [recInfo, setRecInfo] = React.useState(rec);
     const [editViewVal, setEditViewVal] = React.useState(editView);
+    const [currentUserLiked, setCurrentUserLiked] = React.useState(false); // TODO 
 
     React.useEffect( () => {
 
@@ -40,6 +43,13 @@ export default function RecCardBottomRow( {rec, editView=false} ) {
           tempTagElementList.push(<Tag key={tag} tagText={tag} />);
         });
         setTagElementList(tempTagElementList);
+      }
+
+      const currentUser = getCurrentUser();
+
+      if (rec && "recLikes" in rec && rec.recLikes && currentUser && currentUser.id in rec.recLikes) {
+        console.log(`setting currentUserLiked to: ${rec.recLikes[currentUser.id]}`);
+        setCurrentUserLiked(rec.recLikes[currentUser.id]);
       }
       
     }, [])
@@ -72,6 +82,22 @@ export default function RecCardBottomRow( {rec, editView=false} ) {
       );
       
     }
+
+    const handleLikeRec = async () => {
+      console.log(`pressed like button for rec ${recInfo.id}`);
+
+      if (currentUserLiked == true) {
+        removeCurrentUserRecLike(recInfo.id).then(() => {
+          console.log(`removed like!`);
+        });
+      } else if (currentUserLiked == false) {
+        addCurrentUserRecLike(recInfo.id).then(() => {
+          console.log(`added like!`);
+        });
+      }
+      setCurrentUserLiked(!currentUserLiked);
+    }
+
   
     return (
       <View style={bottomRowStyles.bottomRow}>
@@ -82,8 +108,12 @@ export default function RecCardBottomRow( {rec, editView=false} ) {
         {(!editView)
         ? 
           <View style={bottomRowStyles.buttonGroup}>
-            <TouchableHighlight>
-              <MaterialCommunityIcons style={bottomRowStyles.mapIcon} name="heart-outline" />
+            <TouchableHighlight onPress={handleLikeRec} >
+              {currentUserLiked ?
+              <MaterialCommunityIcons style={bottomRowStyles.heartIconLiked} name="heart" />
+              :
+              <MaterialCommunityIcons style={bottomRowStyles.heartIcon} name="heart-outline" /> 
+              }
             </TouchableHighlight>
             <MoreInfo />
           </View>
@@ -117,9 +147,13 @@ const bottomRowStyles = StyleSheet.create({
         justifyContent: "space-around",
         alignItems: "center"
     },
-    mapIcon: {
+    heartIcon: {
         fontSize: 20
     }, 
+    heartIconLiked: {
+      fontSize: 20,
+      color: "red"
+    },
     deleteIcon: {
       fontSize: 20,
       color: "red"
