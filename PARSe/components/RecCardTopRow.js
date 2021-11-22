@@ -23,12 +23,12 @@ export default function RecCardTopRow( {rec} ) {
 
         <View style={topRowStyles.nameRestaurantRow} >
           <Text style={topRowStyles.nameText} >{rec.user.firstName} {rec.user.lastName}</Text>
-          <Text style={topRowStyles.usernameText} >@</Text>
+          {/* <Text style={topRowStyles.usernameText} >@</Text> */}
           <Text style={topRowStyles.restaurantText} >{rec.restaurant.name}</Text>
         </View>
 
         <View style={topRowStyles.usernameLocationRow}>
-          <Text style={topRowStyles.usernameText} >@{rec.username}</Text>
+          <Text style={topRowStyles.usernameText} >@{rec.user.username}</Text>
           <View style={topRowStyles.locationPinRow} >
             <MaterialCommunityIcons style={topRowStyles.mapIcon} name="map-marker" />
             <Text style={topRowStyles.locationText} >{rec.restaurant.location.city}, {rec.restaurant.location.state}</Text>

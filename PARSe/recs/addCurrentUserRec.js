@@ -6,6 +6,10 @@ import { addRestaurant, searchRestaurant} from '../restaurant';
 
 export const addCurrentUserRec = async (rec, restaurant) => {
 
+    console.log(`addCurrentUserRec`);
+    console.log(`rec: ${JSON.stringify(rec, undefined, 2)}`);
+    console.log(`restaurant: ${JSON.stringify(restaurant, undefined, 2)}`);
+
     // Get Current User, to use user ID in firestore lookups
     const currentUser = getCurrentUser();
     if (!currentUser) return;

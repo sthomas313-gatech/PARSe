@@ -26,7 +26,7 @@ export default function RecCardBottomRow( {rec, editView=false} ) {
 
     React.useEffect( () => {
 
-      console.log(`RecCardBottomCard, param rec: ${JSON.stringify(rec)}`);
+      // console.log(`RecCardBottomCard, param rec: ${JSON.stringify(rec)}`);
 
       if (rec && "tags" in rec) {
         const tempTagList = Object.keys(rec.tags);

@@ -7939,6 +7939,11 @@
     "invariant" "^2.2.4"
     "prop-types" "^15.7.2"
 
+"react-native-google-places-api@^1.0.2":
+  "integrity" "sha512-FqQ4SJF4NMFMJ/7YsdTzAyvVLV1ARqBNnAYT6Ie8/Vm+TzV/nYcBPOZIQkElypmSGESph4zAlxhCbFzpE8b1zA=="
+  "resolved" "https://registry.npmjs.org/react-native-google-places-api/-/react-native-google-places-api-1.0.2.tgz"
+  "version" "1.0.2"
+
 "react-native-image-picker@^0.26.7":
   "integrity" "sha512-z6gAbru2E6SyGWm4ZTbiM9hPHZ5Tsl9kXGfRxW6YQXf9us7zybKoS7dKE1fQPsssv/OSvpPDKannJNncE+ATRA=="
   "resolved" "https://registry.npmjs.org/react-native-image-picker/-/react-native-image-picker-0.26.10.tgz"
@@ -8093,7 +8098,7 @@
     "whatwg-fetch" "^3.0.0"
     "ws" "^6.1.4"
 
-"react-native@*", "react-native@^0.66.0", "react-native@>= 0.51", "react-native@>=0.42.0", "react-native@>=0.50.0", "react-native@>=0.55", "react-native@>=v0.40.0", "react-native@>0.27", "react-native@0.66.0":
+"react-native@*", "react-native@^0.66.0", "react-native@>= 0.51", "react-native@>=0.40.0", "react-native@>=0.42.0", "react-native@>=0.50.0", "react-native@>=0.55", "react-native@>=v0.40.0", "react-native@>0.27", "react-native@0.66.0":
   "integrity" "sha512-m26TKwzsfHVdZ1hDG+7mZ4M4ftxFFZrhtiT0OXuwfBzmNtB3xhsJtYszPeizw33c9YNp8rvehKT3c4ldDCW6kA=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.66.0.tgz"
   "version" "0.66.0"
@@ -8166,7 +8171,7 @@
   "resolved" "https://registry.npmjs.org/react-timer-mixin/-/react-timer-mixin-0.13.4.tgz"
   "version" "0.13.4"
 
-"react@*", "react@^16.0.0 || ^17.0.0", "react@^16.8.0 || ^17.0.0", "react@^17.0.0", "react@>= 16.0 || < 18.0", "react@>=16.3.0", "react@>=16.5.1", "react@>15.0", "react@17.0.2":
+"react@*", "react@^16.0.0 || ^17.0.0", "react@^16.8.0 || ^17.0.0", "react@^17.0.0", "react@>= 16.0 || < 18.0", "react@>=15.4.0 || ^16.0.0-alpha", "react@>=16.3.0", "react@>=16.5.1", "react@>15.0", "react@17.0.2":
   "integrity" "sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA=="
   "resolved" "https://registry.npmjs.org/react/-/react-17.0.2.tgz"
   "version" "17.0.2"

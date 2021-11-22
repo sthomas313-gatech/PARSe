@@ -33,5 +33,6 @@ export const subscribeToCurrentUserRecs = (cb) => {
     return firebase.firestore()
         .collection("recs")
         .where("userID", "==", currentUser.id)
+        .orderBy("created", "desc")
         .onSnapshot(callback);
 }
