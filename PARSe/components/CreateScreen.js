@@ -42,6 +42,7 @@ export default function CreateScreen( {navigation} ) {
     const [state, setState] = React.useState(null);
     const [street1, setStreet1] = React.useState(null);
     const [zipcode, setZipcode] = React.useState(null);
+    const [address, setAddress] = React.useState(null);
     const [coordinate, setCoordinate] = React.useState(null);
 
     const [errorMessage, setErrorMessage] = React.useState(null);
@@ -64,6 +65,7 @@ export default function CreateScreen( {navigation} ) {
         newRestaurant.location.street1 = street1;
         newRestaurant.location.zipcode = zipcode;
         newRestaurant.location.coordinate = coordinate;
+        newRestaurant.location.address = address;
         
         await addCurrentUserRec(newRec, newRestaurant);
         navigation.navigate("FeedScreen");
@@ -103,19 +105,9 @@ export default function CreateScreen( {navigation} ) {
                     });
                     setStreet1(`${tempStreetNumber} ${tempRoute}`);
                 }
-
-                // if (place && "address" in place) {
-                //     const split1 = place.address.split(",");
-                //     const tempCity = split1[1].trim();
-                //     const tempStreet1 = split1[0].trim();
-                //     const split2 = split1[2].trim().split(" ");
-                //     const tempState = split2[0].trim();
-                //     const tempZipcode = split2[1].trim();
-                //     setCity(tempCity);
-                //     setState(tempState);
-                //     setStreet1(tempStreet1);
-                //     setZipcode(tempZipcode);
-                // }
+                if (place && "address" in place) {
+                    setAddress(place.address);
+                }
                 if (place && "name" in place) {
                     setRestaurant(place.name);
                 }
