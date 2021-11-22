@@ -1,16 +1,19 @@
 import firebase from '@react-native-firebase/app'
 import '@react-native-firebase/firestore'
 import { getCurrentTimestamp } from '../time';
+import { checkRestaurantRecDependency } from '../restaurant';
 
 
-export const deleteRec = async (recID, userID) => {
+export const deleteRec = async (recID, userID, restaurantID) => {
     try {
         firebase.firestore()
             .collection("recs")
             .doc(recID)
-            .delete();
+            .delete().then(() => {
+                checkRestaurantRecDependency(restaurantID);
+            });
         
-        var updates = {}
+        var updates = {};
         updates[recID] = false;
 
         firebase.firestore()

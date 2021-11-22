@@ -25,12 +25,15 @@ import { getCurrentUserInfo } from '../user';
 import firebase from '@react-native-firebase/app'
 import '@react-native-firebase/firestore'
 import { subscribeToCurrentUserRecs } from '../recs';
+import { getCurrentUserRecLikes } from '../likes';
 
 
 export default function ProfileScreen( {navigation} ) {
 
     const [recCardsList, setRecCardsList] = React.useState([]);
     const [recsList, setRecsList] = React.useState([]);
+    const [recLikesList, setRecLikesList] = React.useState([]);
+    const [recLikesCardsList, setRecLikesCardsList] = React.useState([]);
     const [userInfo, setUserInfo] = React.useState(null);
 
     // set current user info 
@@ -53,10 +56,31 @@ export default function ProfileScreen( {navigation} ) {
     React.useEffect( () => {
         var tempRecCardsList = []
         recsList.forEach((rec) => {
-            tempRecCardsList.push(<RecCard key={rec.restaurant.name.concat(rec.user.username)} rec={rec} editView={true} />)
+            tempRecCardsList.push(<RecCard key={rec.id} rec={rec} editView={true} />)
         });
         setRecCardsList(tempRecCardsList);
     }, [recsList]);
+
+    // get current user rec likes:
+    React.useEffect( () => {
+        getCurrentUserRecLikes()
+            .then((result) => {
+                const recLikes = result;
+                setRecLikesList(recLikes);
+                // console.log(`recLikesList set to: ${JSON.stringify(recLikesList, undefined, 2)}`);
+            })
+            .catch((error) => {
+                console.log(`error from getCurrentUserRecLikes: ${error}`);
+            });
+    }, []);
+
+    React.useEffect( () => {
+        var tempRecLikesCardsList = [];
+        recLikesList.forEach((rec) => {
+            tempRecLikesCardsList.push(<RecCard key={rec.id} rec={rec} editView={false} />)
+        });
+        setRecLikesCardsList(tempRecLikesCardsList);
+    }, [recLikesList]);
     
 
 
@@ -72,14 +96,24 @@ export default function ProfileScreen( {navigation} ) {
                     </View>
                 </View>
 
+
                 <View style={styles.row}>
-                    <Text style={styles.text}>My Top Recs</Text>
-                    <Button title="Edit" />
+                    <Text style={styles.text}>My Recommendations</Text>
                 </View>
                 <View>
                     {recCardsList}
                     <Button title="Add" onPress={() => navigation.navigate("CreateScreen") } />
                 </View>
+
+
+                <View style={styles.row}>
+                    <Text style={styles.text}>My Likes</Text>
+                </View>
+                <View>
+                    {recLikesCardsList}
+                    <Button title="Load More" onPress={() => console.log("not functional yet!") } />
+                </View>
+                
 
                 <View style={styles.row}>
                     <Text style={styles.text}>My Lists</Text>

@@ -23,6 +23,7 @@ import firebase from '@react-native-firebase/app';
 import { getCurrentUserAndFriendRecs } from "../recs";
 // import { getCurrentUserRecs } from '../recs';
 import { getCurrentTimestamp } from '../time';
+import { checkRestaurantRecDependency } from '../restaurant';
 
 
 
@@ -56,7 +57,7 @@ export default function FeedScreen( {navigation} ) {
       getCurrentUserAndFriendRecs(limit=5, orderBy={field: "created", direction: "desc"}, startAfter=startAfter)
         .then((result) => {
           const [recs, lastDoc] = result;
-          console.log(`recs: ${JSON.stringify(recs, undefined, 4)}`);
+          // console.log(`recs: ${JSON.stringify(recs, undefined, 4)}`);
 
           if (recs.length == 0) {
             setNoMoreRecs(true);
@@ -74,7 +75,7 @@ export default function FeedScreen( {navigation} ) {
             
           recs.forEach((rec) => {
             tempRecsList.push(rec);
-            tempRecCardsList.push(<RecCard key={rec.restaurant.name.concat(rec.user.username)} rec={rec} />)
+            tempRecCardsList.push(<RecCard key={rec.id} rec={rec} />)
           });
 
           setRecsList(tempRecsList);

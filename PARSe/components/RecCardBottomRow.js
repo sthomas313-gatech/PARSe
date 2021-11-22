@@ -48,16 +48,16 @@ export default function RecCardBottomRow( {rec, editView=false} ) {
       const currentUser = getCurrentUser();
 
       if (rec && "recLikes" in rec && rec.recLikes && currentUser && currentUser.id in rec.recLikes) {
-        console.log(`setting currentUserLiked to: ${rec.recLikes[currentUser.id]}`);
+        // console.log(`setting currentUserLiked to: ${rec.recLikes[currentUser.id]}`);
         setCurrentUserLiked(rec.recLikes[currentUser.id]);
       }
       
-    }, [])
+    }, []);
 
 
     const handleDeleteRec = async () => {
       console.log(`delete rec: ${JSON.stringify(recInfo, undefined, 2)}`);
-      deleteRec(recInfo.id, recInfo.userID)
+      deleteRec(recInfo.id, recInfo.userID, recInfo.restaurantID)
         .then(() => {
           console.log(`successfully deleted rec: ${recInfo.id}`);
         })
