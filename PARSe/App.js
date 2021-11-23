@@ -28,6 +28,8 @@ import CreateScreen from './components/CreateScreen';
 import { State } from 'react-native-gesture-handler';
 
 import { firebaseConfig } from './firebaseConfig';
+import CompleteRegistrationScreen from './components/CompleteRegistrationScreen';
+import LoggedInLoadingScreen from './components/LoggedInLoadingScreen';
 
 // firebase.functions().useFunctionsEmulator("http://localhost:5001");
 
@@ -78,7 +80,7 @@ export default function App() {
           .auth()
           .signInWithEmailAndPassword(email, password)
           .then(userCredentials => {
-              console.log(`signIn attempt success: ${JSON.stringify(userCredentials)}`);
+              console.log(`signIn attempt success: ${JSON.stringify(userCredentials, undefined, 2)}`);
               dispatch({ type: 'SIGN_IN', token: userCredentials });
           })
           .catch(error => console.log(`signIn error: ${error.code}, ${error.message}`));   
@@ -93,7 +95,7 @@ export default function App() {
           .auth()
           .createUserWithEmailAndPassword(email, password)
           .then(userCredentials => {
-              console.log(`signUp attempt success: ${userCredentials}`);
+              console.log(`signUp attempt success: ${JSON.stringify(userCredentials, undefined, 2)}`);
               dispatch({ type: 'SIGN_IN', token: userCredentials });
           })
           .catch(error => console.log(`signUp error: ${error.code}, ${error.message}`));   
@@ -108,7 +110,7 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator 
           initialRouteName={
-            state.userToken ? "FeedScreen" : "Login"
+            state.userToken ? "LoggedInLoadingScreen" : "Login"
           }
           screenOptions={{
             headerShown: false,
@@ -123,10 +125,12 @@ export default function App() {
         >
           {state.userToken ? (
             <>
+              <Stack.Screen name="LoggedInLoadingScreen" component={LoggedInLoadingScreen} />
               <Stack.Screen name="FeedScreen" component={FeedScreen} />
               <Stack.Screen name="DiscoverScreen" component={DiscoverScreen} />
               <Stack.Screen name="ProfileScreen" component={ProfileScreen} />   
               <Stack.Screen name="CreateScreen" component={CreateScreen} />
+              <Stack.Screen name="CompleteRegistrationScreen" component={CompleteRegistrationScreen} />
             </>
           ) : (
             <>
