@@ -124,16 +124,9 @@ export default function CreateScreen( {navigation} ) {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Header text={"Create Recommendation"} createButton={false}  />
+            <Header text={"Add"} topLeftElement={<Button title="Cancel" onPress={() => navigation.goBack()} />} />
             <View style={styles.scrollViewStyle} >
                 {/* <Text style={styles.textStyle}>Create Recommendation:</Text> */}
-                <Text style={styles.textStyle}>Recommendation Title:</Text>
-                <TextInput 
-                    style={styles.inputBox}
-                    autoCapitalize="none" 
-                    onChangeText={title => setTitle(title)}
-                    placeholder="Awesome Dinner!!" 
-                />
                 <Button
                     title="Click to Search for a Restaurant"
                     onPress={() => openSearchModal()}
@@ -163,6 +156,13 @@ export default function CreateScreen( {navigation} ) {
                     placeholder="" 
                     value={state}
                 />
+                <Text style={styles.textStyle}>Recommendation Title:</Text>
+                <TextInput 
+                    style={styles.inputBox}
+                    autoCapitalize="none" 
+                    onChangeText={title => setTitle(title)}
+                    placeholder="Awesome Dinner!!" 
+                />
                 <Text style={styles.textStyle}>Comments:</Text>
                 <TextInput 
                     style={styles.commentsInputBox}
@@ -183,8 +183,11 @@ export default function CreateScreen( {navigation} ) {
                         isMulti
                     />
                 </View>
-                <Button title="Submit" onPress={buttonSubmit}>
-                </Button>
+                <View style={styles.bottomButtons}> 
+                    <Button title="Submit" onPress={buttonSubmit} />
+                    <Button title="Next" onPress={() => console.log("TODO: not functional yet!")} />
+                </View>
+                
 
 
             </View>
@@ -232,5 +235,10 @@ const styles = StyleSheet.create({
         padding: 10,
         margin: 18,
         marginTop: 0
+    },
+    bottomButtons: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        alignItems: "center",
     }
 });

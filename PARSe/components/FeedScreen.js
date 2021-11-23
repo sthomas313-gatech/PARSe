@@ -24,6 +24,7 @@ import { getCurrentUserAndFriendRecs } from "../recs";
 // import { getCurrentUserRecs } from '../recs';
 import { getCurrentTimestamp } from '../time';
 import { checkRestaurantRecDependency } from '../restaurant';
+import AddRecButton from './AddRecButton';
 
 
 
@@ -115,7 +116,7 @@ export default function FeedScreen( {navigation} ) {
 
   return (
     <SafeAreaView style={styles.container}>
-        <Header navigation={navigation} createButton={true} />
+        <Header navigation={navigation} topLeftElement={<AddRecButton navigation={navigation} />} />
         <ScrollView 
           contentContainerStyle={styles.scrollViewStyle}
           refreshControl={

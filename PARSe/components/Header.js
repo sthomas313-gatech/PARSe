@@ -10,29 +10,54 @@ import {
 import pot_icon from '../images/pot_icon1.png'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export default function Header( {navigation=null, createButton=false, text=" Stirring the Pot "} ) {
+export default function Header( {navigation=null, topLeftElement=null, createButton=false, text=" Stirring the Pot "} ) {
 
   return (
-    <View style={styles.headerView}>
-      <View style={styles.iconTitleView} >
+    <View style={topLeftElement ? styles.headerView3 : styles.headerView2}>
         <Image style={styles.icon} source={pot_icon} />
         <Text style={styles.headerText} > {text} </Text>
-      </View>
 
-      { createButton &&
-        <TouchableHighlight 
-          style={styles.plusHighlight} 
-          onPress={() => navigation.navigate("CreateScreen")}
-        >
-          <MaterialCommunityIcons style={styles.plusIcon} name="plus" />
-        </TouchableHighlight>
-      }
+        { topLeftElement }
     </View>
   );
 }
 
+
+// export default function Header( {navigation=null, topLeftElement=null, createButton=false, text=" Stirring the Pot "} ) {
+
+//   return (
+//     <View style={styles.headerView}>
+//       <View style={styles.iconTitleView} >
+//         <Image style={styles.icon} source={pot_icon} />
+//         <Text style={styles.headerText} > {text} </Text>
+//       </View>
+
+//       { createButton &&
+//         <TouchableHighlight 
+//           style={styles.plusHighlight} 
+//           onPress={() => navigation.navigate("CreateScreen")}
+//         >
+//           <MaterialCommunityIcons style={styles.plusIcon} name="plus" />
+//         </TouchableHighlight>
+//       }
+//     </View>
+//   );
+// }
+
 const styles = StyleSheet.create({
-  headerView: {
+  headerView2: {
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    flexDirection: "row",
+    fontFamily: "Helvetica",
+    fontSize: 100,
+    backgroundColor: "rgb(239, 187, 125)",
+    borderRadius: 5,
+    padding: 5,
+    marginBottom: 5,
+    margin: 3
+  },
+  headerView3: {
     alignItems: 'flex-start',
     justifyContent: 'space-between',
     flexDirection: "row",

@@ -6,7 +6,11 @@ import {
   TextInput,
   Text,
   Alert,
-  Button
+  Button,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Platform,
+  Keyboard
 } from 'react-native';
 import  * as firebase from '@react-native-firebase/app'
 import '@react-native-firebase/auth'
@@ -26,62 +30,72 @@ export default function LoginScreen( {navigation} ) {
     const [errorMessage, setErrorMessage] = React.useState(null);
 
     return (
-        <View style={styles.loginView} >
-            <SafeAreaView style={styles.loginSafeView}>
-                <Header />
-                <View style={styles.textStyle}>
-                {errorMessage && <Text style={styles.textStyle}>{errorMessage}</Text>}
-                </View>
-                <Text style={styles.textStyle}>Email:</Text>
-                <TextInput 
-                    style={styles.inputBox}
-                    autoCapitalize="none" 
-                    onChangeText={email => setEmail(email)}
-                    placeholder="user1234" 
-                />
-                <Text style={styles.textStyle}>Password:</Text>
-                <TextInput 
-                    style={styles.inputBox}
-                    secureTextEntry={true}
-                    autoCapitalize="none" 
-                    onChangeText={password => setPassword(password)}
-                    placeholder="password" 
-                />
+        <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.loginView}
+        >
+            <TouchableWithoutFeedback onPress={() => {console.log("touchable w/o feedback"); Keyboard.dismiss();}}>
+                <View style={styles.loginView} >
+                    <SafeAreaView style={styles.loginSafeView}>
+            
+                    <Header />
+                    <View style={styles.textStyle}>
+                    {errorMessage && <Text style={styles.textStyle}>{errorMessage}</Text>}
+                    </View>
+                    <Text style={styles.textStyle}>Email:</Text>
+                    <TextInput 
+                        style={styles.inputBox}
+                        autoCapitalize="none" 
+                        onChangeText={email => setEmail(email)}
+                        placeholder="user1234" 
+                    />
+                    <Text style={styles.textStyle}>Password:</Text>
+                    <TextInput 
+                        style={styles.inputBox}
+                        secureTextEntry={true}
+                        autoCapitalize="none" 
+                        onChangeText={password => setPassword(password)}
+                        placeholder="password" 
+                    />
+                    
+                    <View style={styles.buttonRow} > 
+                        <View style={styles.facebookView}>
+                            <Icon 
+                                style={styles.facebookButton} 
+                                name="facebook" 
+                                onPress={() => Alert.alert('login with facebook')} 
+                            />
+                        </View>
+                        <View style={styles.facebookView}>
+                            {/* <Image source={require("../images/google_signin_buttons/ios/2x/btn_google_light_normal_ios@2x.png")} /> */}
+                            <Icon 
+                                style={styles.facebookButton}
+                                name="google" 
+                                onPress={() => Alert.alert('login with google')} />
+                        </View>
+                        <View style={styles.buttonView}>
+                            <Button
+                                style={styles.loginButton}
+                                title="Login"
+                                //onPress={() => navigation.navigate("FeedScreen")}
+                                onPress={() => signIn(email, password)}
+                            />
+                        </View>
+                        <View style = {styles.buttonView}>
+                            <Button
+                                style = {styles.loginButton}
+                                title = "Register"
+                                onPress={() => navigation.navigate("RegisterScreen")}
+                            />
+                        </View>
+                    </View>
                 
-                <View style={styles.buttonRow} > 
-                    <View style={styles.facebookView}>
-                        <Icon 
-                            style={styles.facebookButton} 
-                            name="facebook" 
-                            onPress={() => Alert.alert('login with facebook')} 
-                        />
-                    </View>
-                    <View style={styles.facebookView}>
-                        {/* <Image source={require("../images/google_signin_buttons/ios/2x/btn_google_light_normal_ios@2x.png")} /> */}
-                        <Icon 
-                            style={styles.facebookButton}
-                            name="google" 
-                            onPress={() => Alert.alert('login with google')} />
-                    </View>
-                    <View style={styles.buttonView}>
-                        <Button
-                            style={styles.loginButton}
-                            title="Login"
-                            //onPress={() => navigation.navigate("FeedScreen")}
-                            onPress={() => signIn(email, password)}
-                        />
-                    </View>
-                    <View style = {styles.buttonView}>
-                        <Button
-                            style = {styles.loginButton}
-                            title = "Register"
-                            onPress={() => navigation.navigate("RegisterScreen")}
-                        />
-                    </View>
-                </View>
                 
-            </SafeAreaView>
-        </View>
+                
+                    </SafeAreaView>
+                </View>
+            </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
     );
 }
 
