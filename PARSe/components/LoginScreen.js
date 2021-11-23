@@ -6,47 +6,53 @@ import {
   TextInput,
   Text,
   Alert,
-  Button,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  Platform,
-  Keyboard
+  Button
 } from 'react-native';
+import {useContext} from 'react';
 import  * as firebase from '@react-native-firebase/app'
 import '@react-native-firebase/auth'
-import auth from '@react-native-firebase/auth'
-
+import auth from '@react-native-firebase/auth';
+import {LoginManager, AccessToken} from 'react-native-fbsdk';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 // import googleSignIn from "../images/google_signin_buttons/ios/2x/btn_google_light_normal_ios@2x.png";
 
 import Header from './Header';
-import { AuthContext } from '../App';
+import {AuthContext} from './FacebookComponent';
 
-export default function LoginScreen( {navigation} ) {
-    const { signIn } = React.useContext(AuthContext);
-    const [email, setEmail] = React.useState("")
-    const [password, setPassword] = React.useState("")
-    const [errorMessage, setErrorMessage] = React.useState(null);
+export default class LoginScreen extends React.Component  {
+    state = {
+        email: "",
+        password: "",
+        errorMessage: null
+    };
+    handleLogin = () => {
+        const {email, password} = this.state
+        firebase.default
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .catch(error => this.setState({errorMessage: error.message}))
+    }
+    componentDidMount() {
+    }
 
-    return (
-        <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.loginView}
-        >
-            <TouchableWithoutFeedback onPress={() => {console.log("touchable w/o feedback"); Keyboard.dismiss();}}>
-                <View style={styles.loginView} >
-                    <SafeAreaView style={styles.loginSafeView}>
-            
+    // handleFacebook = () => {
+    //     useContext(AuthContext);
+    //     //Alert.alert('login with facebook');
+    // }
+    render() {
+        return (
+            <View style={styles.loginView} >
+                <SafeAreaView style={styles.loginSafeView}>
                     <Header />
-                    <View style={styles.textStyle}>
-                    {errorMessage && <Text style={styles.textStyle}>{errorMessage}</Text>}
+                    <View style={styles.errorMessage}>
+                    {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
                     </View>
                     <Text style={styles.textStyle}>Email:</Text>
                     <TextInput 
                         style={styles.inputBox}
                         autoCapitalize="none" 
-                        onChangeText={email => setEmail(email)}
+                        onChangeText={email => this.setState({email})}
                         placeholder="user1234" 
                     />
                     <Text style={styles.textStyle}>Password:</Text>
@@ -54,7 +60,7 @@ export default function LoginScreen( {navigation} ) {
                         style={styles.inputBox}
                         secureTextEntry={true}
                         autoCapitalize="none" 
-                        onChangeText={password => setPassword(password)}
+                        onChangeText={password => this.setState({password})}
                         placeholder="password" 
                     />
                     
@@ -63,7 +69,7 @@ export default function LoginScreen( {navigation} ) {
                             <Icon 
                                 style={styles.facebookButton} 
                                 name="facebook" 
-                                onPress={() => Alert.alert('login with facebook')} 
+                                onPress={() => onFacebookButtonPress().then(() => console.log('Signed in with Facebook!'))} 
                             />
                         </View>
                         <View style={styles.facebookView}>
@@ -77,118 +83,50 @@ export default function LoginScreen( {navigation} ) {
                             <Button
                                 style={styles.loginButton}
                                 title="Login"
-                                //onPress={() => navigation.navigate("FeedScreen")}
-                                onPress={() => signIn(email, password)}
+                                onPress={this.handleLogin}
                             />
                         </View>
                         <View style = {styles.buttonView}>
                             <Button
                                 style = {styles.loginButton}
                                 title = "Register"
-                                onPress={() => navigation.navigate("RegisterScreen")}
+                                onPress={() => this.props.navigation.navigate("Register")}
                             />
                         </View>
                     </View>
-                
-                
-                
-                    </SafeAreaView>
-                </View>
-            </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
-    );
+                    
+                </SafeAreaView>
+            </View>
+    
+        );
+    }
 }
+async function onFacebookButtonPress() {
+    // Attempt login with permissions
+    const result = await LoginManager.logInWithPermissions([
+      'public_profile',
+      'email',
+    ]);
 
+    if (result.isCancelled) {
+      throw 'User cancelled the login process';
+    }
 
+    // Once signed in, get the users AccesToken
+    const data = await AccessToken.getCurrentAccessToken();
 
+    if (!data) {
+      throw 'Something went wrong obtaining access token';
+    }
 
+    // Create a Firebase credential with the AccessToken
+    const facebookCredential = auth.FacebookAuthProvider.credential(
+      data.accessToken,
+    );
 
-
-
-
-// export default class LoginScreen extends React.Component {
-//     state = {
-//         email: "",
-//         password: "",
-//         errorMessage: null
-//     };
-    
-
-//     handleLogin = () => {
-//         const {email, password} = this.state;
-//         auth()
-//         .signInWithEmailAndPassword(email, password)
-//         .then(() => {
-//             console.log(`authentication success`);
-//             this.props.navigation.navigate("FeedScreen");
-//         })
-//         .catch(error => this.setState({errorMessage: error.message}))
-//     }
-
-    
-    
-//     render() {
-//     return (
-//         <View style={styles.loginView} >
-//             <SafeAreaView style={styles.loginSafeView}>
-//                 <Header />
-//                 <View style={styles.errorMessage}>
-//                 {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
-//                 </View>
-//                 <Text style={styles.textStyle}>Email:</Text>
-//                 <TextInput 
-//                     style={styles.inputBox}
-//                     autoCapitalize="none" 
-//                     onChangeText={email => this.setState({email})}
-//                     placeholder="user1234" 
-//                 />
-//                 <Text style={styles.textStyle}>Password:</Text>
-//                 <TextInput 
-//                     style={styles.inputBox}
-//                     secureTextEntry={true}
-//                     autoCapitalize="none" 
-//                     onChangeText={password => this.setState({password})}
-//                     placeholder="password" 
-//                 />
-                
-//                 <View style={styles.buttonRow} > 
-//                     <View style={styles.facebookView}>
-//                         <Icon 
-//                             style={styles.facebookButton} 
-//                             name="facebook" 
-//                             onPress={() => Alert.alert('login with facebook')} 
-//                         />
-//                     </View>
-//                     <View style={styles.facebookView}>
-//                         {/* <Image source={require("../images/google_signin_buttons/ios/2x/btn_google_light_normal_ios@2x.png")} /> */}
-//                         <Icon 
-//                             style={styles.facebookButton}
-//                             name="google" 
-//                             onPress={() => Alert.alert('login with google')} />
-//                     </View>
-//                     <View style={styles.buttonView}>
-//                         <Button
-//                             style={styles.loginButton}
-//                             title="Login"
-//                             //onPress={() => navigation.navigate("FeedScreen")}
-//                             onPress={this.handleLogin}
-//                         />
-//                     </View>
-//                     <View style = {styles.buttonView}>
-//                         <Button
-//                             style = {styles.loginButton}
-//                             title = "Register"
-//                             onPress={() => this.props.navigation.navigate("RegisterScreen")}
-//                         />
-//                     </View>
-//                 </View>
-                
-//             </SafeAreaView>
-//         </View>
-
-//     );
-//     }
-// }
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(facebookCredential);
+  }
 
 const styles = StyleSheet.create({
     loginView: {
