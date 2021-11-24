@@ -19,11 +19,8 @@ import NavBar from './NavBar';
 import '@react-native-firebase/firestore';
 import firebase from '@react-native-firebase/app';
 
-// import { getCurrentUserFriendRecs } from '../recs';
 import { getCurrentUserAndFriendRecs } from "../recs";
-// import { getCurrentUserRecs } from '../recs';
 import { getCurrentTimestamp } from '../time';
-import { checkRestaurantRecDependency } from '../restaurant';
 import AddRecButton from './AddRecButton';
 
 
@@ -58,7 +55,7 @@ export default function FeedScreen( {navigation} ) {
       getCurrentUserAndFriendRecs(limit=5, orderBy={field: "created", direction: "desc"}, startAfter=startAfter)
         .then((result) => {
           const [recs, lastDoc] = result;
-          // console.log(`recs: ${JSON.stringify(recs, undefined, 4)}`);
+          console.log(recs);
 
           if (recs.length == 0) {
             setNoMoreRecs(true);

@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 // import { Button } from 'react-native-paper';
 import Header from './Header';
-import { checkUsernameAvailability, updateCurrentUserInfo } from '../user';
+import { checkUsernameAvailability, createCurrentUserDoc } from '../user';
 
 
 export default function CompleteRegistrationScreen({navigation}) {
@@ -41,11 +41,14 @@ export default function CompleteRegistrationScreen({navigation}) {
 
 
     const handleSubmit = () => {
-        if (usernameAvailable && !lastName & !firstName && !username) {
+        console.log(`handle submit: `);
+        console.log(`firstName: ${firstName}, lastName: ${lastName}, username: ${username}, usernameAvailable: ${usernameAvailable}`);
+        console.log(`expression: ${(usernameAvailable) && (lastName) && (firstName) && (username)}`);
+        if ((usernameAvailable) && (lastName) && (firstName) && (username)) {
             const userUpdates = {lastName: lastName, firstName: firstName, username: username};
-            updateCurrentUserInfo(userUpdates).then(() => {
-                console.log(`updated user!`);
-                navigation.navigate("FeedScreen");
+            createCurrentUserDoc(userUpdates).then(() => {
+                console.log(`created user!`);
+                navigation.navigate("NavBar");
             })
             .catch((error) => {
                 console.log(`error updating user ${error}`)
@@ -95,7 +98,7 @@ export default function CompleteRegistrationScreen({navigation}) {
                     placeholder="" 
                     value={username}
                 />
-                <Button title="next" onPress={() => navigation.navigate("FeedScreen") } ></Button>
+                <Button title="next" onPress={() => navigation.navigate("NavBar") } ></Button>
                 <Button title="Submit" onPress={handleSubmit} disabled={!usernameAvailable || !usernameLengthRequirement} ></Button>
             </View>
         </SafeAreaView>

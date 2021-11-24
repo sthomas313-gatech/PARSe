@@ -79,12 +79,12 @@ function feedStack() {
 
 const loggedInStack = () => (
  <NavigationContainer> 
-    <LoggedIn.Navigator initialRouteName = "NavBar" screenOptions={{
+    <LoggedIn.Navigator initialRouteName = "LoggedInloading" screenOptions={{
       headerShown: false
     }}>
       <LoggedIn.Screen name="NavBar" component={NavBar} />
       <LoggedIn.Screen name="LoggedInloading" component={LoggedInLoadingScreen} />
-      <LoggedIn.Screen name="Complete" component={CompleteRegistrationScreen} />
+      <LoggedIn.Screen name="CompleteRegistration" component={CompleteRegistrationScreen} />
    </LoggedIn.Navigator> 
  </NavigationContainer>
 )

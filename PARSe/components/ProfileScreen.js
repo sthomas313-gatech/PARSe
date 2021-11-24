@@ -26,6 +26,7 @@ import firebase from '@react-native-firebase/app'
 import '@react-native-firebase/firestore'
 import { subscribeToCurrentUserRecs } from '../recs';
 import { getCurrentUserRecLikes } from '../likes';
+import { signOut } from '../auth';
 
 
 export default function ProfileScreen( {navigation} ) {
@@ -81,12 +82,29 @@ export default function ProfileScreen( {navigation} ) {
         });
         setRecLikesCardsList(tempRecLikesCardsList);
     }, [recLikesList]);
+
+
+    const handleSignOut = () => {
+        signOut()
+            .then(() => {console.log(`signed out!`);})
+            .catch((error) => {console.log(`error signing out: ${error}`);})
+    }
+
+    function SignOutButton () {
+        return (
+            <Button 
+                title="Log Out" 
+                style={styles.logoutButton}
+                onPress={handleSignOut} 
+            />
+        )
+    }
     
 
 
     return (
         <SafeAreaView style={styles.loginSafeView}>
-            <Header />
+            <Header topLeftElement={<SignOutButton/>} />
             <ScrollView style={styles.container} >
                 <View style={styles.userInfoView}>
                     <ProfilePic pictureURL={userInfo && userInfo.profilePicture} />
@@ -115,7 +133,7 @@ export default function ProfileScreen( {navigation} ) {
                 </View>
                 
 
-                <View style={styles.row}>
+                {/* <View style={styles.row}>
                     <Text style={styles.text}>My Lists</Text>
                     <Button title="Edit" />
                 </View>
@@ -130,21 +148,10 @@ export default function ProfileScreen( {navigation} ) {
                         <Card style={styles.myListCard}><Text style={styles.text}>Austin TX Trip</Text></Card>
                     </TouchableOpacity>
                     <Button title="Add" />
-                </View>
+                </View> */}
                 
 
-                <TextInput style={styles.inputBox} />
-                <TextInput style={styles.inputBox} />
-                <TextInput style={styles.inputBox} />
-                <View
-                    style={styles.buttonView}
-                >
-                    <Button 
-                        title="Log Out" 
-                        style={styles.logoutButton}
-                        onPress={() => navigation.navigate("LoginScreen")} 
-                    />
-                </View>
+                
                 <View style={styles.space}>
                     <Text></Text>
                 </View>
@@ -215,7 +222,8 @@ const styles = StyleSheet.create({
     },
     buttonView: {
         borderRadius: 10,
-        backgroundColor: "rgb(199, 147, 85)",
+        marginTop: 15
+        // backgroundColor: "rgb(254, 254, 254)",
     },
     logoutButton: {
         fontFamily: "Helvetica",

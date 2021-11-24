@@ -11,9 +11,9 @@ export default function LoggedInLoadingScreen ({ navigation }) {
         checkUserDocExists(currentUser.id)
             .then((result) => {
                 if (result == true) {
-                    navigation.navigate("FeedScreen");
+                    navigation.navigate("NavBar");
                 } else if (result == false) {
-                    navigation.navigate("CompleteRegistrationScreen");
+                    navigation.navigate("CompleteRegistration");
                 } else {
                     console.log(`issue checking user doc exists`);
                 }
