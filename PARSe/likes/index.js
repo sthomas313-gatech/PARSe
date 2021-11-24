@@ -4,3 +4,4 @@ export { addCurrentUserRecLike } from './addCurrentUserRecLike';
 export { checkRecLikesDocExists } from './checkRecLikesDocExists';
 export { removeCurrentUserRecLike } from './removeCurrentUserRecLike';
 export { getCurrentUserRecLikes } from './getCurrentUserRecLikes';
+export { deleteRecLikesDoc } from './deleteRecLikesDoc';

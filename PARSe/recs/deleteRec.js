@@ -2,6 +2,7 @@ import firebase from '@react-native-firebase/app'
 import '@react-native-firebase/firestore'
 import { getCurrentTimestamp } from '../time';
 import { checkRestaurantRecDependency } from '../restaurant';
+import { deleteRecLikesDoc } from '../likes';
 
 
 export const deleteRec = async (recID, userID, restaurantID) => {
@@ -20,6 +21,8 @@ export const deleteRec = async (recID, userID, restaurantID) => {
             .collection("userRecs")
             .doc(userID)
             .update({...updates, updated: getCurrentTimestamp()});
+        
+        deleteRecLikesDoc(recID);
         
     } catch (error) {
         throw new Error(error);

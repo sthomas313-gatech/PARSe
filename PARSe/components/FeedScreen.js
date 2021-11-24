@@ -55,7 +55,7 @@ export default function FeedScreen( {navigation} ) {
       getCurrentUserAndFriendRecs(limit=5, orderBy={field: "created", direction: "desc"}, startAfter=startAfter)
         .then((result) => {
           const [recs, lastDoc] = result;
-          console.log(recs);
+          // console.log(recs);
 
           if (recs.length == 0) {
             setNoMoreRecs(true);
