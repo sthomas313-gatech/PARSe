@@ -29,6 +29,8 @@ import LoadingScreen from './components/LoadingScreen';
 import CreateScreen from './components/CreateScreen';
 import CompleteRegistrationScreen from './components/CompleteRegistrationScreen';
 import LoggedInLoadingScreen from './components/LoggedInLoadingScreen';
+import DetailedRecScreen from './components/DetailedRecScreen';
+import RecCard from './components/RecCard';
 
 //import { firebaseConfig } from './firebaseConfig';
 
@@ -70,9 +72,12 @@ const authStack = () => (
 
 function feedStack() {
   return (
-    <FeedStack.Navigator initialRouteName = "FeedScreen" >
+    <FeedStack.Navigator initialRouteName = "FeedScreen" screenOptions={{
+      headerShown: true
+    }} >
         <FeedStack.Screen name="FeedScreen" component={FeedScreen} />
         <FeedStack.Screen name="CreateScreen" component={CreateScreen} />
+        <FeedStack.Screen name="DetailedRecScreen" component={DetailedRecScreen}/>
     </FeedStack.Navigator>
   )
 }
@@ -80,7 +85,7 @@ function feedStack() {
 const loggedInStack = () => (
  <NavigationContainer> 
     <LoggedIn.Navigator initialRouteName = "LoggedInloading" screenOptions={{
-      headerShown: false
+      headerShown: false,
     }}>
       <LoggedIn.Screen name="NavBar" component={NavBar} />
       <LoggedIn.Screen name="LoggedInloading" component={LoggedInLoadingScreen} />

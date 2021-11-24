@@ -40,6 +40,7 @@ export default function DiscoverScreen( {navigation} ) {
                 latitudeDelta: LATITUDE_DELTA,
                 longitudeDelta: LONGITUDE_DELTA,
             }
+            console.log("tapped in here")
             setMapViewRegion(region);
         }
     }

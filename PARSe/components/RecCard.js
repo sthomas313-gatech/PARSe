@@ -10,21 +10,22 @@ import RecCardBottomRow from "./RecCardBottomRow";
 
 
 
-export default function RecCard({rec, editView=false}) {
+export default function RecCard({rec, editView=false, navigation}) {
 
   return (
-    <Card style={styles.cardView}>
-
+    
+    <Card style={styles.cardView} onPress={() => navigation.navigate("DetailedRecScreen", {
+      rec: rec.id
+    })}>
       <RecCardTopRow rec={rec} />
 
       <RecCardReview rec={rec} />
 
       <RecCardBottomRow rec={rec} editView={editView} />
-
     </Card>
+    
   );
 }
-
 
 
 const styles = StyleSheet.create({

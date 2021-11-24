@@ -73,7 +73,7 @@ export default function FeedScreen( {navigation} ) {
             
           recs.forEach((rec) => {
             tempRecsList.push(rec);
-            tempRecCardsList.push(<RecCard key={rec.id} rec={rec} />)
+            tempRecCardsList.push(<RecCard key={rec.id} rec={rec} navigation={navigation}/>)
           });
 
           setRecsList(tempRecsList);

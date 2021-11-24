@@ -10,9 +10,9 @@ export const getRec = async (recID) => {
     if (!recDoc) return null;
 
     const rec = recDoc.data();
-
+    console.log("getting rec:" + rec.title)
     if (!rec) return null;
-
+    
     return {
         ...rec,
         id: recDoc.id
