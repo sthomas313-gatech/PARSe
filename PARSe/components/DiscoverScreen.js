@@ -3,11 +3,13 @@ import {
     StyleSheet,
     SafeAreaView,
     Dimensions,
+    Text,
+    TouchableOpacity
     // Button
 } from 'react-native';
 
 
-import MapView, {Marker} from 'react-native-maps';
+import MapView, {Marker, infoWindow, onCalloutPress, onSelect, Callout} from 'react-native-maps';
 const {width, height} = Dimensions.get('window');
 import Geolocation from '@react-native-community/geolocation';
 
@@ -45,15 +47,13 @@ export default function DiscoverScreen( {navigation} ) {
         }
     }
 
-
-
     // Populate markers based on current user's friends' recs
     React.useEffect(() => {
         getCurrentUserAndFriendRecs(limit=null, orderBy={field: "created", direction: "desc"}, startAfter=null)
         .then((result) => {
             const [recs, lastDoc] = result;
             // console.log()
-            console.log(`current user and friend recs: ${JSON.stringify(recs, undefined, 2)}`);
+            // console.log(`current user and friend recs: ${JSON.stringify(recs, undefined, 2)}`);
             setRecsList(recs);
 
             var newMarkerList = [];
@@ -96,13 +96,18 @@ export default function DiscoverScreen( {navigation} ) {
                 var description = `${full_address}\n@${username}`;
 
                 if (coordinate) {
-                    newMarkerList.push(<Marker 
+                    newMarkerList.push(
+                    <Marker 
                         key={restaurantName.concat(username)} 
                         coordinate={coordinate} 
-                        title={restaurantName}
-                        description={description}
-                        onPress={(pressParams) => handleMarkerPress(pressParams)}
-                    />);
+                    >
+                        <Callout onPress={() => navigation.navigate("DetailedRecScreen", {
+                                    rec: description
+                                })}>
+                                <Text>{restaurantName}</Text>
+                                <Text>{description}</Text>
+                        </Callout>
+                    </Marker>);
                 }
 
             })
@@ -148,6 +153,9 @@ export default function DiscoverScreen( {navigation} ) {
                     showsUserLocation={true}
                     initialRegion={initialRegion}
                     region={mapViewRegion}
+                    // onCalloutPress={() => navigation.navigate("DetailedRecScreen", {
+                    //     rec: description
+                    //   })}
                 >
                     {markerList}
                 </MapView>
