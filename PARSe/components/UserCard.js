@@ -3,7 +3,8 @@ import {
   StyleSheet, 
   View,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
+  Button
   } from 'react-native';
   
 import { Card } from 'react-native-paper';
@@ -11,12 +12,19 @@ import ProfilePic from './ProfilePic';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // TODO: implement way to accept/reject follow request, followed by a "follow back" button
-export default function UserCard( {navigation, userInfo, acceptReject=false} ) {
+export default function UserCard( {navigation, userInfo, acceptReject=false, follow=false, unfollow=false} ) {
 
+    const handleSubmitFollowRequest = () => {
+      console.log(`handle submit follow request; not implemented yet`);
+    };
+
+    const handleSubmitUnfollowRequest = () => {
+      console.log(`handle submit unfollow request; not implemented yet`);
+    };
 
 
     return (
-        <Card style={styles.cardView} onPress={() => console.log("implement navigate to OtherProfileScreen")} >
+        <Card style={styles.cardView} onPress={() => console.log(`implement navigate to OtherProfileScreen`)} >
             <View style={topRowStyles.topRow} >
 
                 <View>
@@ -43,7 +51,17 @@ export default function UserCard( {navigation, userInfo, acceptReject=false} ) {
                         <MaterialCommunityIcons style={topRowStyles.rejectButton} name="close-circle" />
                     </TouchableOpacity>
                 </View>
-                }           
+                }    
+
+                {follow && <View style={styles.row} > 
+                    <Button title="Follow" onPress={handleSubmitFollowRequest} />
+                </View>
+                }   
+
+                {unfollow && <View style={styles.row} > 
+                    <Button title="Unfollow" onPress={handleSubmitUnfollowRequest} />
+                </View>
+                }   
 
             </View>
 

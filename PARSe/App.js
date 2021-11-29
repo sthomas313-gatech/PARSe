@@ -31,6 +31,7 @@ import CompleteRegistrationScreen from './components/CompleteRegistrationScreen'
 import LoggedInLoadingScreen from './components/LoggedInLoadingScreen';
 import DetailedRecScreen from './components/DetailedRecScreen';
 import RecCard from './components/RecCard';
+import SearchScreen from './components/SearchScreen';
 
 //import { firebaseConfig } from './firebaseConfig';
 
@@ -102,6 +103,10 @@ function NavBar() {
         <Tab.Screen 
             name="Feed"
             component={feedStack}
+          />
+        <Tab.Screen 
+            name="Search"
+            component={SearchScreen}
           />
         <Tab.Screen 
             name="Discover"
