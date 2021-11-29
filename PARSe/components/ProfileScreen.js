@@ -27,6 +27,9 @@ import '@react-native-firebase/firestore'
 import { subscribeToCurrentUserRecs } from '../recs';
 import { getCurrentUserRecLikes } from '../likes';
 import { signOut } from '../auth';
+import { getCurrentUserFriendsPopulated } from '../friends';
+import UserCard from './UserCard';
+import { getCurrentUserFriendRequestsInPopulated } from '../friendRequests';
 
 
 export default function ProfileScreen( {navigation} ) {
@@ -36,6 +39,10 @@ export default function ProfileScreen( {navigation} ) {
     const [recLikesList, setRecLikesList] = React.useState([]);
     const [recLikesCardsList, setRecLikesCardsList] = React.useState([]);
     const [userInfo, setUserInfo] = React.useState(null);
+    const [friendsList, setFriendsList] = React.useState([]);
+    const [friendCardList, setFriendCardList] = React.useState([]);
+    const [followRequestList, setFollowRequestList] = React.useState([]);
+    const [followRequestCardList, setFollowRequestCardlist] = React.useState([]);
 
     // set current user info 
     React.useEffect( () => {
@@ -84,6 +91,40 @@ export default function ProfileScreen( {navigation} ) {
     }, [recLikesList]);
 
 
+    // get list of current user friends
+    React.useEffect( () => {
+        getCurrentUserFriendsPopulated().then((result) => {
+            setFriendsList(result);
+        });
+    }, []);
+
+    React.useEffect( () => {
+        var tempFriendCards = [];
+        friendsList.forEach((user) => {
+            tempFriendCards.push(<UserCard key={user.userID} userInfo={user.user} />)
+        });
+        setFriendCardList(tempFriendCards);
+
+    }, [friendsList]);
+
+
+    // get current user inbound friend requests
+    React.useEffect( () => {
+        getCurrentUserFriendRequestsInPopulated().then((result) => {
+            console.log(result);
+            setFollowRequestList(result);
+        });
+    }, []);
+
+    React.useEffect( ( ) => {
+        var tempFollowCards = [];
+        followRequestList.forEach((user) => {
+            tempFollowCards.push(<UserCard key={user.userID} userInfo={user.user} />)
+        });
+        setFollowRequestCardlist(tempFollowCards);
+    }, [followRequestList]);
+
+
     const handleSignOut = () => {
         signOut()
             .then(() => {console.log(`signed out!`);})
@@ -130,6 +171,22 @@ export default function ProfileScreen( {navigation} ) {
                 <View>
                     {recLikesCardsList}
                     <Button title="Load More" onPress={() => console.log("not functional yet!") } />
+                </View>
+
+
+                <View style={styles.row}>
+                    <Text style={styles.text}>My Friends</Text>
+                </View>
+                <View>
+                    {friendCardList}
+                </View>
+
+
+                <View style={styles.row}>
+                    <Text style={styles.text}>Follow Requests</Text>
+                </View>
+                <View>
+                    {followRequestCardList}
                 </View>
                 
 
