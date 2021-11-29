@@ -2,15 +2,16 @@ import * as React from 'react';
 import { 
   StyleSheet, 
   View,
-  Text
+  Text,
+  TouchableOpacity
   } from 'react-native';
   
 import { Card } from 'react-native-paper';
 import ProfilePic from './ProfilePic';
-
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // TODO: implement way to accept/reject follow request, followed by a "follow back" button
-export default function UserCard( {navigation, userInfo} ) {
+export default function UserCard( {navigation, userInfo, acceptReject=false} ) {
 
 
 
@@ -33,6 +34,16 @@ export default function UserCard( {navigation, userInfo} ) {
                     </View>
 
                 </View>
+                    
+                {acceptReject && <View style={styles.row} > 
+                    <TouchableOpacity onPress={() => console.log("not functional yet")} >
+                        <MaterialCommunityIcons style={topRowStyles.acceptButton} name="check-circle" />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => console.log("not functional yet")} >
+                        <MaterialCommunityIcons style={topRowStyles.rejectButton} name="close-circle" />
+                    </TouchableOpacity>
+                </View>
+                }           
 
             </View>
 
@@ -53,6 +64,11 @@ const styles = StyleSheet.create({
       backgroundColor: "rgb(252, 252, 252)",
       borderRadius: 10,
       padding: 0
+    },
+    row: {
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center"
     }
   });
 
@@ -96,8 +112,13 @@ const styles = StyleSheet.create({
       fontSize: 16,
       justifyContent: "space-between"
     },
-    mapIcon: {
-      fontSize: 14,
+    acceptButton: {
+      fontSize: 40,
+      color: "green"
+    },
+    rejectButton: {
+        fontSize: 40,
+        color: "red"
     },
     locationText: {
       fontFamily: "Helvetica",

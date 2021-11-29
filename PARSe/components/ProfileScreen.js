@@ -119,7 +119,7 @@ export default function ProfileScreen( {navigation} ) {
     React.useEffect( ( ) => {
         var tempFollowCards = [];
         followRequestList.forEach((user) => {
-            tempFollowCards.push(<UserCard key={user.userID} userInfo={user.user} />)
+            tempFollowCards.push(<UserCard key={user.userID} userInfo={user.user} acceptReject={true} />)
         });
         setFollowRequestCardlist(tempFollowCards);
     }, [followRequestList]);
