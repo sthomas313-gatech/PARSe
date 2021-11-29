@@ -9,6 +9,8 @@ import {
   ScrollView,
   TouchableOpacity
 } from 'react-native';
+import { getCurrentUser } from '../auth';
+import { populateSearchUsersCurrentUserStatuses } from '../friends';
 import { searchUsers } from '../user';
 
 import Header from './Header';
@@ -17,6 +19,9 @@ import UserCard from './UserCard';
 
 export default function SearchScreen( {navigation} ) {
 
+    const [currentUser, setCurrentUser] = React.useState(() => {
+        return getCurrentUser();
+    });
     const [userList, setUserList] = React.useState([]);
     const [userCardList, setUserCardList] = React.useState([]);
     const [restaurantList, setRestaurantList] = React.useState([]);
@@ -25,7 +30,16 @@ export default function SearchScreen( {navigation} ) {
     React.useEffect( () => {
         var tempUserCards = [];
         userList.forEach((user) => {
-            tempUserCards.push(<UserCard key={user.id} userInfo={user} follow={true} />)
+            if (user.id == currentUser.id) {
+                tempUserCards.push(<UserCard key={user.id} userInfo={user} />);
+            } else if (user.friendStatus == true) {
+                tempUserCards.push(<UserCard key={user.id} userInfo={user} unfollow={true} />);
+            } else if (user.friendRequestStatus.requestOut) {
+                tempUserCards.push(<UserCard key={user.id} userInfo={user} cancelRequest={true} />);
+            } else {
+                tempUserCards.push(<UserCard key={user.id} userInfo={user} follow={true} />);
+            }
+            
         });
         setUserCardList(tempUserCards);
     }, [userList]);
@@ -33,7 +47,8 @@ export default function SearchScreen( {navigation} ) {
 
 
     const handleSearch = (searchStr) => {
-        searchUsers(searchStr).then((result) => {
+        populateSearchUsersCurrentUserStatuses(searchStr).then((result) => {
+            console.log(JSON.stringify(result, undefined, 2));
             setUserList(result);
         });
     };

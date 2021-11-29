@@ -4,23 +4,48 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Button
+  Button,
+  Alert
   } from 'react-native';
   
 import { Card } from 'react-native-paper';
 import ProfilePic from './ProfilePic';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { addCurrentUserFriendRequest } from '../friendRequests';
 
 // TODO: implement way to accept/reject follow request, followed by a "follow back" button
-export default function UserCard( {navigation, userInfo, acceptReject=false, follow=false, unfollow=false} ) {
+export default function UserCard( {navigation, userInfo, acceptReject=false, follow=false, unfollow=false, cancelRequest=false} ) {
+
 
     const handleSubmitFollowRequest = () => {
-      console.log(`handle submit follow request; not implemented yet`);
+      console.log(`handle submit follow request`);
+      // addCurrentUserFriendRequest(userInfo.id);
     };
 
     const handleSubmitUnfollowRequest = () => {
       console.log(`handle submit unfollow request; not implemented yet`);
     };
+
+    const handleSubmitCancelRequest = () => {
+      console.log(`handle cancel request to follow`);
+    };
+
+
+    const handleSubmitUnfollowRequestAlert = async () => {
+      Alert.alert(
+        "Are you sure?",
+        `Are you sure you want to unfollow user: '${userInfo.firstName} ${userInfo.lastName}'?`,
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+          },
+          { text: "Yes", onPress: () => handleSubmitUnfollowRequest() }
+        ]
+      );
+      
+    }
 
 
     return (
@@ -59,9 +84,14 @@ export default function UserCard( {navigation, userInfo, acceptReject=false, fol
                 }   
 
                 {unfollow && <View style={styles.row} > 
-                    <Button title="Unfollow" onPress={handleSubmitUnfollowRequest} />
+                    <Button color="red" title="Unfollow" onPress={handleSubmitUnfollowRequestAlert} />
                 </View>
                 }   
+
+                {cancelRequest && <View style={styles.row} > 
+                    <Button color="orange" title="Cancel Request to Follow" onPress={handleSubmitCancelRequest} />
+                </View>
+                }  
 
             </View>
 
