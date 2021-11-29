@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import { 
-  StyleSheet
+  StyleSheet, SafeAreaView
 } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'; 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -59,6 +59,7 @@ const AuthStack = createNativeStackNavigator();
 const FeedStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const LoggedIn = createNativeStackNavigator();
+const Discover = createNativeStackNavigator();
 
 
 
@@ -74,7 +75,7 @@ const authStack = () => (
 function feedStack() {
   return (
     <FeedStack.Navigator initialRouteName = "FeedScreen" screenOptions={{
-      headerShown: true
+      headerShown: false
     }} >
         <FeedStack.Screen name="FeedScreen" component={FeedScreen} />
         <FeedStack.Screen name="CreateScreen" component={CreateScreen} />
@@ -94,6 +95,18 @@ const loggedInStack = () => (
    </LoggedIn.Navigator> 
  </NavigationContainer>
 )
+
+function discoverStack () {
+  return (
+    <Discover.Navigator initialRouteName = "DiscoverScreen" screenOptions={{
+      headerShown: false,
+    }}>
+      <Discover.Screen name="DiscoverScreen" component={DiscoverScreen} />
+      <Discover.Screen name="DetailedRecScreen" component={DetailedRecScreen}/>
+   </Discover.Navigator> 
+ )
+}
+
 // to do come back to nav bar and nav container
 function NavBar() {
   return (
@@ -110,7 +123,7 @@ function NavBar() {
           />
         <Tab.Screen 
             name="Discover"
-            component={DiscoverScreen}
+            component={discoverStack}
           />
         <Tab.Screen 
             name="Profile"

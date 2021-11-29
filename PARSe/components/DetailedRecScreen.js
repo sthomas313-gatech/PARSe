@@ -24,28 +24,51 @@ import { getCurrentTimestamp } from '../time';
 
 export default class DetailedRecScreen extends React.Component {
     state = {
-        rec: null
+        rec: []
     };
+    firestoreRef = firebase.firestore().collection('recs').doc(this.props.route.params.rec);
 
     componentDidMount() {
-        const db = firebase.firestore();
-        const countRef = db.collection('recs').doc(this.props.route.params.rec);
-        const snapshot = countRef.get();
-        if (snapshot.exists) {
-            const rec = snapshot.data();
-            this.state.rec = rec
-            console.log(rec)
-            console.log("state:" + this.state.rec.title)
-        }
+        // const db = firebase.firestore();
+        // const countRef = db.collection('recs').doc(this.props.route.params.rec);
+        // const snapshot = countRef.get();
+        // if (snapshot.exists) {
+        //     const rec = snapshot.data();
+        //     this.state.rec = rec
+        //     console.log(rec)
+        //     console.log("state:" + this.state.rec.title)
+        this.unsubscribe = this.firestoreRef.onSnapshot(this.getCollectionToolsRental);
     }
-      currentView() {
+
+    getCollectionToolsRental = (querySnapshot) => {
+        console.log("this is the query snapshot:" + querySnapshot)
+        console.log(querySnapshot.data())
+        const rec = querySnapshot.data()
+        this.setState({rec})
+        console.log(this.state.rec)
+    }
+    currentView() {
           return (
-            // <RecCardTopRow rec={this.state.rec} />
-            <Text>{this.props.route.params.rec}</Text>
-            // <Text>{this.state.rec.title}</Text>
+            <SafeAreaView>
+                <Button 
+                title="Go Back" 
+                style={styles.goBackButton}
+                onPress={() => this.props.navigation.goBack(this.props.route.params.go_back_key)} 
+                />
+                {/* // <RecCardTopRow rec={this.state.rec} /> */}
+                <Text>{this.state.rec.title}</Text>
+            {/* // <Text>{this.state.rec.title}</Text> */}
+            </SafeAreaView>
+            
           );
       }
       render() {
           return this.currentView()
       }
   }
+  const styles = StyleSheet.create({
+    goBackButton: {
+        fontFamily: "Helvetica",
+        fontSize: 14
+    }
+})

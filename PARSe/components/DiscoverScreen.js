@@ -94,6 +94,7 @@ export default function DiscoverScreen( {navigation} ) {
 
                 var full_address = `${street1}, ${city}, ${state} ${zipcode}`;
                 var description = `${full_address}\n@${username}`;
+                var rec = rec.id;
 
                 if (coordinate) {
                     newMarkerList.push(
@@ -102,7 +103,7 @@ export default function DiscoverScreen( {navigation} ) {
                         coordinate={coordinate} 
                     >
                         <Callout onPress={() => navigation.navigate("DetailedRecScreen", {
-                                    rec: description
+                                    rec: rec
                                 })}>
                                 <Text>{restaurantName}</Text>
                                 <Text>{description}</Text>

@@ -3,6 +3,7 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
+  View,
   Text,
   RefreshControl,
   Button
@@ -130,8 +131,7 @@ export default function FeedScreen( {navigation} ) {
               title="Load More Recommendations" 
               onPress={loadMore}
             />}
-        </ScrollView>
-        <NavBar navigation={navigation} />
+        </ScrollView>     
     </SafeAreaView>
   );
 }
@@ -142,10 +142,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#ecf0f1',
     padding: 8,
+    marginTop: 40 //this is hard coded in 
   },
   scrollViewStyle: {
     paddingBottom: 100,
-    // marginBottom: 200
+    //marginBottom: 200
   },
   loadMoreButton: {
     marginTop: 20,

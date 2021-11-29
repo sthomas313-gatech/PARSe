@@ -1068,13 +1068,13 @@ SPEC CHECKSUMS:
   React-jsinspector: be95ad424ba9f7b817aff22732eb9b1b810a000a
   React-logger: 9a9cd87d4ea681ae929b32ef580638ff1b50fb24
   react-native-fbsdk: 8e92c7a334fd8d9c2b5d8b8fcd7ae2c314161099
-  react-native-geolocation: c956aeb136625c23e0dce0467664af2c437888c9
+  react-native-geolocation: cbd9d6bd06bac411eed2671810f454d4908484a8
   react-native-google-maps: 8b7f40e437adc0e4640a7bce2f60f7721e1e52cd
-  react-native-google-places: 0f36a39cc1e7461f76bc3c32622ecef523a9403c
-  react-native-image-picker: 869530859570f2af86ae57bc48886a5e2367a825
-  react-native-image-resizer: d9fb629a867335bdc13230ac2a58702bb8c8828f
+  react-native-google-places: 272eeeb77cf30b5c9758af3168e778151096eb0c
+  react-native-image-picker: 1dbc397ab78be161bf08bc4f3ad9c39bec12be11
+  react-native-image-resizer: 506412a2bdd70dde64a61e13505ce10f61a04369
   react-native-maps: 41d01d8e0afcebe32bec9eea3bd945adc1b18f7a
-  react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
+  react-native-safe-area-context: 5cf05f49df9d17261e40e518481f2e334c6cd4b5
   React-perflogger: 1f554c2b684e2f484f9edcdfdaeedab039fbaca8
   React-RCTActionSheet: 610d5a5d71ab4808734782c8bca6a12ec3563672
   React-RCTAnimation: ec6ed97370ace32724c253f29f0586cafcab8126
