@@ -5,3 +5,4 @@ export { removeCurrentUserFriend } from './removeCurrentUserFriend';
 export { getCurrentUserFriendsPopulated } from './getCurrentUserFriendsPopulated';
 export { getCurrentUserFriendStatus } from './getCurrentUserFriendStatus';
 export { populateSearchUsersCurrentUserStatuses } from './populateSearchUsersCurrentUserStatuses';
+export { subscribeToCurrentUserFollowingPopulated } from './subscribeToCurrentUserFollowingPopulated';

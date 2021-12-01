@@ -27,7 +27,7 @@ import '@react-native-firebase/firestore'
 import { subscribeToCurrentUserRecs } from '../recs';
 import { getCurrentUserRecLikes } from '../likes';
 import { signOut } from '../auth';
-import { getCurrentUserFriendsPopulated } from '../friends';
+import { subscribeToCurrentUserFollowingPopulated } from '../friends';
 import UserCard from './UserCard';
 import { getCurrentUserFriendRequestsInPopulated } from '../friendRequests';
 
@@ -91,11 +91,12 @@ export default function ProfileScreen( {navigation} ) {
     }, [recLikesList]);
 
 
-    // get list of current user friends
-    React.useEffect( () => {
-        getCurrentUserFriendsPopulated().then((result) => {
-            setFriendsList(result);
+    // subscribe to real-time changes in the current user's friends
+    React.useEffect(() => {
+        const unsubscribe = subscribeToCurrentUserFollowingPopulated(results => {
+            setFriendsList(results);
         });
+        return unsubscribe;
     }, []);
 
     React.useEffect( () => {
@@ -104,7 +105,6 @@ export default function ProfileScreen( {navigation} ) {
             tempFriendCards.push(<UserCard key={user.userID} userInfo={user.user} />)
         });
         setFriendCardList(tempFriendCards);
-
     }, [friendsList]);
 
 
@@ -175,7 +175,7 @@ export default function ProfileScreen( {navigation} ) {
 
 
                 <View style={styles.row}>
-                    <Text style={styles.text}>My Friends</Text>
+                    <Text style={styles.text}>Following</Text>
                 </View>
                 <View>
                     {friendCardList}
