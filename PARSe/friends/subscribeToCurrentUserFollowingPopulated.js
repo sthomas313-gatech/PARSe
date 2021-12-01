@@ -10,7 +10,7 @@ export const subscribeToCurrentUserFollowingPopulated = (cb) => {
 
     const callback = async (docSnapshot) => {
         const friends = docSnapshot.data();
-        console.log(`friends in subscribeToCurrentUserFriendsPopulated callback: ${friends}`);
+        // console.log(`friends in subscribeToCurrentUserFriendsPopulated callback: ${friends}`);
         if (!friends) {
             console.log(`error in subscribeToCurrentUserFriendsPopulated`);
             return null;
@@ -22,7 +22,7 @@ export const subscribeToCurrentUserFollowingPopulated = (cb) => {
         });
 
         const populatedFriends = await populateUsers(filteredFriendList);
-        console.log(`populatedFriends in subscribeToCurrentUserFriendsPopulated callback: ${populatedFriends}`);
+        // console.log(`populatedFriends in subscribeToCurrentUserFriendsPopulated callback: ${populatedFriends}`);
 
         cb(populatedFriends);
 

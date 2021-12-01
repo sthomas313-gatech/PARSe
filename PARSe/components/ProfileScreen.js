@@ -27,7 +27,7 @@ import '@react-native-firebase/firestore'
 import { subscribeToCurrentUserRecs } from '../recs';
 import { getCurrentUserRecLikes } from '../likes';
 import { signOut } from '../auth';
-import { subscribeToCurrentUserFollowingPopulated } from '../friends';
+import { getCurrentUserFollowers, subscribeToCurrentUserFollowersPopulated, subscribeToCurrentUserFollowingPopulated } from '../friends';
 import UserCard from './UserCard';
 import { getCurrentUserFriendRequestsInPopulated } from '../friendRequests';
 
@@ -41,6 +41,8 @@ export default function ProfileScreen( {navigation} ) {
     const [userInfo, setUserInfo] = React.useState(null);
     const [friendsList, setFriendsList] = React.useState([]);
     const [friendCardList, setFriendCardList] = React.useState([]);
+    const [followersList, setFollowersList] = React.useState([]);
+    const [followersCardList, setFollowersCardList] = React.useState([]);
     const [followRequestList, setFollowRequestList] = React.useState([]);
     const [followRequestCardList, setFollowRequestCardlist] = React.useState([]);
 
@@ -106,6 +108,23 @@ export default function ProfileScreen( {navigation} ) {
         });
         setFriendCardList(tempFriendCards);
     }, [friendsList]);
+
+    // subscribe to real-time changes in the current user's followers
+    React.useEffect( () => {
+        const unsubscribe = subscribeToCurrentUserFollowersPopulated(results => {
+            // console.log(`subscribeToCurrentUserFollowersPopulated: ${JSON.stringify(results)}`);
+            setFollowersList(results);
+        });
+        return unsubscribe;
+    }, []);
+
+    React.useEffect( () => {
+        var tempFriendCards = [];
+        followersList.forEach((user) => {
+            tempFriendCards.push(<UserCard key={user.userID} userInfo={user.user} />)
+        });
+        setFollowersCardList(tempFriendCards);
+    }, [followersList]);
 
 
     // get current user inbound friend requests
@@ -179,6 +198,13 @@ export default function ProfileScreen( {navigation} ) {
                 </View>
                 <View>
                     {friendCardList}
+                </View>
+
+                <View style={styles.row}>
+                    <Text style={styles.text}>Followers</Text>
+                </View>
+                <View>
+                    {followersCardList}
                 </View>
 
 

@@ -19,7 +19,7 @@ export const getCurrentUserRecLikes = async () => {
         recIDList.push(doc.id);
     });
 
-    console.log(`getCurrentUserRecLikes, recIDList: ${recIDList}`);
+    // console.log(`getCurrentUserRecLikes, recIDList: ${recIDList}`);
 
     return getRecsFromRecIDList(recIDList);
 }
