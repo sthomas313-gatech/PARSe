@@ -26,6 +26,9 @@ export default function SearchScreen( {navigation} ) {
     const [userCardList, setUserCardList] = React.useState([]);
     const [restaurantList, setRestaurantList] = React.useState([]);
     const [restaurantCardList, setRestaurantCardList] = React.useState([]);
+    const [forceRefresh, setForceRefresh] = React.useState(false);
+    const [refreshing, setRefreshing] = React.useState(false);
+    const [currSearchStr, setCurrSearchStr] = React.useState();
 
     React.useEffect( () => {
         var tempUserCards = [];
@@ -33,11 +36,11 @@ export default function SearchScreen( {navigation} ) {
             if (user.id == currentUser.id) {
                 tempUserCards.push(<UserCard key={user.id} userInfo={user} />);
             } else if (user.friendStatus == true) {
-                tempUserCards.push(<UserCard key={user.id} userInfo={user} unfollow={true} />);
+                tempUserCards.push(<UserCard key={user.id} userInfo={user} unfollow={true} setForceRefresh={setForceRefresh} forceRefresh={forceRefresh} />);
             } else if (user.friendRequestStatus.requestOut) {
-                tempUserCards.push(<UserCard key={user.id} userInfo={user} cancelRequest={true} />);
+                tempUserCards.push(<UserCard key={user.id} userInfo={user} cancelRequest={true} setForceRefresh={setForceRefresh} forceRefresh={forceRefresh} />);
             } else {
-                tempUserCards.push(<UserCard key={user.id} userInfo={user} follow={true} />);
+                tempUserCards.push(<UserCard key={user.id} userInfo={user} follow={true} setForceRefresh={setForceRefresh} forceRefresh={forceRefresh} />);
             }
             
         });
@@ -46,12 +49,33 @@ export default function SearchScreen( {navigation} ) {
 
 
 
-    const handleSearch = (searchStr) => {
+    const handleSearch = async (searchStr) => {
+        setCurrSearchStr(searchStr);
         populateSearchUsersCurrentUserStatuses(searchStr).then((result) => {
             console.log(JSON.stringify(result, undefined, 2));
             setUserList(result);
         });
     };
+
+
+    React.useEffect( () => {
+        if (refreshing == false) {
+            setForceRefresh(false);
+        }
+        console.log(`refreshing hook`);
+    }, [refreshing]);
+
+
+    React.useEffect( () => {
+        if (forceRefresh == true) {
+            setRefreshing(true);
+            handleSearch(currSearchStr).then(() => {
+                setRefreshing(false);
+            });
+        }
+        console.log(`forceRefresh hook`);
+
+    }, [forceRefresh]);
 
 
     return (

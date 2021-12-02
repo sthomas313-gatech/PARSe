@@ -22,7 +22,7 @@ export const subscribeToCurrentUserFollowingPopulated = (cb) => {
         const friendList = Object.keys(friends);
         // console.log(`subscribeToCurrentUserFriendsPopulated friendList: ${friendList}`);
         const filteredFriendList = friendList.filter(function(userID) {
-            return friends[userID]
+            return friends[userID] && userID != "updated" && userID != "created";
         });
         // console.log(`subscribeToCurrentUserFriendsPopulated filteredFriendList: ${filteredFriendList}`);
 

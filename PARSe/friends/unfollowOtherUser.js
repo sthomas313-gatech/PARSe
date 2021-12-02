@@ -1,7 +1,7 @@
 import { updateCollectionDoc } from "../firestore_helpers";
 
 
-export const removeFriend = async (requestingUserID, otherUserID) => {
+export const unfollowOtherUser = async (requestingUserID, otherUserID) => {
 
     const collection = "friends";
 

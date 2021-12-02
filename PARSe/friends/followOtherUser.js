@@ -1,7 +1,7 @@
 import { checkCollectionDocExists, createCollectionDoc, updateCollectionDoc } from '../firestore_helpers';
 
 
-export const addFriend = async (requestingUserID, otherUserID) => {
+export const followOtherUser = async (requestingUserID, otherUserID) => {
 
     const collection = "friends";
 

@@ -45,9 +45,10 @@ export default function ProfileScreen( {navigation} ) {
     const [followersCardList, setFollowersCardList] = React.useState([]);
     const [followRequestList, setFollowRequestList] = React.useState([]);
     const [followRequestCardList, setFollowRequestCardlist] = React.useState([]);
-    // const [updating, setUpdating] = React.useState(false);
+    const [forceRefresh, setForceRefresh] = React.useState(false);
+    const [refreshing, setRefreshing] = React.useState(0);
 
-    // set current user info 
+    // CURRENT USER INFO: set current user info 
     React.useEffect( () => {
         getCurrentUserInfo().then((result) => {
             setUserInfo(result);
@@ -55,7 +56,7 @@ export default function ProfileScreen( {navigation} ) {
     }, []);
 
 
-    // subscribe to real-time changes in the user's recommendations
+    // CURRENT USER RECOMMENDATIONS: subscribe to real-time changes in the user's recommendations
     React.useEffect(() => {
         const unsubscribe = subscribeToCurrentUserRecs(results => {
             setRecsList(results);
@@ -63,7 +64,7 @@ export default function ProfileScreen( {navigation} ) {
         return unsubscribe;
     }, []);
 
-    // update recCardsList when recsList changes
+    // CURRENT USER RECOMMENDATIONS: update recCardsList when recsList changes
     React.useEffect( () => {
         var tempRecCardsList = []
         recsList.forEach((rec) => {
@@ -75,7 +76,7 @@ export default function ProfileScreen( {navigation} ) {
 
 
 
-    // get current user rec likes:
+    // CURRENT USER LIKES: get current user rec likes:
     React.useEffect( () => {
         getCurrentUserRecLikes()
             .then((result) => {
@@ -87,7 +88,7 @@ export default function ProfileScreen( {navigation} ) {
                 console.log(`error from getCurrentUserRecLikes: ${error}`);
             });
     }, []);
-
+    // CURRENT USER LIKES
     React.useEffect( () => {
         var tempRecLikesCardsList = [];
         recLikesList.forEach((rec) => {
@@ -99,15 +100,16 @@ export default function ProfileScreen( {navigation} ) {
 
 
 
-    // // FOLLOWING: subscribe to real-time changes in the current user's friends
+    // FOLLOWING: subscribe to real-time changes in the current user's friends
     React.useEffect(() => {
         const unsubscribe = subscribeToCurrentUserFollowingPopulated(results => {
+            console.log(`subscribeToCurrentUserFollowingPopulated results: ${JSON.stringify(results)}`);
             setFollowingList(results);
         });
         return unsubscribe;
-    }, []);
+    }, [refreshing]);
 
-    // // FOLLOWING
+    // FOLLOWING
     React.useEffect( () => {
         var tempUserCards = [];
         followingList.forEach((user) => {
@@ -132,24 +134,24 @@ export default function ProfileScreen( {navigation} ) {
     // FOLLOWERS: subscribe to real-time changes in the current user's followers
     React.useEffect( () => {
         const unsubscribe = subscribeToCurrentUserFollowersPopulated(results => {
-            console.log(`subscribeToCurrentUserFollowersPopulated return: ${JSON.stringify(results)}`);
+            // console.log(`subscribeToCurrentUserFollowersPopulated return: ${JSON.stringify(results)}`);
             setFollowersList(results);
         });
         return unsubscribe;
-    }, []);
+    }, [refreshing]);
 
-    // FOLLOWERS:
+    // // FOLLOWERS:
     React.useEffect( () => {
         var tempUserCards = [];
         followersList.forEach((user) => {
             if (user.id == currentUser.id) {
                 tempUserCards.push(<UserCard key={user.userID} userInfo={user.user} />);
             } else if (user.friendStatus == true) {
-                tempUserCards.push(<UserCard key={user.userID} userInfo={user.user} unfollow={true} />);
+                tempUserCards.push(<UserCard key={user.userID} userInfo={user.user} unfollow={true} setForceRefresh={setForceRefresh} />);
             } else if (user.friendRequestStatus.requestOut) {
-                tempUserCards.push(<UserCard key={user.userID} userInfo={user.user} cancelRequest={true} />);
+                tempUserCards.push(<UserCard key={user.userID} userInfo={user.user} cancelRequest={true} setForceRefresh={setForceRefresh} />);
             } else {
-                tempUserCards.push(<UserCard key={user.userID} userInfo={user.user} follow={true} />);
+                tempUserCards.push(<UserCard key={user.userID} userInfo={user.user} follow={true} setForceRefresh={setForceRefresh} />);
             }
             // tempUserCards.push(<UserCard key={user.userID} userInfo={user.user} />)
         });
@@ -159,20 +161,16 @@ export default function ProfileScreen( {navigation} ) {
 
 
 
-    // get current user inbound friend requests
+    // FOLLOW REQUESTS: get current user inbound friend requests
     React.useEffect( () => {
         const unsubscribe = subscribeToCurrentUserFriendRequestsInPopulated((results) => {
             // console.log(`subscribeToCurrentUserFriendRequestsInPopulated return: ${JSON.stringify(results, undefined, 2)}`);
             setFollowRequestList(results);
         });
         return unsubscribe;
+    }, [refreshing]);
 
-        // getCurrentUserFriendRequestsInPopulated().then((result) => {
-        //     console.log(result);
-        //     setFollowRequestList(result);
-        // });
-    }, []);
-
+    // FOLLOW REQUESTS
     React.useEffect( ( ) => {
         var tempFollowCards = [];
         followRequestList.forEach((user) => {
@@ -182,6 +180,23 @@ export default function ProfileScreen( {navigation} ) {
     }, [followRequestList]);
 
 
+    // // FORCE REFRESHES:
+    // React.useEffect( () => {
+    //     if (refreshing == false) {
+    //         setForceRefresh(false);
+    //     }
+    //     console.log(`refreshing hook`);
+    // }, [refreshing]);
+
+    // FORCE REFRESHES
+    React.useEffect( () => {
+        if (forceRefresh == true) {
+            setRefreshing(refreshing + 1);
+            setForceRefresh(false);
+        }
+        console.log(`forceRefresh hook`);
+
+    }, [forceRefresh]);
 
 
     const handleSignOut = () => {

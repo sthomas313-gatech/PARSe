@@ -11,23 +11,63 @@ import {
 import { Card } from 'react-native-paper';
 import ProfilePic from './ProfilePic';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { addCurrentUserFriendRequest } from '../friendRequests';
+import { acceptFollowRequestWithCurrentUser, addCurrentUserFollowRequest, declineFollowRequestWithCurrentUser, removeCurrentUserFriendRequest } from '../friendRequests';
+import { unfollowOtherUserWithCurrentUser } from '../friends';
 
 // TODO: implement way to accept/reject follow request, followed by a "follow back" button
-export default function UserCard( {navigation, userInfo, acceptReject=false, follow=false, unfollow=false, cancelRequest=false} ) {
+export default function UserCard( {navigation, userInfo, acceptReject=false, follow=false, unfollow=false, cancelRequest=false, setForceRefresh=null, forceRefresh=null} ) {
+    const [buttonPressed, setButtonPressed] = React.useState(0);
+    // const [refreshing, setRefreshing] = React.useState(false);
+    // console.log(`just in the middle of the function here, buttonPressed is ${buttonPressed}`);
 
     const handleSubmitFollowRequest = () => {
-      console.log(`handle submit follow request`);
-      // addCurrentUserFriendRequest(userInfo.id);
+      // console.log(`handle submit follow request`);
+      addCurrentUserFollowRequest(userInfo.id).then(() => {
+        // console.log(`UserCard buttonPressed value was set to ${buttonPressed}`);
+        setButtonPressed(buttonPressed + 1);
+        // console.log(`UserCard set buttonPressed value to ${buttonPressed}`);
+      });
     };
 
     const handleSubmitUnfollowRequest = () => {
-      console.log(`handle submit unfollow request; not implemented yet`);
+      // console.log(`handle submit unfollow request; not implemented yet`);
+      unfollowOtherUserWithCurrentUser(userInfo.id).then(() => {
+        setButtonPressed(buttonPressed + 1);
+        // console.log(`UserCard set buttonPressed value to ${buttonPressed}`);
+      });
     };
 
     const handleSubmitCancelRequest = () => {
-      console.log(`handle cancel request to follow`);
+      removeCurrentUserFriendRequest(userInfo.id).then(() => {
+        // console.log(`UserCard buttonPressed value was set to ${buttonPressed}`);
+        setButtonPressed(buttonPressed + 1);
+        // console.log(`UserCard set buttonPressed value to ${buttonPressed}`);
+      });
     };
+
+
+    const handleAcceptFollowRequest = () => {
+      acceptFollowRequestWithCurrentUser(userInfo.id).then(() => {
+        setButtonPressed(buttonPressed + 1);
+        // console.log(`UserCard set buttonPressed value to ${buttonPressed}`);
+      });
+    }
+
+    const handleDeclineFollowRequest = () => {
+      declineFollowRequestWithCurrentUser(userInfo.id).then(() => {
+        setButtonPressed(buttonPressed + 1);
+        // console.log(`UserCard set changed value to ${buttonPressed}`);
+      });
+    }
+
+    // FORCE REFRESH
+    React.useEffect( () => {
+      // console.log(`UserCard buttonPressed hook: 'setButtonPressed' set to ${buttonPressed}`);
+      if (buttonPressed > 0 && setForceRefresh) {
+        setForceRefresh(true);
+        // console.log(`UserCard buttonPressed hook: set force refresh to true`);
+      }
+  }, [buttonPressed]);
 
 
     const handleSubmitUnfollowRequestAlert = async () => {
@@ -52,7 +92,7 @@ export default function UserCard( {navigation, userInfo, acceptReject=false, fol
             <View style={topRowStyles.topRow} >
 
                 <View>
-                    <ProfilePic pictureURL={"profilePicture" in userInfo && userInfo.profilePicture} />
+                    <ProfilePic pictureURL={userInfo && "profilePicture" in userInfo && userInfo.profilePicture} />
                 </View>
 
                 <View style={topRowStyles.topRight} >
@@ -68,10 +108,10 @@ export default function UserCard( {navigation, userInfo, acceptReject=false, fol
                 </View>
                     
                 {acceptReject && <View style={styles.row} > 
-                    <TouchableOpacity onPress={() => console.log("not functional yet")} >
+                    <TouchableOpacity onPress={handleAcceptFollowRequest} >
                         <MaterialCommunityIcons style={topRowStyles.acceptButton} name="check-circle" />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => console.log("not functional yet")} >
+                    <TouchableOpacity onPress={handleDeclineFollowRequest} >
                         <MaterialCommunityIcons style={topRowStyles.rejectButton} name="close-circle" />
                     </TouchableOpacity>
                 </View>
@@ -88,7 +128,7 @@ export default function UserCard( {navigation, userInfo, acceptReject=false, fol
                 }   
 
                 {cancelRequest && <View style={styles.row} > 
-                    <Button color="orange" title="Cancel Request to Follow" onPress={handleSubmitCancelRequest} />
+                    <Button color="orange" title="Cancel Request" onPress={handleSubmitCancelRequest} />
                 </View>
                 }  
 
