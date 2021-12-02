@@ -9,6 +9,7 @@ export const getFriendRequestStatus = async (requestingUserID, otherUserID) => {
     returnObj.requestOut = null;
 
     const requestsIn = await getFriendRequestsIn(requestingUserID);
+    // console.log(`getFriendRequestStatus requestsIn: ${requestsIn}`);
 
     if (requestsIn && requestsIn.friendRequestsIn.includes(otherUserID)) {
         returnObj.requestIn = true;
@@ -17,6 +18,7 @@ export const getFriendRequestStatus = async (requestingUserID, otherUserID) => {
     }
 
     const requestsOut = await getFriendRequestsOut(requestingUserID);
+    // console.log(`getFriendRequestStatus requestsOut: ${requestsOut}`);
 
     if (requestsOut && requestsOut.friendRequestsOut.includes(otherUserID)) {
         returnObj.requestOut = true;

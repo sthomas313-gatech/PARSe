@@ -9,7 +9,11 @@ export const getFriends = async userID => {
         .doc(userID)
         .get();
     
+    if (!result) return {friendList: [], userID: userID}; // no friends?
+    
     const friends = result.data();
+
+    // console.log(`getFriends: ${JSON.stringify(friends, undefined, 2)}`);
 
     if (!friends) return null;
 

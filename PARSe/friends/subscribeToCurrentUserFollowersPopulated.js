@@ -1,7 +1,10 @@
 import firebase from '@react-native-firebase/app'
 import '@react-native-firebase/firestore'
+import { getCurrentUserFriendStatus } from '.';
 import { getCurrentUser } from '../auth'
+import { getCurrentUserFriendRequestStatus } from '../friendRequests';
 import { populateUsers } from '../user';
+import { mapAsync } from '../util';
 
 export const subscribeToCurrentUserFollowersPopulated = (cb) => {
 
@@ -20,7 +23,18 @@ export const subscribeToCurrentUserFollowersPopulated = (cb) => {
         const populatedFollowers = await populateUsers(followersList);
         console.log(`populatedFollowers in subscribeToCurrentUserFriendsPopulated callback: ${populatedFollowers}`);
 
-        cb(populatedFollowers);
+        const populatedFollowersAndStatuses = await mapAsync(populatedFollowers, async (user) => {
+            const friendStatus = await getCurrentUserFriendStatus(user.userID);
+            const friendRequestStatus = await getCurrentUserFriendRequestStatus(user.userID);
+            return {
+                ...user,
+                friendStatus: friendStatus,
+                friendRequestStatus: friendRequestStatus
+            };
+        });
+        console.log(`populatedFollowersAndStatuses in subscribeToCurrentUserFriendsPopulated callback: ${populatedFollowersAndStatuses}`);
+
+        cb(populatedFollowersAndStatuses);
 
     }
 

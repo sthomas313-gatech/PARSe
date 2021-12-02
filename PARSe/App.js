@@ -32,6 +32,7 @@ import LoggedInLoadingScreen from './components/LoggedInLoadingScreen';
 import DetailedRecScreen from './components/DetailedRecScreen';
 import RecCard from './components/RecCard';
 import SearchScreen from './components/SearchScreen';
+import ProfileScreen2 from './components/ProfileScreen2';
 
 //import { firebaseConfig } from './firebaseConfig';
 

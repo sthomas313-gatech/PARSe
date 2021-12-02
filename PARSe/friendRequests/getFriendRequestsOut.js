@@ -20,6 +20,6 @@ export const getFriendRequestsOut = async userID => {
     
     return {
         friendRequestsOut: filteredFriendRequestList,
-        userID: friends.id
+        userID: result.id
     }
 };

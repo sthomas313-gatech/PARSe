@@ -16,6 +16,8 @@ import Header from './Header';
 import NavBar from './NavBar';
 import ProfilePic from './ProfilePic';
 import RecCard from "./RecCard";
+import Accordion from 'react-native-collapsible/Accordion';
+
 
 
 // Firestore data
@@ -29,23 +31,26 @@ import { getCurrentUserRecLikes } from '../likes';
 import { signOut } from '../auth';
 import { getCurrentUserFollowers, subscribeToCurrentUserFollowersPopulated, subscribeToCurrentUserFollowingPopulated } from '../friends';
 import UserCard from './UserCard';
-import { getCurrentUserFriendRequestsInPopulated, subscribeToCurrentUserFriendRequestsInPopulated } from '../friendRequests';
+import { getCurrentUserFriendRequestsInPopulated } from '../friendRequests';
 
 
-export default function ProfileScreen( {navigation} ) {
+export default function ProfileScreen2( {navigation} ) {
 
     const [recCardsList, setRecCardsList] = React.useState([]);
     const [recsList, setRecsList] = React.useState([]);
     const [recLikesList, setRecLikesList] = React.useState([]);
     const [recLikesCardsList, setRecLikesCardsList] = React.useState([]);
     const [userInfo, setUserInfo] = React.useState(null);
-    const [followingList, setFollowingList] = React.useState([]);
-    const [followingCardList, setFollowingCardList] = React.useState([]);
+    const [friendsList, setFriendsList] = React.useState([]);
+    const [friendCardList, setFriendCardList] = React.useState([]);
     const [followersList, setFollowersList] = React.useState([]);
     const [followersCardList, setFollowersCardList] = React.useState([]);
     const [followRequestList, setFollowRequestList] = React.useState([]);
     const [followRequestCardList, setFollowRequestCardlist] = React.useState([]);
-    // const [updating, setUpdating] = React.useState(false);
+
+    const [activeSections, setActiveSections] = React.useState([0]);
+    const [multipleSelect, setMultipleSelect] = React.useState(false);
+
 
     // set current user info 
     React.useEffect( () => {
@@ -72,9 +77,6 @@ export default function ProfileScreen( {navigation} ) {
         setRecCardsList(tempRecCardsList);
     }, [recsList]);
 
-
-
-
     // get current user rec likes:
     React.useEffect( () => {
         getCurrentUserRecLikes()
@@ -97,20 +99,17 @@ export default function ProfileScreen( {navigation} ) {
     }, [recLikesList]);
 
 
-
-
-    // // FOLLOWING: subscribe to real-time changes in the current user's friends
+    // subscribe to real-time changes in the current user's friends
     React.useEffect(() => {
         const unsubscribe = subscribeToCurrentUserFollowingPopulated(results => {
-            setFollowingList(results);
+            setFriendsList(results);
         });
         return unsubscribe;
     }, []);
 
-    // // FOLLOWING
     React.useEffect( () => {
         var tempUserCards = [];
-        followingList.forEach((user) => {
+        friendsList.forEach((user) => {
             if (user.id == currentUser.id) {
                 tempUserCards.push(<UserCard key={user.userID} userInfo={user.user} />);
             } else if (user.friendStatus == true) {
@@ -122,23 +121,18 @@ export default function ProfileScreen( {navigation} ) {
             }
             // tempUserCards.push(<UserCard key={user.userID} userInfo={user.user} />)
         });
-        setFollowingCardList(tempUserCards);
-    }, [followingList]);
+        setFriendCardList(tempUserCards);
+    }, [friendsList]);
 
-
-
-
-
-    // FOLLOWERS: subscribe to real-time changes in the current user's followers
+    // subscribe to real-time changes in the current user's followers
     React.useEffect( () => {
         const unsubscribe = subscribeToCurrentUserFollowersPopulated(results => {
-            console.log(`subscribeToCurrentUserFollowersPopulated return: ${JSON.stringify(results)}`);
+            console.log(`subscribeToCurrentUserFollowersPopulated: ${JSON.stringify(results)}`);
             setFollowersList(results);
         });
         return unsubscribe;
     }, []);
 
-    // FOLLOWERS:
     React.useEffect( () => {
         var tempUserCards = [];
         followersList.forEach((user) => {
@@ -157,20 +151,12 @@ export default function ProfileScreen( {navigation} ) {
     }, [followersList]);
 
 
-
-
     // get current user inbound friend requests
     React.useEffect( () => {
-        const unsubscribe = subscribeToCurrentUserFriendRequestsInPopulated((results) => {
-            // console.log(`subscribeToCurrentUserFriendRequestsInPopulated return: ${JSON.stringify(results, undefined, 2)}`);
-            setFollowRequestList(results);
+        getCurrentUserFriendRequestsInPopulated().then((result) => {
+            console.log(result);
+            setFollowRequestList(result);
         });
-        return unsubscribe;
-
-        // getCurrentUserFriendRequestsInPopulated().then((result) => {
-        //     console.log(result);
-        //     setFollowRequestList(result);
-        // });
     }, []);
 
     React.useEffect( ( ) => {
@@ -180,8 +166,6 @@ export default function ProfileScreen( {navigation} ) {
         });
         setFollowRequestCardlist(tempFollowCards);
     }, [followRequestList]);
-
-
 
 
     const handleSignOut = () => {
@@ -199,6 +183,51 @@ export default function ProfileScreen( {navigation} ) {
             />
         )
     }
+
+
+    const CONTENT = [
+        {
+            title: "Following",
+            content: friendCardList
+        },
+        {
+            title: "Followers",
+            content: followersCardList
+        },
+        {
+            title: "Follow Requests",
+            content: followRequestCardList
+        },
+        {
+            title: "My Recommendations",
+            content: recCardsList
+        },
+        {
+            title: "My Likes",
+            content: recLikesCardsList
+        },
+
+    ];
+
+    const setSections = (sections) => {
+        setActiveSections(sections.includes(undefined) ? [] : sections);
+    };
+
+    const renderContent = (section) => {
+        return (
+            <View>
+                {section.content}
+            </View>
+        );
+    };
+
+    const renderSectionTitle = (section) => {
+        return (
+            <View style={styles.row}>
+                <Text style={styles.text}>{section.title}</Text>
+            </View>
+        );
+    };
     
 
 
@@ -214,45 +243,19 @@ export default function ProfileScreen( {navigation} ) {
                     </View>
                 </View>
 
-
-                <View style={styles.row}>
-                    <Text style={styles.text}>My Recommendations</Text>
-                </View>
                 <View>
-                    {recCardsList}
-                    <Button title="Add" onPress={() => navigation.navigate("CreateScreen") } />
-                </View>
-
-
-                <View style={styles.row}>
-                    <Text style={styles.text}>My Likes</Text>
-                </View>
-                <View>
-                    {recLikesCardsList}
-                    <Button title="Load More" onPress={() => console.log("not functional yet!") } />
-                </View>
-
-
-                <View style={styles.row}>
-                    <Text style={styles.text}>Following</Text>
-                </View>
-                <View>
-                    {followingCardList}
-                </View>
-
-                <View style={styles.row}>
-                    <Text style={styles.text}>Followers</Text>
-                </View>
-                <View>
-                    {followersCardList}
-                </View>
-
-
-                <View style={styles.row}>
-                    <Text style={styles.text}>Follow Requests</Text>
-                </View>
-                <View>
-                    {followRequestCardList}
+                    <Accordion
+                        activeSections={activeSections}
+                        sections={CONTENT}
+                        // touchableComponent={TouchableOpacity}
+                        expandMultiple={multipleSelect}
+                        renderHeader={renderSectionTitle}
+                        // renderSectionTitle={renderSectionTitle}
+                        renderContent={renderContent}
+                        duration={400}
+                        onChange={setSections}
+                        renderAsFlatList={false}
+                    />
                 </View>
                 
 

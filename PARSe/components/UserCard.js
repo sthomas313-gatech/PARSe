@@ -16,7 +16,6 @@ import { addCurrentUserFriendRequest } from '../friendRequests';
 // TODO: implement way to accept/reject follow request, followed by a "follow back" button
 export default function UserCard( {navigation, userInfo, acceptReject=false, follow=false, unfollow=false, cancelRequest=false} ) {
 
-
     const handleSubmitFollowRequest = () => {
       console.log(`handle submit follow request`);
       // addCurrentUserFriendRequest(userInfo.id);
