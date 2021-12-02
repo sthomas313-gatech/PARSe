@@ -18,10 +18,10 @@ export const subscribeToCurrentUserFollowersPopulated = (cb) => {
             followersList.push(doc.id);
         });
 
-        console.log(`followersList in subscribeToCurrentUserFollowersPopulated callback: ${followersList}`);
+        // console.log(`followersList in subscribeToCurrentUserFollowersPopulated callback: ${followersList}`);
 
         const populatedFollowers = await populateUsers(followersList);
-        console.log(`populatedFollowers in subscribeToCurrentUserFriendsPopulated callback: ${populatedFollowers}`);
+        // console.log(`populatedFollowers in subscribeToCurrentUserFriendsPopulated callback: ${populatedFollowers}`);
 
         const populatedFollowersAndStatuses = await mapAsync(populatedFollowers, async (user) => {
             const friendStatus = await getCurrentUserFriendStatus(user.userID);
@@ -32,7 +32,7 @@ export const subscribeToCurrentUserFollowersPopulated = (cb) => {
                 friendRequestStatus: friendRequestStatus
             };
         });
-        console.log(`populatedFollowersAndStatuses in subscribeToCurrentUserFriendsPopulated callback: ${populatedFollowersAndStatuses}`);
+        // console.log(`populatedFollowersAndStatuses in subscribeToCurrentUserFriendsPopulated callback: ${populatedFollowersAndStatuses}`);
 
         cb(populatedFollowersAndStatuses);
 

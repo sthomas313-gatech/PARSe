@@ -103,7 +103,7 @@ export default function ProfileScreen( {navigation} ) {
     // FOLLOWING: subscribe to real-time changes in the current user's friends
     React.useEffect(() => {
         const unsubscribe = subscribeToCurrentUserFollowingPopulated(results => {
-            console.log(`subscribeToCurrentUserFollowingPopulated results: ${JSON.stringify(results)}`);
+            // console.log(`subscribeToCurrentUserFollowingPopulated results: ${JSON.stringify(results)}`);
             setFollowingList(results);
         });
         return unsubscribe;
@@ -172,11 +172,15 @@ export default function ProfileScreen( {navigation} ) {
 
     // FOLLOW REQUESTS
     React.useEffect( ( ) => {
-        var tempFollowCards = [];
-        followRequestList.forEach((user) => {
-            tempFollowCards.push(<UserCard key={user.userID} userInfo={user.user} acceptReject={true} />)
-        });
-        setFollowRequestCardlist(tempFollowCards);
+        // console.log(`followRequestList:`);
+        // console.log(followRequestList);
+        if (followRequestList.length > 0) {
+            var tempFollowCards = [];
+            followRequestList.forEach((user) => {
+                tempFollowCards.push(<UserCard key={user.userID} userInfo={user.user} acceptReject={true} />)
+            });
+            setFollowRequestCardlist(tempFollowCards);
+        }
     }, [followRequestList]);
 
 
@@ -194,7 +198,7 @@ export default function ProfileScreen( {navigation} ) {
             setRefreshing(refreshing + 1);
             setForceRefresh(false);
         }
-        console.log(`forceRefresh hook`);
+        // console.log(`forceRefresh hook`);
 
     }, [forceRefresh]);
 

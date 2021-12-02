@@ -185,7 +185,7 @@ export default function CreateScreen( {navigation} ) {
                 </View>
                 <View style={styles.bottomButtons}> 
                     <Button title="Submit" onPress={buttonSubmit} />
-                    <Button title="Next" onPress={() => console.log("TODO: not functional yet!")} />
+                    {/* <Button title="Next" onPress={() => console.log("TODO: not functional yet!")} /> */}
                 </View>
                 
 

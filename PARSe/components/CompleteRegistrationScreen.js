@@ -8,7 +8,8 @@ import {
   View,
   LogBox,
   Button,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from 'react-native';
 // import { Button } from 'react-native-paper';
 import Header from './Header';
@@ -16,11 +17,13 @@ import { checkUsernameAvailability, createCurrentUserDoc } from '../user';
 
 
 export default function CompleteRegistrationScreen({navigation}) {
-    const [firstName, setFirstName] = React.useState();
-    const [lastName, setLastName] = React.useState();
+    const [firstName, setFirstName] = React.useState("");
+    const [lastName, setLastName] = React.useState("");
     const [username, setUsername] = React.useState("");
-    const [usernameAvailable, setUsernameAvailable] = React.useState();
+    const [usernameAvailable, setUsernameAvailable] = React.useState(false);
     const [usernameLengthRequirement, setUsernameLengthRequirement] = React.useState(false);
+    const [submitErrorMessage, setSubmitErrorMessage] = React.useState("");
+    const [usernameValidChars, setUsernameValidChars] = React.useState(false);
 
     React.useEffect( () => {
         checkUsernameAvailability(username).then((result) => {
@@ -36,24 +39,41 @@ export default function CompleteRegistrationScreen({navigation}) {
         } else {
             setUsernameLengthRequirement(true);
         }
+
+        var validChars = /^[0-9a-zA-Z_.]+$/;
+        if (username.match(validChars)) {
+            // console.log(`validChars for username ${username}: ${true}`);
+            setUsernameValidChars(true);
+        } else {
+            setUsernameValidChars(false);
+            // console.log(`validChars for username ${username}: ${false}`);
+        }
+
     }, [username]);
+
+
+    React.useEffect( () => {
+        setSubmitErrorMessage("");
+    }, [username, firstName, lastName]);
 
 
 
     const handleSubmit = () => {
         console.log(`handle submit: `);
         console.log(`firstName: ${firstName}, lastName: ${lastName}, username: ${username}, usernameAvailable: ${usernameAvailable}`);
-        console.log(`expression: ${(usernameAvailable) && (lastName) && (firstName) && (username)}`);
-        if ((usernameAvailable) && (lastName) && (firstName) && (username)) {
-            const userUpdates = {lastName: lastName, firstName: firstName, username: username};
-            createCurrentUserDoc(userUpdates).then(() => {
-                console.log(`created user!`);
-                navigation.navigate("NavBar");
-            })
-            .catch((error) => {
-                console.log(`error updating user ${error}`)
-            });
-        }
+        if (firstName === "" || lastName === "" || username === "") {
+            setSubmitErrorMessage("First Name, Last Name, and Username fields cannot be empty");
+            return;
+        } 
+        
+        const userUpdates = {lastName: lastName, firstName: firstName, username: username};
+        createCurrentUserDoc(userUpdates).then(() => {
+            console.log(`created user!`);
+            navigation.navigate("NavBar");
+        })
+        .catch((error) => {
+            console.log(`error updating user ${error}`)
+        });
         
     };
 
@@ -84,6 +104,10 @@ export default function CompleteRegistrationScreen({navigation}) {
                     ?
                     <Text style={styles.unavailableTextStyle}>username not long enough :(</Text>
                     :
+                    (!usernameValidChars)
+                    ?
+                    <Text style={styles.unavailableTextStyle}>username has invalid characters :(</Text>
+                    :
                     (usernameAvailable) 
                     ? 
                     <Text style={styles.availableTextStyle}>username available :)</Text>
@@ -98,8 +122,9 @@ export default function CompleteRegistrationScreen({navigation}) {
                     placeholder="" 
                     value={username}
                 />
-                <Button title="next" onPress={() => navigation.navigate("NavBar") } ></Button>
-                <Button title="Submit" onPress={handleSubmit} disabled={!usernameAvailable || !usernameLengthRequirement} ></Button>
+                {/* <Button title="next" onPress={() => navigation.navigate("NavBar") } ></Button> */}
+                <Button title="Submit" onPress={handleSubmit} disabled={!usernameAvailable || !usernameLengthRequirement || !usernameValidChars || submitErrorMessage != ""} ></Button>
+                <Text style={styles.unavailableTextStyle} >{submitErrorMessage}</Text>
             </View>
         </SafeAreaView>
     );

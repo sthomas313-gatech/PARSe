@@ -6,3 +6,4 @@ export { checkUserDocExists } from './checkUserDocExists';
 export { createCurrentUserDoc } from './createCurrentUserDoc';
 export { populateUsers } from './populateUsers';
 export { searchUsers } from './searchUsers';
+export { sortListOfUsers } from './sortListOfUsers';

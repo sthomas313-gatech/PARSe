@@ -114,6 +114,7 @@ export const TAG_OPTIONS = [
     {item: "Mediterranean", id: "Mediterranean"},
     {item: "Mexican", id: "Mexican"},
     {item: "Middle Eastern", id: "Middle Eastern"},
+    {item: "Milkshakes", id: "Milkshakes"},
     {item: "Modern European", id: "Modern European"},
     {item: "Mongolian", id: "Mongolian"},
     {item: "Moroccan", id: "Moroccan"},

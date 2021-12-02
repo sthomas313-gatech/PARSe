@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { getCurrentUser } from '../auth';
 import { populateSearchUsersCurrentUserStatuses } from '../friends';
-import { searchUsers } from '../user';
+import { searchUsers, sortListOfUsers } from '../user';
 
 import Header from './Header';
 import UserCard from './UserCard';
@@ -53,7 +53,8 @@ export default function SearchScreen( {navigation} ) {
         setCurrSearchStr(searchStr);
         populateSearchUsersCurrentUserStatuses(searchStr).then((result) => {
             console.log(JSON.stringify(result, undefined, 2));
-            setUserList(result);
+            const sortedUserList = sortListOfUsers(result);
+            setUserList(sortedUserList);
         });
     };
 

@@ -115,7 +115,7 @@ export default function RecCardBottomRow( {rec, editView=false} ) {
               <MaterialCommunityIcons style={bottomRowStyles.heartIcon} name="heart-outline" /> 
               }
             </TouchableHighlight>
-            <MoreInfo />
+            {/* <MoreInfo /> */}
           </View>
         :
         <View style={bottomRowStyles.buttonGroup}>
@@ -144,7 +144,7 @@ const bottomRowStyles = StyleSheet.create({
         flexDirection: "row",
         paddingLeft: 10,
         flex: 1,
-        justifyContent: "space-around",
+        justifyContent: "flex-end",
         alignItems: "center"
     },
     heartIcon: {
