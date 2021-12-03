@@ -94,7 +94,7 @@ export default function DiscoverScreen( {navigation} ) {
 
                 var full_address = `${street1}, ${city}, ${state} ${zipcode}`;
                 var description = `${full_address}\n@${username}`;
-                var rec = rec.id;
+                var rec = rec;
 
                 if (coordinate) {
                     newMarkerList.push(

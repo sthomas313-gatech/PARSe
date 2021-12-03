@@ -5,7 +5,8 @@ import {
   SafeAreaView,
   Text,
   RefreshControl,
-  Button
+  Button,
+  View
 } from 'react-native';
 import { getRec } from "../recs";
 import  RecCardTopRow  from "./RecCardTopRow";
@@ -26,27 +27,21 @@ export default class DetailedRecScreen extends React.Component {
     state = {
         rec: []
     };
-    firestoreRef = firebase.firestore().collection('recs').doc(this.props.route.params.rec);
+    // firestoreRef = firebase.firestore().collection('recs').doc(this.props.route.params.rec);
 
     componentDidMount() {
-        // const db = firebase.firestore();
-        // const countRef = db.collection('recs').doc(this.props.route.params.rec);
-        // const snapshot = countRef.get();
-        // if (snapshot.exists) {
-        //     const rec = snapshot.data();
-        //     this.state.rec = rec
-        //     console.log(rec)
-        //     console.log("state:" + this.state.rec.title)
-        this.unsubscribe = this.firestoreRef.onSnapshot(this.getCollectionToolsRental);
+        //this.unsubscribe = this.firestoreRef.onSnapshot(this.getCollectionToolsRental);
+        const rec = this.props.route.params.rec
+        this.setState({rec})
     }
 
-    getCollectionToolsRental = (querySnapshot) => {
-        console.log("this is the query snapshot:" + querySnapshot)
-        console.log(querySnapshot.data())
-        const rec = querySnapshot.data()
-        this.setState({rec})
-        console.log(this.state.rec)
-    }
+    // getCollectionToolsRental = (querySnapshot) => {
+    //     console.log("this is the query snapshot:" + querySnapshot)
+    //     console.log(querySnapshot.data())
+    //     const rec = querySnapshot.data()
+    //     this.setState({rec})
+    //     console.log(this.state.rec)
+    // }
     currentView() {
           return (
             <SafeAreaView>
@@ -55,9 +50,16 @@ export default class DetailedRecScreen extends React.Component {
                 style={styles.goBackButton}
                 onPress={() => this.props.navigation.goBack(this.props.route.params.go_back_key)} 
                 />
-                {/* // <RecCardTopRow rec={this.state.rec} /> */}
+                <RecCardTopRow rec={this.props.route.params.rec} style ={{paddingBottom: 3}}/>
+                <View
+                  style={{
+                    paddingTop: 3,
+                    borderBottomColor: 'gray',
+                    borderBottomWidth: 1,
+                  }}
+                />
                 <Text>{this.state.rec.title}</Text>
-            {/* // <Text>{this.state.rec.title}</Text> */}
+                <Text>{this.state.rec.comments}</Text>
             </SafeAreaView>
             
           );

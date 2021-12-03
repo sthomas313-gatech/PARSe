@@ -15,7 +15,7 @@ export default function RecCard({rec, editView=false, navigation}) {
   return (
     
     <Card style={styles.cardView} onPress={() => navigation.navigate("DetailedRecScreen", {
-      rec: rec.id
+      rec: rec
     })}>
       <RecCardTopRow rec={rec} />
 
