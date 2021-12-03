@@ -1,0 +1,1 @@
+export { getCurrentTimestamp } from './getCurrentTimestamp';
