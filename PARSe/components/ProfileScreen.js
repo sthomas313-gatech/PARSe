@@ -32,7 +32,7 @@ import UserCard from './UserCard';
 import { getCurrentUserFriendRequestsInPopulated, subscribeToCurrentUserFriendRequestsInPopulated } from '../friendRequests';
 
 
-export default function ProfileScreen( {navigation} ) {
+export default function ProfileScreen( { navigation} ) {
 
     const [recCardsList, setRecCardsList] = React.useState([]);
     const [recsList, setRecsList] = React.useState([]);
@@ -68,7 +68,7 @@ export default function ProfileScreen( {navigation} ) {
     React.useEffect( () => {
         var tempRecCardsList = []
         recsList.forEach((rec) => {
-            tempRecCardsList.push(<RecCard key={rec.id} rec={rec} editView={true} />)
+            tempRecCardsList.push(<RecCard key={rec.id} rec={rec} editView={true} navigation={navigation}/>)
         });
         setRecCardsList(tempRecCardsList);
     }, [recsList]);
@@ -92,7 +92,7 @@ export default function ProfileScreen( {navigation} ) {
     React.useEffect( () => {
         var tempRecLikesCardsList = [];
         recLikesList.forEach((rec) => {
-            tempRecLikesCardsList.push(<RecCard key={rec.id} rec={rec} editView={false} />)
+            tempRecLikesCardsList.push(<RecCard key={rec.id} rec={rec} editView={false} navigation={navigation} />)
         });
         setRecLikesCardsList(tempRecLikesCardsList);
     }, [recLikesList]);

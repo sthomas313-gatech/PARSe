@@ -61,6 +61,8 @@ const FeedStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const LoggedIn = createNativeStackNavigator();
 const Discover = createNativeStackNavigator();
+const Profile = createNativeStackNavigator();
+
 
 
 
@@ -108,10 +110,21 @@ function discoverStack () {
  )
 }
 
+function profileStack () {
+  return (
+    <Profile.Navigator initialRouteName = "ProfileScreen" screenOptions={{
+      headerShown: false,
+    }}>
+      <Profile.Screen name="ProfileScreen" component={ProfileScreen} />
+      <Profile.Screen name="DetailedRecScreen" component={DetailedRecScreen}/>
+   </Profile.Navigator> 
+ )
+}
+
 // to do come back to nav bar and nav container
 function NavBar() {
   return (
-      <Tab.Navigator initialRouteName = "FeedScreen" screenOptions={{
+      <Tab.Navigator initialRouteName = "Feed" screenOptions={{
       headerShown: false
     }}>
         <Tab.Screen 
@@ -128,7 +141,7 @@ function NavBar() {
           />
         <Tab.Screen 
             name="Profile"
-            component={ProfileScreen}
+            component={profileStack}
           />  
       </Tab.Navigator>
   )
