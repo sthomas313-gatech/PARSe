@@ -29,6 +29,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import ProfilePic from './ProfilePic';
 import RecCardBottomRow from './RecCardBottomRow';
+import DetailedRecMap from './DetailedRecMap';
 
 export default class DetailedRecScreen extends React.Component {
     state = {
@@ -42,13 +43,7 @@ export default class DetailedRecScreen extends React.Component {
         this.setState({rec})
     }
 
-    // getCollectionToolsRental = (querySnapshot) => {
-    //     console.log("this is the query snapshot:" + querySnapshot)
-    //     console.log(querySnapshot.data())
-    //     const rec = querySnapshot.data()
-    //     this.setState({rec})
-    //     console.log(this.state.rec)
-    // }
+
     currentView() {
           return (
             <SafeAreaView>
@@ -65,7 +60,7 @@ export default class DetailedRecScreen extends React.Component {
                   }}
                 />
                 {<DetailedRecMiddle rec={this.props.route.params.rec} navigation = {this.props.navigation} style ={{paddingBottom: 3}}/>}
-                {/* <RecCardBottomRow rec={this.props.route.params.rec} style ={{paddingBottom: 3}}/> */}
+                {<DetailedRecMap rec={this.props.route.params.rec} navigation = {this.props.navigation} style ={{paddingBottom: 3}}/>}
                 
             </SafeAreaView>
             

@@ -24,6 +24,36 @@ export default function DetailedRecMiddle( {rec, navigation} ) {
     const [recInfo, setRecInfo] = React.useState(rec);
     const [currentUserLiked, setCurrentUserLiked] = React.useState(false); // TODO 
 
+    var restaurantName = "";
+    var street1 = "";
+    var zipcode = "";
+    var city = "";
+    var state = "";
+    if ("restaurant" in rec) {
+        if ("name" in rec.restaurant) {
+            restaurantName = rec.restaurant.name;
+        }
+        if ("location" in rec.restaurant) {
+            if ("coordinate" in rec.restaurant.location) {
+                 coordinate = rec.restaurant.location.coordinate;
+            }
+            if ("street1" in rec.restaurant.location) {
+                street1 = rec.restaurant.location.street1;
+            }
+            if ("zipcode" in rec.restaurant.location) {
+                 zipcode = rec.restaurant.location.zipcode;
+            }
+            if ("city" in rec.restaurant.location) {
+                city = rec.restaurant.location.city;
+            }
+            if ("state" in rec.restaurant.location) {
+                state = rec.restaurant.location.state;
+            }
+                        
+        }
+    }
+
+    var full_address = `${street1}, ${city}, ${state} ${zipcode}`;
 
     React.useEffect( () => {
 
@@ -85,6 +115,9 @@ export default function DetailedRecMiddle( {rec, navigation} ) {
         <Text style={reviewStyles.commentsText} >{rec.comments}</Text>
         <View style={bottomRowStyles.tagGroup}>
           {tagElementList}
+        </View>
+        <View>
+            <Text style={reviewStyles.recTitleText} >{full_address}</Text>
         </View>
     </View>
   );
