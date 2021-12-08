@@ -7,6 +7,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation'; 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 //import {  } from '@react-navigation';
+// import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+
+
 
 import { FIREBASE_APIKEY,
   FIREBASE_AUTHDOMAIN,
@@ -124,9 +128,33 @@ function profileStack () {
 // to do come back to nav bar and nav container
 function NavBar() {
   return (
-      <Tab.Navigator initialRouteName = "Feed" screenOptions={{
-      headerShown: false
-    }}>
+      <Tab.Navigator initialRouteName = "Feed" screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color}) => {
+          var iconName;
+          
+          if (route.name === 'Feed') {
+            iconName = focused
+              ? 'home'
+              : 'home';
+          } else if (route.name == 'Search') {
+            iconName = focused
+              ? 'search'
+              : 'search';
+          } else if (route.name == 'Discover') {
+            iconName = focused
+              ? 'map-pin'
+              : 'map-pin';
+          } else if (route.name == 'Profile') {
+            iconName = focused
+              ? 'user'
+              : 'user';
+          } 
+          return <FontAwesome name={iconName} size={30} color={color} />;
+        },
+        tabBarActiveTintColor: 'rgb(239, 187,125)',
+        tabBarInactiveTintColor: 'gray',
+        headerShown: false
+      })}>
         <Tab.Screen 
             name="Feed"
             component={feedStack}
