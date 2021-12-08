@@ -4,7 +4,6 @@ import {
   Image,
   Dimensions
 } from 'react-native';
-import { readFile } from '../util';
 
 
 export default function ProfilePic({pictureURL}) {

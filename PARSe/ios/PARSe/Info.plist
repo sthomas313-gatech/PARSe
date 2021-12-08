@@ -61,6 +61,23 @@
 	<false/>
 	<key></key>
 	<string></string>
+	<key>FacebookAppID</key>
+	<string>1540328606332029</string>
+	<key>FacebookDisplayName</key>
+	<string>Stirring the pot</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb1540328606332029</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string></string>
+		</dict>
+	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Need users to be able to upload photos for social media interaction on platform. Users should be able to upload photos of their dining experience to share with friends.</string>
 </dict>

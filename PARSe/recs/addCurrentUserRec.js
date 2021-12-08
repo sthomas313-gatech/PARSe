@@ -6,6 +6,10 @@ import { addRestaurant, searchRestaurant} from '../restaurant';
 
 export const addCurrentUserRec = async (rec, restaurant) => {
 
+    console.log(`addCurrentUserRec`);
+    console.log(`rec: ${JSON.stringify(rec, undefined, 2)}`);
+    console.log(`restaurant: ${JSON.stringify(restaurant, undefined, 2)}`);
+
     // Get Current User, to use user ID in firestore lookups
     const currentUser = getCurrentUser();
     if (!currentUser) return;
@@ -13,7 +17,7 @@ export const addCurrentUserRec = async (rec, restaurant) => {
     // search 'restaurants' documents; if no matching restaurant, create new document
     const restSearchResults = await searchRestaurant(restaurant);
     var restaurantID = null;
-    if (!restSearchResults) {
+    if (!restSearchResults || restSearchResults.length == 0) {
         const restaurantDoc = await addRestaurant(restaurant);
         restaurantID = restaurantDoc.id;
     } else {
@@ -28,7 +32,7 @@ export const addCurrentUserRec = async (rec, restaurant) => {
     rec.restaurantID = restaurantID;
     const createdRecDoc = await firebase.firestore()
         .collection("recs")
-        .add(rec);
+        .add({...rec, created: firebase.firestore.Timestamp.now()});
     
     if (!createdRecDoc) {
         console.log(`issue after writing new recommendation to 'recs' collection`);
@@ -88,7 +92,7 @@ const updateUserRecs = async (docID, userRecsUpdate) => {
     firebase.firestore()
         .collection("userRecs")
         .doc(docID)
-        .update(userRecsUpdate);
+        .update({...userRecsUpdate, updated: firebase.firestore.Timestamp.now()});
 };
 
 
@@ -96,5 +100,5 @@ const createUserRecs = async (docID, userRecsUpdate) => {
     firebase.firestore()
         .collection("userRecs")
         .doc(docID)
-        .set(userRecsUpdate);
+        .set({...userRecsUpdate, created: firebase.firestore.Timestamp.now()});
 }

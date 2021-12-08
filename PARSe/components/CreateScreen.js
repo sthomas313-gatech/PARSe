@@ -7,13 +7,15 @@ import {
   TextInput,
   View,
   LogBox,
-  Button
+  Button,
+  TouchableOpacity
 } from 'react-native';
 // import { Button } from 'react-native-paper';
 import Header from './Header';
 import NavBar from './NavBar';
 import { addCurrentUserRec } from '../recs/addCurrentUserRec';
 import { searchRestaurant } from '../restaurant';
+import { TAG_OPTIONS } from '../recs';
 
 
 // import {launchImageLibrary} from 'react-native-image-picker';
@@ -26,57 +28,44 @@ import { xorBy } from 'lodash';
 import '@react-native-firebase/firestore';
 import firebase from '@react-native-firebase/app';
 
-
-const TAG_OPTIONS = [
-    {item: "Cheap", id: "Cheap"},
-    {item: "Fancy", id: "Fancy"},
-
-    {item: "Bike-safe", id: "Bike-safe"},
-
-    {item: "Fast", id: "Fast"},
-
-    {item: "Italian", id: "Italian"},
-    {item: "BBQ", id: "BBQ"},
-    {item: "American", id: "American"},
-    {item: "Pizza", id: "Pizza"},
-    {item: "Chinese", id: "Chinese"},
-    {item: "Japanese", id: "Japanese"},
-    {item: "Ramen", id: "Ramen"},
-    {item: "Sushi", id: "Sushi"},
-]
-
-
-
+// Google Place API
+import RNGooglePlaces from 'react-native-google-places-api';
 
 
 export default function CreateScreen( {navigation} ) {
 
-    const [title, setTitle] = React.useState("");
-    const [restaurant, setRestaurant] = React.useState("");
-    const [comments, setComments] = React.useState("");
+    const [title, setTitle] = React.useState(null);
+    const [restaurant, setRestaurant] = React.useState(null);
+    const [comments, setComments] = React.useState(null);
     const [selectedTags, setSelectedTags] = React.useState([]);
-    const [city, setCity] = React.useState("");
-    const [state, setState] = React.useState("");
-    // const [tags, setTags] = React.useState(TAG_OPTIONS);
-    // const [tagSelectorOpen, setTagSelectorOpen] = React.useState(false);
+    const [city, setCity] = React.useState(null);
+    const [state, setState] = React.useState(null);
+    const [street1, setStreet1] = React.useState(null);
+    const [zipcode, setZipcode] = React.useState(null);
+    const [address, setAddress] = React.useState(null);
+    const [coordinate, setCoordinate] = React.useState(null);
 
     const [errorMessage, setErrorMessage] = React.useState(null);
 
     const buttonSubmit = async () => {
         const newRec = {};
-        newRec["title"] = title;
-        newRec["restaurantName"] = restaurant;
-        newRec["comments"] = comments;
-        newRec["tags"] = {}
+        newRec.title = title;
+        newRec.restaurantName = restaurant;
+        newRec.comments = comments;
+        newRec.tags = {}
         selectedTags.forEach(tag => {
-            newRec["tags"][tag.item] = true;
+            newRec.tags[tag.item] = true;
         });
 
         const newRestaurant = {};
-        newRestaurant["name"] = restaurant;
-        newRestaurant["location"] = {};
-        newRestaurant["location"]["city"] = city;
-        newRestaurant["location"]["state"] = state;
+        newRestaurant.name = restaurant;
+        newRestaurant.location = {};
+        newRestaurant.location.city = city;
+        newRestaurant.location.state = state;
+        newRestaurant.location.street1 = street1;
+        newRestaurant.location.zipcode = zipcode;
+        newRestaurant.location.coordinate = coordinate;
+        newRestaurant.location.address = address;
         
         await addCurrentUserRec(newRec, newRestaurant);
         navigation.navigate("FeedScreen");
@@ -90,37 +79,71 @@ export default function CreateScreen( {navigation} ) {
         }
         console.log(`selected tags: ${selectedTagsList}`); 
     }, [selectedTags]);
+    
 
-    // React.useEffect(() => { 
-    //     const obj = {name: "Taqueria Del Sol", city: "Atlanta"};
-    //     searchRestaurant(obj)
-    //         .then((results) => {
-    //             console.log(`searchRestaurant results: ${JSON.stringify(results)}`);
-    //             // console.log()
-    //         })
-    //         .catch((error) => {
-    //             console.log(`error in searchRestaurant: ${error}`);
-    //         });
-    // }, []);
+    const openSearchModal = () => {
+        // open Google Places Modal
+        RNGooglePlaces.openAutocompleteModal()
+            .then((place) => {
+                // print selected place (restaurant) to log
+                console.log(JSON.stringify(place, undefined, 2));
+
+                // parse out available address components, save to component state
+                if (place && "addressComponents" in place) {
+                    var tempStreetNumber = "";
+                    var tempRoute = "";
+                    place.addressComponents.forEach((addressComp) => {
+                        addressComp.types.forEach((type) => {
+                            if (type == "street_number") {
+                                tempStreetNumber = addressComp.shortName;
+                            } else if (type == "route") {
+                                tempRoute = addressComp.shortName;
+                            } else if (type == "locality") {
+                                setCity(addressComp.shortName);
+                            } else if (type == "administrative_area_level_1") {
+                                setState(addressComp.shortName);
+                            } else if (type == "postal_code") {
+                                setZipcode(addressComp.shortName);
+                            }
+                        });
+                    });
+                    setStreet1(`${tempStreetNumber} ${tempRoute}`);
+                }
+
+                // save selected restaurant's full address (if available) to component state
+                if (place && "address" in place) {
+                    setAddress(place.address);
+                }
+                // save selected restaurant's name to component state
+                if (place && "name" in place) {
+                    setRestaurant(place.name);
+                }
+
+                // save GPS location (if available) of selected restaurant to component state
+                if (place && "location" in place) {
+                    setCoordinate(place.location);
+                }
+            })
+            .catch(error => console.log(error.message));  // error is a Javascript Error object
+    };
 
     return (
         <SafeAreaView style={styles.container}>
-            <Header text={"Create Recommendation"} createButton={false}  />
+            <Header text={"Add"} topLeftElement={<Button title="Cancel" onPress={() => navigation.goBack()} />} />
             <View style={styles.scrollViewStyle} >
                 {/* <Text style={styles.textStyle}>Create Recommendation:</Text> */}
-                <Text style={styles.textStyle}>Recommendation Title:</Text>
-                <TextInput 
-                    style={styles.inputBox}
-                    autoCapitalize="none" 
-                    onChangeText={title => setTitle(title)}
-                    placeholder="Awesome Dinner!!" 
-                />
+                <Button
+                    title="Click to Search for a Restaurant"
+                    onPress={() => openSearchModal()}
+                >
+                </Button>
                 <Text style={styles.textStyle}>Restaurant:</Text>
                 <TextInput 
                     style={styles.inputBox}
                     autoCapitalize="none" 
                     onChangeText={rest => setRestaurant(rest)}
                     placeholder="" 
+                    value={restaurant}
                 />
                 <Text style={styles.textStyle}>City:</Text>
                 <TextInput 
@@ -128,6 +151,7 @@ export default function CreateScreen( {navigation} ) {
                     autoCapitalize="none" 
                     onChangeText={city => setCity(city)}
                     placeholder="" 
+                    value={city}
                 />
                 <Text style={styles.textStyle}>State:</Text>
                 <TextInput 
@@ -135,6 +159,14 @@ export default function CreateScreen( {navigation} ) {
                     autoCapitalize="none" 
                     onChangeText={state => setState(state)}
                     placeholder="" 
+                    value={state}
+                />
+                <Text style={styles.textStyle}>Recommendation Title:</Text>
+                <TextInput 
+                    style={styles.inputBox}
+                    autoCapitalize="none" 
+                    onChangeText={title => setTitle(title)}
+                    placeholder="Awesome Dinner!!" 
                 />
                 <Text style={styles.textStyle}>Comments:</Text>
                 <TextInput 
@@ -156,8 +188,11 @@ export default function CreateScreen( {navigation} ) {
                         isMulti
                     />
                 </View>
-                <Button title="Submit" onPress={buttonSubmit}>
-                </Button>
+                <View style={styles.bottomButtons}> 
+                    <Button title="Submit" onPress={buttonSubmit} />
+                    {/* <Button title="Next" onPress={() => console.log("TODO: not functional yet!")} /> */}
+                </View>
+                
 
 
             </View>
@@ -203,6 +238,12 @@ const styles = StyleSheet.create({
         // justifyContent: "center",
         flex: 1,
         padding: 10,
-        margin: 18
+        margin: 18,
+        marginTop: 0
+    },
+    bottomButtons: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        alignItems: "center",
     }
 });

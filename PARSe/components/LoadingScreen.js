@@ -1,14 +1,18 @@
 import React from 'react'
 import {View, Text, StyleSheet, ActivityIndicator} from 'react-native'
-import firebase from '@react-native-firebase/app'
+// import firebase from '@react-native-firebase/app'
+// import '@react-native-firebase/auth'
+import  * as firebase from '@react-native-firebase/app'
 import '@react-native-firebase/auth'
-
+import auth from '@react-native-firebase/auth';
 
 
 export default class LoadingScreen extends React.Component {
     componentDidMount() {
     
-        firebase.auth().onAuthStateChanged(user => {
+        firebase.default.auth().onAuthStateChanged(user => {
+            console.log("got to firebase auth change in loading screen");
+            console.log(`${JSON.stringify(user, undefined, 2)}`);
             this.props.navigation.navigate(user ? "App" : "Auth");
         })
     }

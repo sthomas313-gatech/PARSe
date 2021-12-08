@@ -3,23 +3,27 @@ import '@react-native-firebase/firestore'
 
 
 
-export const getFriends = async username => {
+export const getFriends = async userID => {
     const result = await firebase.firestore()
         .collection("friends")
-        .doc(username)
+        .doc(userID)
         .get();
     
+    if (!result) return {friendList: [], userID: userID}; // no friends?
+    
     const friends = result.data();
+
+    // console.log(`getFriends: ${JSON.stringify(friends, undefined, 2)}`);
 
     if (!friends) return null;
 
     const friendList = Object.keys(friends);
-    const filteredFriendList = friendList.filter(function(username) {
-        return friends[username]
+    const filteredFriendList = friendList.filter(function(userID) {
+        return friends[userID]
     });
     
     return {
         friendList: filteredFriendList,
-        username: friends.id
+        userID: friends.id
     }
 };

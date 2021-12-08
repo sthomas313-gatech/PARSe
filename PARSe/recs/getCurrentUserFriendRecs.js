@@ -1,5 +1,5 @@
 // import { getFriendRecs } from './getFriendRecs';
-import { getCurrentUserFriends } from '../friends/getCurrentUserFriends';
+import { getCurrentUserFriends } from '../friends';
 import { getUsersRecs } from "./getUsersRecs";
 
 
