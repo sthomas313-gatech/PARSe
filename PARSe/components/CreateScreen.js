@@ -79,12 +79,16 @@ export default function CreateScreen( {navigation} ) {
         }
         console.log(`selected tags: ${selectedTagsList}`); 
     }, [selectedTags]);
+    
 
     const openSearchModal = () => {
+        // open Google Places Modal
         RNGooglePlaces.openAutocompleteModal()
             .then((place) => {
+                // print selected place (restaurant) to log
                 console.log(JSON.stringify(place, undefined, 2));
 
+                // parse out available address components, save to component state
                 if (place && "addressComponents" in place) {
                     var tempStreetNumber = "";
                     var tempRoute = "";
@@ -105,19 +109,20 @@ export default function CreateScreen( {navigation} ) {
                     });
                     setStreet1(`${tempStreetNumber} ${tempRoute}`);
                 }
+
+                // save selected restaurant's full address (if available) to component state
                 if (place && "address" in place) {
                     setAddress(place.address);
                 }
+                // save selected restaurant's name to component state
                 if (place && "name" in place) {
                     setRestaurant(place.name);
                 }
+
+                // save GPS location (if available) of selected restaurant to component state
                 if (place && "location" in place) {
                     setCoordinate(place.location);
                 }
-                // place.
-                
-                // place represents user's selection from the
-                // suggestions and it is a simplified Google Place object.
             })
             .catch(error => console.log(error.message));  // error is a Javascript Error object
     };
