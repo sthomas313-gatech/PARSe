@@ -72,13 +72,6 @@ export default class LoginScreen extends React.Component  {
                                 onPress={() => onFacebookButtonPress().then(() => console.log('Signed in with Facebook!'))} 
                             />
                         </View>
-                        <View style={styles.facebookView}>
-                            {/* <Image source={require("../images/google_signin_buttons/ios/2x/btn_google_light_normal_ios@2x.png")} /> */}
-                            <Icon 
-                                style={styles.facebookButton}
-                                name="google" 
-                                onPress={() => Alert.alert('login with google')} />
-                        </View>
                         <View style={styles.buttonView}>
                             <Button
                                 style={styles.loginButton}
