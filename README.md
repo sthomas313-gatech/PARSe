@@ -5,6 +5,6 @@ Our application is a new social media platform geared towards foodies and influe
 
 ## Installation
 - Clone repo
-- Run `npm install` inside folder
+- Run `npm install` inside PARSe folder
 - Navigate to ios folder and run `pod install`
 - Run `npm run ios` to run the app
