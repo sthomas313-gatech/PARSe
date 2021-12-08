@@ -282,7 +282,6 @@ export default function ProfileScreen2( {navigation} ) {
                     <Text></Text>
                 </View>
             </ScrollView>
-            <NavBar navigation={navigation} />
             
         </SafeAreaView>
 

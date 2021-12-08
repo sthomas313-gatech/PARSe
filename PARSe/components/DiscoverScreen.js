@@ -160,7 +160,6 @@ export default function DiscoverScreen( {navigation} ) {
                 >
                     {markerList}
                 </MapView>
-                <NavBar navigation={navigation} />
         </SafeAreaView>
     );
   }
